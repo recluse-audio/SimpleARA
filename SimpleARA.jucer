@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="KE8N2F" name="SimpleARA" projectType="araaudioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="1" jucerFormatVersion="1" pluginName="SimpleARA"
+              pluginManufacturer="recluse-audio" pluginManufacturerCode="RECL"
+              companyName="recluse-audio">
+  <MAINGROUP id="txu9ht" name="SimpleARA">
+    <GROUP id="{23FEAE3D-FA35-C0BF-6594-7F689F119FA4}" name="Source">
+      <FILE id="T6Lcjw" name="GlobalDefines.h" compile="0" resource="0" file="Source/GlobalDefines.h"/>
+      <FILE id="aeFbEh" name="PossiblyBufferedReader.cpp" compile="1" resource="0"
+            file="Source/PossiblyBufferedReader.cpp"/>
+      <FILE id="OXJqxx" name="PossiblyBufferedReader.h" compile="0" resource="0"
+            file="Source/PossiblyBufferedReader.h"/>
+      <FILE id="F4rBco" name="WaveformCache.cpp" compile="1" resource="0"
+            file="Source/WaveformCache.cpp"/>
+      <FILE id="HSqjfS" name="WaveformCache.h" compile="0" resource="0" file="Source/WaveformCache.h"/>
+      <GROUP id="{6DF16422-B970-5319-3BAA-7E10B66F579B}" name="Util">
+        <FILE id="PHcPfH" name="AsyncCallback.h" compile="0" resource="0" file="Source/AsyncCallback.h"/>
+        <FILE id="sbz5XD" name="CallbackTracker.cpp" compile="1" resource="0"
+              file="Source/CallbackTracker.cpp"/>
+        <FILE id="vx7xUS" name="CallbackTracker.h" compile="0" resource="0"
+              file="Source/CallbackTracker.h"/>
+        <FILE id="gsu3bc" name="UtilObjects.h" compile="0" resource="0" file="Source/UtilObjects.h"/>
+      </GROUP>
+      <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
+        <FILE id="c158IT" name="OverlayComponent.cpp" compile="1" resource="0"
+              file="Source/OverlayComponent.cpp"/>
+        <FILE id="oWDN3i" name="OverlayComponent.h" compile="0" resource="0"
+              file="Source/OverlayComponent.h"/>
+        <FILE id="A32SHq" name="TrackHeader.cpp" compile="1" resource="0" file="Source/TrackHeader.cpp"/>
+        <FILE id="alJKKB" name="TrackHeader.h" compile="0" resource="0" file="Source/TrackHeader.h"/>
+        <FILE id="hpLgfq" name="VerticalLayoutViewport.h" compile="0" resource="0"
+              file="Source/VerticalLayoutViewport.h"/>
+        <FILE id="lJM1hF" name="VerticalLayoutViewportContent.h" compile="0"
+              resource="0" file="Source/VerticalLayoutViewportContent.h"/>
+        <FILE id="bRAapr" name="WaveformView.cpp" compile="1" resource="0"
+              file="Source/WaveformView.cpp"/>
+        <FILE id="xdoeGW" name="WaveformView.h" compile="0" resource="0" file="Source/WaveformView.h"/>
+        <FILE id="voncYt" name="ZoomControls.h" compile="0" resource="0" file="Source/ZoomControls.h"/>
+      </GROUP>
+      <GROUP id="{748BF6FD-1CDE-63EC-6E44-C5B289A3011C}" name="ARA_Views">
+        <GROUP id="{F39CCB1F-5DC6-FE16-AD40-56645A1FB87F}" name="ARAObjectViews">
+          <FILE id="wYA3Hk" name="AudioSourceView.cpp" compile="1" resource="0"
+                file="Source/AudioSourceView.cpp"/>
+          <FILE id="cOXNAH" name="AudioSourceView.h" compile="0" resource="0"
+                file="Source/AudioSourceView.h"/>
+          <FILE id="vEhB2x" name="ActiveRegionView.cpp" compile="1" resource="0"
+                file="Source/ActiveRegionView.cpp"/>
+          <FILE id="gFOH3W" name="ActiveRegionView.h" compile="0" resource="0"
+                file="Source/ActiveRegionView.h"/>
+          <FILE id="YNWqFQ" name="AudioModView.cpp" compile="1" resource="0"
+                file="Source/AudioModView.cpp"/>
+          <FILE id="OmOoGO" name="AudioModView.h" compile="0" resource="0" file="Source/AudioModView.h"/>
+          <FILE id="ZJkiBS" name="PlaybackRegionView.cpp" compile="1" resource="0"
+                file="Source/PlaybackRegionView.cpp"/>
+          <FILE id="YqUzOe" name="PlaybackRegionView.h" compile="0" resource="0"
+                file="Source/PlaybackRegionView.h"/>
+          <FILE id="QDnlBe" name="RegionSequenceView.cpp" compile="1" resource="0"
+                file="Source/RegionSequenceView.cpp"/>
+          <FILE id="I4JC0L" name="RegionSequenceView.h" compile="0" resource="0"
+                file="Source/RegionSequenceView.h"/>
+          <FILE id="vtWzHn" name="DocumentView.cpp" compile="1" resource="0"
+                file="Source/DocumentView.cpp"/>
+          <FILE id="ULvmva" name="DocumentView.h" compile="0" resource="0" file="Source/DocumentView.h"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{28EADBB1-911D-3C92-9EF8-482AA0FDBA4B}" name="ARA">
+        <FILE id="WDLMP2" name="ARA_AudioMod.cpp" compile="1" resource="0"
+              file="Source/ARA_AudioMod.cpp"/>
+        <FILE id="rJXXjG" name="ARA_AudioMod.h" compile="0" resource="0" file="Source/ARA_AudioMod.h"/>
+        <FILE id="KAUcUw" name="ARA_DocumentSpecialisation.cpp" compile="1"
+              resource="0" file="Source/ARA_DocumentSpecialisation.cpp"/>
+        <FILE id="Bbftd9" name="ARA_DocumentSpecialisation.h" compile="0" resource="0"
+              file="Source/ARA_DocumentSpecialisation.h"/>
+        <FILE id="podQHd" name="ARA_EditorRenderer.cpp" compile="1" resource="0"
+              file="Source/ARA_EditorRenderer.cpp"/>
+        <FILE id="Rv7F4B" name="ARA_EditorRenderer.h" compile="0" resource="0"
+              file="Source/ARA_EditorRenderer.h"/>
+        <FILE id="GmK2mH" name="ARA_PlaybackRenderer.cpp" compile="1" resource="0"
+              file="Source/ARA_PlaybackRenderer.cpp"/>
+        <FILE id="RM9foq" name="ARA_PlaybackRenderer.h" compile="0" resource="0"
+              file="Source/ARA_PlaybackRenderer.h"/>
+      </GROUP>
+      <FILE id="ceVH1S" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="B1fE2T" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="SDuX0n" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="kbv23c" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="ArtieARA"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="ArtieARA"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE_7/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../JUCE_7/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
