@@ -14,6 +14,8 @@
 #include "PlaybackRegionView.h"
 #include "WaveformCache.h"
 
+class SimpleARAEditor;
+
 //==============================================================================
 /*
 */
@@ -23,7 +25,7 @@ public juce::ChangeBroadcaster,
 private juce::ARAPlaybackRegion::Listener
 {
 public:
-	RegionSequenceView (juce::ARARegionSequence& rs, WaveformCache& cache, double pixelPerSec);
+	RegionSequenceView (SimpleARAEditor& editor, juce::ARARegionSequence& rs, WaveformCache& cache, double pixelPerSec);
 
 	~RegionSequenceView() override;
 
@@ -47,6 +49,8 @@ public:
 	void setZoomLevel (double pixelPerSecond);
 
 private:
+	SimpleARAEditor& mEditor;
+
 	void createAndAddPlaybackRegionView (ARAPlaybackRegion* playbackRegion);
 
 	void updatePlaybackDuration();

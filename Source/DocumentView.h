@@ -18,6 +18,7 @@
 #include "TrackHeader.h"
 #include "ZoomControls.h"
 
+class SimpleARAEditor;
 //==============================================================================
 /*
 */
@@ -27,7 +28,7 @@ private juce::ARADocument::Listener,
 private juce::ARAEditorView::Listener
 {
 public:
-	explicit DocumentView (juce::ARADocument& document, PlayHeadState& playHeadState);
+	explicit DocumentView (SimpleARAEditor& mEditor, juce::ARADocument& document, PlayHeadState& playHeadState);
 
 	~DocumentView() override;
 
@@ -92,7 +93,7 @@ private:
 	
 	void zoom (double factor);
 
-	void update();
+	void updateViewport();
 
 	void addTrackViews (juce::ARARegionSequence* regionSequence);
 
@@ -105,7 +106,7 @@ private:
 
 
     static constexpr auto minimumZoom = 10.0;
-    static constexpr auto trackHeight = 100;
+    static constexpr auto trackHeight = 60;
 
 	juce::ARADocument& araDocument;
 
@@ -126,5 +127,7 @@ private:
     int viewportHeightOffset = 0;
 
 private:
+	SimpleARAEditor& mEditor;
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DocumentView)
 };

@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 class WaveformCache;
+class PlaybackRegionView;
+class SimpleARAEditor;
 
 //==============================================================================
 /**
@@ -22,15 +24,19 @@ class WaveformCache;
 class ActiveRegionView  : public juce::Component
 {
 public:
-    ActiveRegionView(juce::ARAPlaybackRegion& region, WaveformCache& cache);
+    ActiveRegionView(SimpleARAEditor& editor, juce::ARAPlaybackRegion& region, WaveformCache& cache);
     ~ActiveRegionView() override;
 	
     void paint (juce::Graphics&) override;
     void resized() override;
+	
+	void mouseEnter(const juce::MouseEvent& e) override;
+	void mouseExit(const juce::MouseEvent& e) override;
 
 private:
 	juce::ARAPlaybackRegion& playbackRegion;
 	WaveformCache& waveCache;
+	SimpleARAEditor& mEditor;
 	
 	void _drawPlaybackRegion(juce::Graphics& g);
 	

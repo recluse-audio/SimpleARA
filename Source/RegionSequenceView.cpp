@@ -11,10 +11,11 @@
 #include <JuceHeader.h>
 #include "RegionSequenceView.h"
 #include "GlobalDefines.h"
+#include "PluginEditor.h"
 
 //==============================================================================
-RegionSequenceView::RegionSequenceView(ARARegionSequence& rs, WaveformCache& wave, double pixelPerSec)
-: regionSequence (rs), waveformCache(wave), zoomLevelPixelPerSecond (pixelPerSec)
+RegionSequenceView::RegionSequenceView(SimpleARAEditor& editor, ARARegionSequence& rs, WaveformCache& wave, double pixelPerSec)
+: mEditor(editor), regionSequence (rs), waveformCache(wave), zoomLevelPixelPerSecond (pixelPerSec)
 {
 	regionSequence.addListener (this);
 
@@ -115,7 +116,7 @@ void RegionSequenceView::setZoomLevel (double pixelPerSecond)
 
 void RegionSequenceView::createAndAddPlaybackRegionView (ARAPlaybackRegion* playbackRegion)
 {
-	playbackRegionViewsMap[playbackRegion] = std::make_unique<PlaybackRegionView> (*playbackRegion, waveformCache);
+	playbackRegionViewsMap[playbackRegion] = std::make_unique<PlaybackRegionView> (mEditor, *playbackRegion, waveformCache);
 	playbackRegion->addListener (this);
 	addAndMakeVisible (*playbackRegionViewsMap[playbackRegion]);
 }

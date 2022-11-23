@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include "DocumentView.h"
 #include "ARA_DocumentSpecialisation.h"
+#include "HelperDisplay.h"
 
 //==============================================================================
 SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
@@ -18,10 +19,13 @@ SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
 	if (auto* editorView = getARAEditorView())
 	{
 		auto* document = ARADocumentControllerSpecialisation::getSpecialisedDocumentController<ARA_DocumentSpecialisation>(editorView->getDocumentController())->getDocument();
-		documentView = std::make_unique<DocumentView> (*document, p.playHeadState );
+		documentView = std::make_unique<DocumentView> (*this, *document, p.playHeadState );
 	}
 
 	addAndMakeVisible (documentView.get());
+	
+	helperDisplay = std::make_unique<HelperDisplay>();
+	addAndMakeVisible(helperDisplay.get());
 	
 	// ARA requires that plugin editors are resizable to support tight integration
 	// into the host UI
@@ -64,5 +68,14 @@ void SimpleARAEditor::resized()
 	if (documentView != nullptr)
 		documentView->setBoundsRelative(0.f, 0.f, 1.f, 1.f);
 	
+	if(helperDisplay != nullptr)
+		helperDisplay->setBoundsRelative(0.f, 0.9f, 0.4f, 0.1f);
+}
 
+
+
+
+HelperDisplay* SimpleARAEditor::getHelperDisplay()
+{
+	return helperDisplay.get();
 }

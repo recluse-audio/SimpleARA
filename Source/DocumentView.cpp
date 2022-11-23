@@ -10,10 +10,12 @@
 
 #include <JuceHeader.h>
 #include "DocumentView.h"
+#include "PluginEditor.h"
 
 //==============================================================================
-DocumentView::DocumentView(juce::ARADocument& document, PlayHeadState& playHeadState)
-: araDocument (document),
+DocumentView::DocumentView(SimpleARAEditor& editor, juce::ARADocument& document, PlayHeadState& playHeadState)
+: mEditor(editor),
+  araDocument (document),
   overlay (playHeadState)
 {
 	addAndMakeVisible (tracksBackground);
@@ -64,23 +66,25 @@ void DocumentView::willRemoveRegionSequenceFromDocument (juce::ARADocument*, juc
 void DocumentView::didEndEditing (juce::ARADocument*)
 {
 	rebuildRegionSequenceViews();
-	update();
+	updateViewport();
 }
 
 //==============================================================================
 void DocumentView::changeListenerCallback (juce::ChangeBroadcaster*)
 {
-	update();
+	updateViewport();
 }
 
 //==============================================================================
 // ARAEditorView::Listener overrides
 void DocumentView::onNewSelection (const ARA::PlugIn::ViewSelection&)
 {
+	DBG("NEW SELECTION");
 }
 
 void DocumentView::onHideRegionSequences (const std::vector<juce::ARARegionSequence*>& regionSequences)
 {
+	DBG("NEW SELECTION");
 }
 
 
@@ -110,6 +114,12 @@ void DocumentView::resized()
 	tracksBackground.setBounds (bounds);
 	viewport.setBounds (bounds);
 	overlay.setBounds (bounds);
+	
+	for (auto& view : regionSequenceViews)
+	{
+		auto regionSequenceView = view.second.get();
+		regionSequenceView->resized();
+	}
 }
 
 
@@ -122,7 +132,7 @@ void DocumentView::setZoomLevel (double pixelPerSecond)
 
 	overlay.setZoomLevel (zoomLevelPixelPerSecond);
 
-	update();
+	updateViewport();
 }
 
 
@@ -136,16 +146,17 @@ void DocumentView::zoom (double factor)
 
 
 
-void DocumentView::update()
+void DocumentView::updateViewport()
 {
 	timelineLength = 0.0;
 
 	for (const auto& view : regionSequenceViews)
 		timelineLength = std::max (timelineLength, view.second->getPlaybackDuration());
 
-	const juce::Rectangle<int> timelineSize (roundToInt (timelineLength * zoomLevelPixelPerSecond),
-									   (int) regionSequenceViews.size() * trackHeight);
-	viewport.content.setSize (timelineSize.getWidth(), timelineSize.getHeight());
+	auto timelineWidth = roundToInt (timelineLength * zoomLevelPixelPerSecond);
+	auto timelineHeight = roundToInt ((int) regionSequenceViews.size() * trackHeight);
+	
+	viewport.content.setSize (timelineWidth, timelineHeight);
 	viewport.content.resized();
 
 	resized();
@@ -162,7 +173,7 @@ void DocumentView::addTrackViews (juce::ARARegionSequence* regionSequence)
 	auto& regionSequenceView = insertIntoMap (
 		regionSequenceViews,
 		RegionSequenceViewKey { regionSequence },
-		std::make_unique<RegionSequenceView> (*regionSequence, waveformCache, zoomLevelPixelPerSecond));
+		std::make_unique<RegionSequenceView> (mEditor, *regionSequence, waveformCache, zoomLevelPixelPerSecond));
 
 	regionSequenceView.addChangeListener (this);
 	viewport.content.addAndMakeVisible (regionSequenceView);
@@ -172,6 +183,8 @@ void DocumentView::addTrackViews (juce::ARARegionSequence* regionSequence)
 									   std::make_unique<TrackHeader> (*regionSequence));
 
 	addAndMakeVisible (trackHeader);
+	
+	updateViewport();
 }
 
 
@@ -213,7 +226,7 @@ void DocumentView::rebuildRegionSequenceViews()
 			addTrackViews (regionSequence);
 		}
 
-		update();
+		updateViewport();
 
 		regionSequenceViewsAreValid = true;
 	}

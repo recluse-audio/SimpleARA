@@ -11,11 +11,15 @@
 #include <JuceHeader.h>
 #include "AudioSourceView.h"
 #include "WaveformCache.h"
+#include "PluginEditor.h"
+#include "HelperDisplay.h"
 
 //==============================================================================
-AudioSourceView::AudioSourceView(juce::ARAAudioSource& source, WaveformCache& cache)
-: audioSource(source), waveCache(cache)
+AudioSourceView::AudioSourceView(SimpleARAEditor& editor, juce::ARAAudioSource& source, WaveformCache& cache)
+: mEditor(editor), audioSource(source), waveCache(cache)
 {
+	this->setInterceptsMouseClicks(false, false);
+
 	waveCache.getOrCreateThumbnail(&audioSource);
 
 }
@@ -48,4 +52,15 @@ void AudioSourceView::_drawAudioSource(juce::Graphics& g)
 	// Draw full audio source
 	g.setColour (Colours::whitesmoke.darker().withAlpha(0.3f));
 	thumbnail.drawChannels (g, bounds, 0, sourceDuration, 1.0f);
+}
+
+void AudioSourceView::mouseEnter(const juce::MouseEvent& e)
+{
+
+}
+
+void AudioSourceView::mouseExit(const juce::MouseEvent& e)
+{
+
+	
 }

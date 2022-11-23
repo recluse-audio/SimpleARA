@@ -11,10 +11,14 @@
 #include <JuceHeader.h>
 #include "ActiveRegionView.h"
 #include "WaveformCache.h"
+#include "PluginEditor.h"
+#include "HelperDisplay.h"
+
 //==============================================================================
-ActiveRegionView::ActiveRegionView(juce::ARAPlaybackRegion& region, WaveformCache& cache)
-: playbackRegion(region), waveCache(cache)
+ActiveRegionView::ActiveRegionView(SimpleARAEditor& editor, juce::ARAPlaybackRegion& region, WaveformCache& cache)
+: mEditor(editor), playbackRegion(region), waveCache(cache)
 {
+
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 
@@ -53,3 +57,14 @@ void ActiveRegionView::_drawPlaybackRegion(juce::Graphics& g)
 	g.setColour (Colours::mediumaquamarine);
 	thumbnail.drawChannels (g, bounds, regionStartInMod, regionEndInMod, 1.0f);
 }
+
+void ActiveRegionView::mouseEnter(const juce::MouseEvent& e)
+{
+	auto helperDisplay = mEditor.getHelperDisplay();
+	helperDisplay->displayPlaybackRegion(&playbackRegion);
+}
+
+void ActiveRegionView::mouseExit(const juce::MouseEvent& e)
+{
+	auto helperDisplay = mEditor.getHelperDisplay();
+	helperDisplay->clearDisplay();}

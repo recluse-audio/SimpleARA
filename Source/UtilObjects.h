@@ -49,3 +49,9 @@ struct PlayHeadState
     std::atomic<bool>   isPlaying     { false };
     std::atomic<double> timeInSeconds { 0.0 };
 };
+
+/** Given a playback region, this returns a formatted*/
+static juce::StringRef getPlaybackRegionHexString(juce::ARAPlaybackRegion* pRegion)
+{
+	
+}

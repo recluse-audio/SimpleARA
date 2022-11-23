@@ -16,6 +16,7 @@
 class ActiveRegionView;
 class AudioModView;
 class AudioSourceView;
+class SimpleARAEditor;
 
 //==============================================================================
 /**
@@ -31,10 +32,11 @@ class AudioSourceView;
 */
 class PlaybackRegionView : public juce::Component
 , public juce::ChangeListener
-, public juce::ARAPlaybackRegion::Listener
+, private juce::ARAPlaybackRegion::Listener
+
 {
 public:
-	PlaybackRegionView (juce::ARAPlaybackRegion& region, WaveformCache& cache);
+	PlaybackRegionView (SimpleARAEditor& editor, juce::ARAPlaybackRegion& region, WaveformCache& cache);
 
 	~PlaybackRegionView() override;
 
@@ -44,14 +46,20 @@ public:
 
 	void resized() override;
 	
-	void willUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion* playbackRegion, ARA::PlugIn::PropertiesPtr<ARA::ARAPlaybackRegionProperties> newProperties) override;
-	void didUpdatePlaybackRegionProperties(juce::ARAPlaybackRegion* playbackRegion) override;
-	void didUpdatePlaybackRegionContent (juce::ARAPlaybackRegion* playbackRegion, ARAContentUpdateScopes scopeFlags) override;
-	void willDestroyPlaybackRegion (juce::ARAPlaybackRegion* playbackRegion) override;
-	
-	void updateAddressLabel(juce::StringRef newAddress);
+	void didUpdatePlaybackRegionProperties (ARAPlaybackRegion*) override;
 
+	
+	void mouseEnter(const juce::MouseEvent& e) override;
+	void mouseExit(const juce::MouseEvent& e) override;
+	void mouseDown(const juce::MouseEvent& e) override;
+
+
+	void updateGlobalAddressLabel();
+	void resetGlobalAddressLabel();
+	
 private:
+	SimpleARAEditor& mEditor;
+
     juce::ARAPlaybackRegion& playbackRegion;
 	WaveformCache& waveformCache;
 
@@ -59,14 +67,8 @@ private:
 	std::unique_ptr<AudioModView> audioModView;
 	std::unique_ptr<AudioSourceView> audioSourceView;
 	
-	std::unique_ptr<juce::Label> memoryAddressLabel;
-	std::unique_ptr<juce::Label> notificationLabel;
-
-	int numNotifications = 0;
-	
-	void _drawAudioSource(juce::Graphics& g);
-	void _drawPlaybackRegion(juce::Graphics& g);
 	void _updateRegionBounds();
+	juce::StringRef _getARAObjectAddressStrings();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlaybackRegionView);
 };

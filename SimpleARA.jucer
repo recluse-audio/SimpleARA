@@ -23,6 +23,9 @@
         <FILE id="gsu3bc" name="UtilObjects.h" compile="0" resource="0" file="Source/UtilObjects.h"/>
       </GROUP>
       <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
+        <FILE id="VUIyBc" name="HelperDisplay.cpp" compile="1" resource="0"
+              file="Source/HelperDisplay.cpp"/>
+        <FILE id="KrR543" name="HelperDisplay.h" compile="0" resource="0" file="Source/HelperDisplay.h"/>
         <FILE id="c158IT" name="OverlayComponent.cpp" compile="1" resource="0"
               file="Source/OverlayComponent.cpp"/>
         <FILE id="oWDN3i" name="OverlayComponent.h" compile="0" resource="0"

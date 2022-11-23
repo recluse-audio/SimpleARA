@@ -11,6 +11,8 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+class HelperDisplay;
+
 
 //==============================================================================
 /**
@@ -26,9 +28,11 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+	HelperDisplay* getHelperDisplay();
+
 private:
 	std::unique_ptr<juce::Component> documentView;
-	
+	std::unique_ptr<HelperDisplay> helperDisplay; // print address of object when being hovered over
 	
     SimpleARAProcessor& audioProcessor;
 

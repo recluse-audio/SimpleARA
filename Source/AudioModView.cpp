@@ -11,41 +11,26 @@
 #include <JuceHeader.h>
 #include "AudioModView.h"
 #include "ARA_AudioMod.h"
+#include "PluginEditor.h"
+#include "HelperDisplay.h"
 //==============================================================================
-//AudioModView::AudioModView(juce::ARAPlaybackRegion& region, WaveformCache& cache)
-//: playbackRegion(region), waveformCache(cache)
-//{
-//	auto* audioSource = playbackRegion.getAudioModification()->getAudioSource();
-//	waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
-//}
-//
-//AudioModView::~AudioModView()
-//{
-//	waveformCache.getOrCreateThumbnail (playbackRegion.getAudioModification()->getAudioSource())
-//		.removeChangeListener (this);
-//
-//	playbackRegion.removeListener(this);
-//}
 
-AudioModView::AudioModView()
+
+AudioModView::AudioModView(SimpleARAEditor& editor, juce::ARAPlaybackRegion& region) : mEditor(editor), playbackRegion(region)
 {
-
 }
+
 
 AudioModView::~AudioModView()
 {
-//	waveformCache.getOrCreateThumbnail (playbackRegion.getAudioModification()->getAudioSource())
-//		.removeChangeListener (this);
-//
-//	playbackRegion.removeListener(this);
+
 }
 
 void AudioModView::paint (juce::Graphics& g)
 {
-//	auto modColor = playbackRegion.getAudioModification<ARAHelper_AudioMod>()->getColor();
-//	g.fillAll(modColor.withAlpha(0.3f));
-	
-	g.fillAll(juce::Colours::orange.withAlpha(0.1f));
+	auto modColor = playbackRegion.getAudioModification<ARA_AudioMod>()->getColor();
+	g.fillAll(modColor.withAlpha(0.3f));
+
 
 }
 
@@ -72,4 +57,17 @@ void AudioModView::_drawAudioMod(juce::Graphics &g)
 //	auto audioSourceBounds = bounds.withHeight(thumbnailHeight);
 //	g.setColour (Colours::whitesmoke.darker().withAlpha(0.3f));
 //	thumbnail.drawChannels (g, audioSourceBounds, 0, sourceDuration, 1.0f);
+}
+
+void AudioModView::mouseEnter(const juce::MouseEvent& e)
+{
+	auto helperDisplay = mEditor.getHelperDisplay();
+	helperDisplay->displayPlaybackRegion(&playbackRegion);
+}
+
+void AudioModView::mouseExit(const juce::MouseEvent& e)
+{
+	auto helperDisplay = mEditor.getHelperDisplay();
+	helperDisplay->clearDisplay();
+	
 }
