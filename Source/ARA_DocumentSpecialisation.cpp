@@ -9,27 +9,36 @@
 */
 
 #include "ARA_DocumentSpecialisation.h"
+#include "ARA_EditorRenderer.h"
+#include "ARA_PlaybackRenderer.h"
+#include "ARA_AudioMod.h"
+#include "ARA_PlaybackRegion.h"
 #include "CallbackTracker.h"
 
 ARA_DocumentSpecialisation::ARA_DocumentSpecialisation(const ARA::PlugIn::PlugInEntry* entry, const ARA::ARADocumentControllerHostInstance* instance)
 : juce::ARADocumentControllerSpecialisation(entry, instance)
 {
-	callbackTracker = std::make_unique<CallbackTracker>();
+	
 }
 
-ARA_PlaybackRenderer* ARA_DocumentSpecialisation::doCreatePlaybackRenderer() noexcept
+juce::ARAPlaybackRenderer* ARA_DocumentSpecialisation::doCreatePlaybackRenderer() noexcept
 {
 	return new ARA_PlaybackRenderer (getDocumentController());
 }
 
-ARA_EditorRenderer* ARA_DocumentSpecialisation::doCreateEditorRenderer() noexcept
+juce::ARAEditorRenderer* ARA_DocumentSpecialisation::doCreateEditorRenderer() noexcept
 {
 	return new ARA_EditorRenderer (getDocumentController());
 }
 
-ARA_AudioMod* ARA_DocumentSpecialisation::doCreateAudioModification(juce::ARAAudioSource *audioSource, ARA::ARAAudioModificationHostRef hostRef, const ARAAudioModification *optionalModificationToClone) noexcept
+juce::ARAAudioModification* ARA_DocumentSpecialisation::doCreateAudioModification(juce::ARAAudioSource *audioSource, ARA::ARAAudioModificationHostRef hostRef, const ARAAudioModification *optionalModificationToClone) noexcept
 {
 	return new ARA_AudioMod(audioSource, hostRef, optionalModificationToClone);
+}
+
+juce::ARAPlaybackRegion* ARA_DocumentSpecialisation::doCreatePlaybackRegion(juce::ARAAudioModification *modification, ARA::ARAPlaybackRegionHostRef hostRef) noexcept
+{
+    return new ARA_PlaybackRegion(modification, hostRef);
 }
 
 bool ARA_DocumentSpecialisation::doRestoreObjectsFromStream (ARAInputStream& input,

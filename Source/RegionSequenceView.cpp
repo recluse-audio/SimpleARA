@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "RegionSequenceView.h"
+#include "ARA_PlaybackRegion.h"
 #include "GlobalDefines.h"
 #include "PluginEditor.h"
 
@@ -19,7 +20,8 @@ RegionSequenceView::RegionSequenceView(SimpleARAEditor& editor, ARARegionSequenc
 {
 	regionSequence.addListener (this);
 
-	for (auto* playbackRegion : regionSequence.getPlaybackRegions())
+    const auto& playbackRegions = regionSequence.getPlaybackRegions<ARA_PlaybackRegion>();
+	for (auto playbackRegion : playbackRegions)
 		createAndAddPlaybackRegionView (playbackRegion);
 
 	updatePlaybackDuration();
@@ -116,7 +118,8 @@ void RegionSequenceView::setZoomLevel (double pixelPerSecond)
 
 void RegionSequenceView::createAndAddPlaybackRegionView (ARAPlaybackRegion* playbackRegion)
 {
-	playbackRegionViewsMap[playbackRegion] = std::make_unique<PlaybackRegionView> (mEditor, *playbackRegion, waveformCache);
+    auto pRegion = static_cast<ARA_PlaybackRegion*>(playbackRegion);
+	playbackRegionViewsMap[playbackRegion] = std::make_unique<PlaybackRegionView> (mEditor, *pRegion, waveformCache);
 	playbackRegion->addListener (this);
 	addAndMakeVisible (*playbackRegionViewsMap[playbackRegion]);
 }
@@ -131,6 +134,7 @@ void RegionSequenceView::updatePlaybackDuration()
 
 	playbackDuration = iter != playbackRegionViewsMap.end() ? iter->first->getEndInPlaybackTime() : 0.0;
 
+    resized();
 	sendChangeMessage();
 }
 

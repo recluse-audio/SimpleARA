@@ -17,6 +17,7 @@ class ActiveRegionView;
 class AudioModView;
 class AudioSourceView;
 class SimpleARAEditor;
+class ARA_PlaybackRegion;
 
 //==============================================================================
 /**
@@ -36,7 +37,7 @@ class PlaybackRegionView : public juce::Component
 
 {
 public:
-	PlaybackRegionView (SimpleARAEditor& editor, juce::ARAPlaybackRegion& region, WaveformCache& cache);
+	PlaybackRegionView (SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache);
 
 	~PlaybackRegionView() override;
 
@@ -59,8 +60,7 @@ public:
 	
 private:
 	SimpleARAEditor& mEditor;
-
-    juce::ARAPlaybackRegion& playbackRegion;
+    ARA_PlaybackRegion& playbackRegion;
 	WaveformCache& waveformCache;
 
 	std::unique_ptr<ActiveRegionView> activeRegionView;

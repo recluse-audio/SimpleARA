@@ -11,11 +11,13 @@
 #include <JuceHeader.h>
 #include "DocumentView.h"
 #include "PluginEditor.h"
+#include "ARA_PlaybackRegion.h"
 
 //==============================================================================
 DocumentView::DocumentView(SimpleARAEditor& editor, juce::ARADocument& document, PlayHeadState& playHeadState)
 : mEditor(editor),
   araDocument (document),
+  araEditorView(*editor.getARAEditorView()),
   overlay (playHeadState)
 {
 	addAndMakeVisible (tracksBackground);
@@ -35,15 +37,18 @@ DocumentView::DocumentView(SimpleARAEditor& editor, juce::ARADocument& document,
 	zoomControls.setZoomInCallback  ([this] { zoom (2.0); });
 	zoomControls.setZoomOutCallback ([this] { zoom (0.5); });
 	addAndMakeVisible (zoomControls);
+    zoom(0.5f);
 
 	invalidateRegionSequenceViews();
 	araDocument.addListener (this);
+    araEditorView.addListener(this);
+    updateViewSelection();
 }
 
 DocumentView::~DocumentView()
 {
 	araDocument.removeListener (this);
-
+    araEditorView.removeListener(this);
 }
 
 
@@ -77,8 +82,17 @@ void DocumentView::changeListenerCallback (juce::ChangeBroadcaster*)
 
 //==============================================================================
 // ARAEditorView::Listener overrides
-void DocumentView::onNewSelection (const ARA::PlugIn::ViewSelection&)
+
+void DocumentView::onNewSelection (const ARA::PlugIn::ViewSelection& viewSelection)
 {
+    const auto& effectiveRegions = viewSelection.getEffectivePlaybackRegions<ARA_PlaybackRegion>();
+    
+    for(auto region : effectiveRegions)
+    {
+        region->setCurrentlyInView(true);
+    }
+
+    
 	DBG("NEW SELECTION");
 }
 
@@ -148,7 +162,7 @@ void DocumentView::zoom (double factor)
 
 void DocumentView::updateViewport()
 {
-	timelineLength = 0.0;
+	timelineLength = 120.0;
 
 	for (const auto& view : regionSequenceViews)
 		timelineLength = std::max (timelineLength, view.second->getPlaybackDuration());
@@ -156,6 +170,7 @@ void DocumentView::updateViewport()
 	auto timelineWidth = roundToInt (timelineLength * zoomLevelPixelPerSecond);
 	auto timelineHeight = roundToInt ((int) regionSequenceViews.size() * trackHeight);
 	
+    // This is setting the
 	viewport.content.setSize (timelineWidth, timelineHeight);
 	viewport.content.resized();
 
@@ -230,4 +245,26 @@ void DocumentView::rebuildRegionSequenceViews()
 
 		regionSequenceViewsAreValid = true;
 	}
+}
+
+void DocumentView::updateViewSelection()
+{
+    auto viewSelection = araEditorView.getViewSelection();
+    
+    const auto& regions = viewSelection.getPlaybackRegions<ARA_PlaybackRegion>();
+    const auto& effectiveRegions = viewSelection.getEffectivePlaybackRegions<ARA_PlaybackRegion>();
+    
+    auto time = viewSelection.getTimeRange();
+    auto effectiveTime = viewSelection.getEffectiveTimeRange();
+    
+    for(auto region : regions)
+    {
+        region->setCurrentlyInView(true);
+    }
+    for(auto region : effectiveRegions)
+    {
+        region->setCurrentlyInView(true);
+    }
+    
+    updateViewport();
 }

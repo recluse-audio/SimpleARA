@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include "DocumentView.h"
 #include "ARA_DocumentSpecialisation.h"
+#include "ARA_PlaybackRegion.h"
 #include "HelperDisplay.h"
 
 //==============================================================================
@@ -18,8 +19,10 @@ SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
 {
 	if (auto* editorView = getARAEditorView())
 	{
+        
 		auto* document = ARADocumentControllerSpecialisation::getSpecialisedDocumentController<ARA_DocumentSpecialisation>(editorView->getDocumentController())->getDocument();
 		documentView = std::make_unique<DocumentView> (*this, *document, p.playHeadState );
+
 	}
 
 	addAndMakeVisible (documentView.get());
@@ -35,6 +38,12 @@ SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
 
 SimpleARAEditor::~SimpleARAEditor()
 {
+    auto viewSelection = this->getARAEditorView()->getViewSelection();
+    const auto& playbackRegions = viewSelection.getPlaybackRegions<ARA_PlaybackRegion>();
+    for(auto region : playbackRegions)
+    {
+        region->setCurrentlyInView(false);
+    }
 }
 
 //==============================================================================

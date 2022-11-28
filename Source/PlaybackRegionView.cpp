@@ -15,6 +15,7 @@
 #include "AudioSourceView.h"
 
 #include "ARA_DocumentSpecialisation.h"
+#include "ARA_PlaybackRegion.h"
 #include "GlobalDefines.h"
 #include "WaveformCache.h"
 #include "PluginEditor.h"
@@ -22,7 +23,7 @@
 
 
 //==============================================================================
-PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARAPlaybackRegion& region, WaveformCache& cache)
+PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache)
 : mEditor(editor), playbackRegion (region), waveformCache (cache)
 {
 	
@@ -64,7 +65,7 @@ void PlaybackRegionView::changeListenerCallback(juce::ChangeBroadcaster* changeB
 //-------------------------------------
 void PlaybackRegionView::paint (juce::Graphics& g)
 {
-	g.fillAll (Colours::darkgrey.darker(0.9f));
+
 	
 //	auto bounds = this->getLocalBounds();
 //
@@ -82,6 +83,7 @@ void PlaybackRegionView::resized()
 	_updateRegionBounds();
 	
 	repaint();
+    activeRegionView->repaint();
 }
 
 
@@ -130,5 +132,8 @@ void PlaybackRegionView::mouseDown(const juce::MouseEvent& e)
 void PlaybackRegionView::didUpdatePlaybackRegionProperties(juce::ARAPlaybackRegion* pRegion)
 {
 	if(&playbackRegion == pRegion)
-		repaint();
+    {
+        resized();
+        repaint();
+    }
 }

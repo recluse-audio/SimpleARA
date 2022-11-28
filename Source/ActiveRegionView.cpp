@@ -13,9 +13,10 @@
 #include "WaveformCache.h"
 #include "PluginEditor.h"
 #include "HelperDisplay.h"
+#include "ARA_PlaybackRegion.h"
 
 //==============================================================================
-ActiveRegionView::ActiveRegionView(SimpleARAEditor& editor, juce::ARAPlaybackRegion& region, WaveformCache& cache)
+ActiveRegionView::ActiveRegionView(SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache)
 : mEditor(editor), playbackRegion(region), waveCache(cache)
 {
 
@@ -30,7 +31,13 @@ ActiveRegionView::~ActiveRegionView()
 
 void ActiveRegionView::paint (juce::Graphics& g)
 {
-	g.setColour(juce::Colours::aquamarine);
+    g.fillAll(juce::Colours::grey);
+
+    if(playbackRegion.isCurrentlyInView())
+        g.setColour(juce::Colours::yellow);
+    else
+        g.setColour(juce::Colours::red);
+    
 	g.drawRoundedRectangle(getLocalBounds().toFloat(), 1.f, 1.f);
 	
 	_drawPlaybackRegion(g);
@@ -54,7 +61,6 @@ void ActiveRegionView::_drawPlaybackRegion(juce::Graphics& g)
 	auto regionStartInMod = playbackRegion.getStartInAudioModificationTime();
 	auto regionEndInMod = playbackRegion.getEndInAudioModificationTime();
 	
-	g.setColour (Colours::mediumaquamarine);
 	thumbnail.drawChannels (g, bounds, regionStartInMod, regionEndInMod, 1.0f);
 }
 

@@ -79,6 +79,14 @@
               file="Source/ARA_EditorRenderer.cpp"/>
         <FILE id="Rv7F4B" name="ARA_EditorRenderer.h" compile="0" resource="0"
               file="Source/ARA_EditorRenderer.h"/>
+        <FILE id="dMUYLQ" name="ARA_EditorView.cpp" compile="1" resource="0"
+              file="Source/ARA_EditorView.cpp"/>
+        <FILE id="hjWMof" name="ARA_EditorView.h" compile="0" resource="0"
+              file="Source/ARA_EditorView.h"/>
+        <FILE id="eLVLb2" name="ARA_PlaybackRegion.cpp" compile="1" resource="0"
+              file="Source/ARA_PlaybackRegion.cpp"/>
+        <FILE id="rxnwY1" name="ARA_PlaybackRegion.h" compile="0" resource="0"
+              file="Source/ARA_PlaybackRegion.h"/>
         <FILE id="GmK2mH" name="ARA_PlaybackRenderer.cpp" compile="1" resource="0"
               file="Source/ARA_PlaybackRenderer.cpp"/>
         <FILE id="RM9foq" name="ARA_PlaybackRenderer.h" compile="0" resource="0"
@@ -97,8 +105,8 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="ArtieARA"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="ArtieARA"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="SimpleARA"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="SimpleARA"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../JUCE_7/JUCE/modules"/>
@@ -117,18 +125,18 @@
     </XCODE_MAC>
   </EXPORTFORMATS>
   <MODULES>
-    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
-            useGlobalPath="1"/>
-    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
   </MODULES>
 </JUCERPROJECT>

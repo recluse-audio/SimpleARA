@@ -58,6 +58,8 @@ public:
 
     //==============================================================================
 	void setZoomLevel (double pixelPerSecond);
+    
+    void updateViewSelection();
 
     static constexpr int headerWidth = 120;
 
@@ -109,6 +111,7 @@ private:
     static constexpr auto trackHeight = 60;
 
 	juce::ARADocument& araDocument;
+    juce::ARAEditorView& araEditorView;
 
     bool regionSequenceViewsAreValid = false;
     double timelineLength = 0;
