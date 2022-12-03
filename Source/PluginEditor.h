@@ -11,7 +11,11 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+class ARAViewSection;
+class TopControlPanel;
+class ControlPanel;
 class HelperDisplay;
+class ARA_DocumentSpecialisation;
 
 
 //==============================================================================
@@ -29,9 +33,16 @@ public:
     void resized() override;
 
 	HelperDisplay* getHelperDisplay();
+    SimpleARAProcessor& getSimpleAudioProcessor() const;
+    PlayHeadState& getPlayHeadState();
+    juce::ARADocument* getARADocument();
+    ARA_DocumentSpecialisation* getARADocumentSpecialisation();
 
 private:
 	std::unique_ptr<juce::Component> documentView;
+    std::unique_ptr<ARAViewSection> araViewSection;
+    std::unique_ptr<ControlPanel>   controlPanel;
+    std::unique_ptr<TopControlPanel> topControlPanel;
 	std::unique_ptr<HelperDisplay> helperDisplay; // print address of object when being hovered over
 	
     SimpleARAProcessor& audioProcessor;

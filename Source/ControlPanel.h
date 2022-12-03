@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    WaveformView.h
-    Created: 20 Nov 2022 4:14:38pm
+    ControlPanel.h
+    Created: 2 Dec 2022 6:35:05pm
     Author:  Ryan Devens
 
   ==============================================================================
@@ -11,19 +11,22 @@
 #pragma once
 
 #include <JuceHeader.h>
-
+class SimpleARAEditor;
+class NavigationMenu;
 //==============================================================================
 /*
 */
-class WaveformView  : public juce::Component
+class ControlPanel  : public juce::Component
 {
 public:
-    WaveformView();
-    ~WaveformView() override;
+    ControlPanel(SimpleARAEditor& editor);
+    ~ControlPanel() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformView)
+    SimpleARAEditor& mEditor;
+    std::unique_ptr<NavigationMenu> navigationMenu;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlPanel)
 };

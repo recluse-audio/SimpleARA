@@ -60,3 +60,23 @@ const ARA::ARAFactory* JUCE_CALLTYPE createARAFactory()
 {
 	return juce::ARADocumentControllerSpecialisation::createARAFactory<ARA_DocumentSpecialisation>();
 }
+
+juce::ARAPlaybackRegion* ARA_DocumentSpecialisation::getRegionAtIndex(int index)
+{
+    auto regionSequences = this->getDocumentController()->getDocument()->getRegionSequences();
+    
+    int indexToCheck = 0;
+    for(auto sequence : regionSequences)
+    {
+        auto playbackRegions = sequence->getPlaybackRegions<juce::ARAPlaybackRegion>();
+        for(auto* region : playbackRegions)
+        {
+            if(indexToCheck == index)
+                return region;
+            
+            indexToCheck++;
+        }
+    }
+        
+    return nullptr;
+}

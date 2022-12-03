@@ -1,0 +1,42 @@
+/*
+  ==============================================================================
+
+    ARAViewSection.h
+    Created: 2 Dec 2022 6:42:28pm
+    Author:  Ryan Devens
+
+  ==============================================================================
+*/
+
+#pragma once
+
+#include <JuceHeader.h>
+class SimpleARAEditor;
+class DocumentView;
+class PlaybackRegionView;
+class WaveformCache;
+
+//==============================================================================
+/*
+*/
+class ARAViewSection  : public juce::Component
+{
+public:
+    ARAViewSection(SimpleARAEditor& mEditor);
+    ~ARAViewSection() override;
+
+    void paint (juce::Graphics&) override;
+    void resized() override;
+
+private:
+    SimpleARAEditor& mEditor;
+    std::unique_ptr<DocumentView> documentView;
+    std::unique_ptr<PlaybackRegionView> playbackRegionView;
+    
+    std::unique_ptr<WaveformCache> waveCache;
+    
+    // Prepare the playback region to show 
+    void _preparePlaybackRegionView(juce::ARADocument* document, int indexOfRegionToView);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ARAViewSection)
+};

@@ -11,22 +11,23 @@
 #include "DocumentView.h"
 #include "ARA_DocumentSpecialisation.h"
 #include "ARA_PlaybackRegion.h"
+#include "ARAViewSection.h"
+#include "ControlPanel.h"
+#include "TopControlPanel.h"
 #include "HelperDisplay.h"
 
 //==============================================================================
 SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
     : AudioProcessorEditor (&p), AudioProcessorEditorARAExtension(&p), audioProcessor (p)
 {
-	if (auto* editorView = getARAEditorView())
-	{
-        
-		auto* document = ARADocumentControllerSpecialisation::getSpecialisedDocumentController<ARA_DocumentSpecialisation>(editorView->getDocumentController())->getDocument();
-		documentView = std::make_unique<DocumentView> (*this, *document, p.playHeadState );
 
-	}
-
-	addAndMakeVisible (documentView.get());
 	
+    araViewSection = std::make_unique<ARAViewSection>(*this);
+    addAndMakeVisible(araViewSection.get());
+    controlPanel = std::make_unique<ControlPanel>(*this);
+    addAndMakeVisible(controlPanel.get());
+    topControlPanel = std::make_unique<TopControlPanel>();
+    addAndMakeVisible(topControlPanel.get());
 	helperDisplay = std::make_unique<HelperDisplay>();
 	addAndMakeVisible(helperDisplay.get());
 	
@@ -49,27 +50,7 @@ SimpleARAEditor::~SimpleARAEditor()
 //==============================================================================
 void SimpleARAEditor::paint (juce::Graphics& g)
 {
-	auto outline = this->getBounds();
-	g.setColour(juce::Colours::blue);
-	g.drawRect(outline, 2.f);
-
-
-	g.setColour (Colours::white);
-	g.setFont (15.0f);
-	g.drawFittedText ("Audio Processor Editor",
-					  getLocalBounds(),
-					  Justification::centred,
-					  1);
-	
-	if (! isARAEditorView())
-	{
-		g.setColour (Colours::white);
-		g.setFont (15.0f);
-		g.drawFittedText ("ARA host isn't detected. This plugin only supports ARA mode",
-						  getLocalBounds(),
-						  Justification::centred,
-						  1);
-	}
+    g.fillAll(juce::Colours::darkgrey.darker());
 }
 
 void SimpleARAEditor::resized()
@@ -79,6 +60,11 @@ void SimpleARAEditor::resized()
 	
 	if(helperDisplay != nullptr)
 		helperDisplay->setBoundsRelative(0.f, 0.9f, 0.4f, 0.1f);
+    
+    controlPanel->setBoundsRelative(0.f, 0.f, 0.2f, 1.f);
+    topControlPanel->setBoundsRelative(0.2f, 0.f, 0.8f, 0.1f);
+    araViewSection->setBoundsRelative(0.2f, 0.1f, 0.8f, 0.8f);
+    helperDisplay->setBoundsRelative(0.2f, 0.9f, 0.8f, 0.1f);
 }
 
 
@@ -87,4 +73,46 @@ void SimpleARAEditor::resized()
 HelperDisplay* SimpleARAEditor::getHelperDisplay()
 {
 	return helperDisplay.get();
+}
+
+SimpleARAProcessor& SimpleARAEditor::getSimpleAudioProcessor() const
+{
+    return audioProcessor;
+}
+
+PlayHeadState& SimpleARAEditor::getPlayHeadState()
+{
+    return audioProcessor.playHeadState;
+}
+
+juce::ARADocument* SimpleARAEditor::getARADocument()
+{
+    juce::ARADocument* araDocument = nullptr;
+    
+    auto specialisation = this->getARADocumentSpecialisation();
+    if(specialisation != nullptr)
+    {
+        araDocument = specialisation->getDocument();
+        return araDocument;
+    }
+    
+    jassert(araDocument != nullptr);
+    return araDocument;
+
+}
+
+ARA_DocumentSpecialisation* SimpleARAEditor::getARADocumentSpecialisation()
+{
+    ARA_DocumentSpecialisation* araDocumentSpecialisation = nullptr;
+    
+    if (auto* editorView = this->getARAEditorView())
+    {
+        araDocumentSpecialisation = ARADocumentControllerSpecialisation::getSpecialisedDocumentController<ARA_DocumentSpecialisation>(editorView->getDocumentController());
+        
+        return araDocumentSpecialisation;
+    }
+    
+    jassert(araDocumentSpecialisation != nullptr);
+    
+    return araDocumentSpecialisation;
 }

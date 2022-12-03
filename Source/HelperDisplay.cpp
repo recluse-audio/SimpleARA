@@ -26,7 +26,7 @@ HelperDisplay::~HelperDisplay()
 
 void HelperDisplay::paint (juce::Graphics& g)
 {
-
+    g.fillAll(juce::Colours::darkorange.darker().withAlpha(0.7f));
 }
 
 void HelperDisplay::resized()

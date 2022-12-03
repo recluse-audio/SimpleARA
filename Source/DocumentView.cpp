@@ -12,13 +12,15 @@
 #include "DocumentView.h"
 #include "PluginEditor.h"
 #include "ARA_PlaybackRegion.h"
+#include "WaveformCache.h"
 
 //==============================================================================
-DocumentView::DocumentView(SimpleARAEditor& editor, juce::ARADocument& document, PlayHeadState& playHeadState)
+DocumentView::DocumentView(SimpleARAEditor& editor, juce::ARADocument& document, PlayHeadState& playHeadState, WaveformCache& cache)
 : mEditor(editor),
   araDocument (document),
   araEditorView(*editor.getARAEditorView()),
-  overlay (playHeadState)
+  overlay (playHeadState),
+  waveCache(cache)
 {
 	addAndMakeVisible (tracksBackground);
 
@@ -188,7 +190,7 @@ void DocumentView::addTrackViews (juce::ARARegionSequence* regionSequence)
 	auto& regionSequenceView = insertIntoMap (
 		regionSequenceViews,
 		RegionSequenceViewKey { regionSequence },
-		std::make_unique<RegionSequenceView> (mEditor, *regionSequence, waveformCache, zoomLevelPixelPerSecond));
+		std::make_unique<RegionSequenceView> (mEditor, *regionSequence, waveCache, zoomLevelPixelPerSecond));
 
 	regionSequenceView.addChangeListener (this);
 	viewport.content.addAndMakeVisible (regionSequenceView);

@@ -23,6 +23,11 @@ class ARA_DocumentSpecialisation  : public ARADocumentControllerSpecialisation
 public:
 	ARA_DocumentSpecialisation(const ARA::PlugIn::PlugInEntry* entry, const ARA::ARADocumentControllerHostInstance* instance);
 
+    /**
+        Regions are indexed within vector of regions sequences.  First playback region in the upper most regions sequence is region zero.
+        [region sequence][playback region]
+    */
+    juce::ARAPlaybackRegion* getRegionAtIndex(int index);
 protected:
 	juce::ARAPlaybackRenderer* doCreatePlaybackRenderer() noexcept override;
 

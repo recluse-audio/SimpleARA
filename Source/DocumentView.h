@@ -19,6 +19,7 @@
 #include "ZoomControls.h"
 
 class SimpleARAEditor;
+class WaveformCache;
 //==============================================================================
 /*
 */
@@ -28,7 +29,7 @@ private juce::ARADocument::Listener,
 private juce::ARAEditorView::Listener
 {
 public:
-	explicit DocumentView (SimpleARAEditor& mEditor, juce::ARADocument& document, PlayHeadState& playHeadState);
+	explicit DocumentView (SimpleARAEditor& mEditor, juce::ARADocument& document, PlayHeadState& playHeadState, WaveformCache& cache);
 
 	~DocumentView() override;
 
@@ -112,12 +113,12 @@ private:
 
 	juce::ARADocument& araDocument;
     juce::ARAEditorView& araEditorView;
+    WaveformCache& waveCache;
 
     bool regionSequenceViewsAreValid = false;
     double timelineLength = 0;
     double zoomLevelPixelPerSecond = minimumZoom * 4;
 
-    WaveformCache waveformCache;
     juce::Component tracksBackground;
 	
     std::map<RegionSequenceViewKey, std::unique_ptr<TrackHeader>> trackHeaders;
