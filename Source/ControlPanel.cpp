@@ -13,6 +13,7 @@
 #include "PluginEditor.h"
 #include "NavigationMenu.h"
 #include "ARA_DocumentSpecialisation.h"
+#include "ARAFocusButtons.h"
 //==============================================================================
 ControlPanel::ControlPanel(SimpleARAEditor& editor) : mEditor(editor)
 {
@@ -24,6 +25,9 @@ ControlPanel::ControlPanel(SimpleARAEditor& editor) : mEditor(editor)
         navigationMenu = std::make_unique<NavigationMenu>(*document);
         addAndMakeVisible(navigationMenu.get());
     }
+    
+    focusButtons = std::make_unique<ARAFocusButtons>();
+    addAndMakeVisible(focusButtons.get());
 }
 
 ControlPanel::~ControlPanel()
@@ -37,6 +41,7 @@ void ControlPanel::paint (juce::Graphics& g)
 
 void ControlPanel::resized()
 {
-    navigationMenu->setBoundsRelative(0.2f, 0.2f, 0.6f, 0.2f);
+    navigationMenu->setBoundsRelative(0.2f, 0.2f, 0.6f, 0.1f);
+    focusButtons->setBoundsRelative(0.05f, 0.05f, 0.9f, 0.075f );
 
 }

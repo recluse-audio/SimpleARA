@@ -19,13 +19,16 @@ SimpleARAProcessor::SimpleARAProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), valueTreeState(*this, nullptr, "PARAMETERS", this->_getParameterLayout())
 #endif
 {
+    valueTreeState.state.addListener(this);
+    
 }
 
 SimpleARAProcessor::~SimpleARAProcessor()
 {
+    valueTreeState.state.removeListener(this);
 }
 
 //==============================================================================
@@ -134,6 +137,8 @@ void SimpleARAProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
 	auto* audioPlayHead = getPlayHead();
 	playHeadState.update (audioPlayHead);
 
+    if(valueTreeHasChanged)
+        _updateParameters();
 	bool processARASuccess = processBlockForARA (buffer, isRealtime(), audioPlayHead);
 	
 	if (!processARASuccess )
@@ -170,4 +175,31 @@ void SimpleARAProcessor::setStateInformation (const void* data, int sizeInBytes)
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SimpleARAProcessor();
+}
+
+
+juce::AudioProcessorValueTreeState::ParameterLayout SimpleARAProcessor::_getParameterLayout()
+{
+    std::vector<std::unique_ptr<RangedAudioParameter>> params;
+    
+    params.push_back (std::make_unique<AudioParameterFloat>("FOCUS VIEW", "Focus View", 0.0f, 2.0f, 1.f));
+    params.push_back (std::make_unique<AudioParameterFloat>("TEST PARAM", "Test Param", 0.0f, 100.0f, 1.f));
+//    params.push_back (std::make_unique<AudioParameterFloat>("ATTACK", "Attack", 0.0f, 2.0f, 0.01f));
+//    params.push_back (std::make_unique<AudioParameterFloat>("DECAY", "Decay", 0.0f, 2.0f, 2.0f));
+//    params.push_back (std::make_unique<AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+//    params.push_back (std::make_unique<AudioParameterFloat>("RELEASE", "Release", 0.0f, 2.0f, 0.1f));
+    
+    return { params.begin(), params.end() };
+}
+
+
+void SimpleARAProcessor::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged,
+                                                  const juce::Identifier &property)
+{
+    valueTreeHasChanged = true;
+}
+
+void SimpleARAProcessor::_updateParameters()
+{
+    
 }

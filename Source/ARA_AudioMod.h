@@ -22,5 +22,6 @@ public:
 	void generateRandomColor();
 	juce::Colour getColor() const;
 private:
+    juce::AudioProcessorValueTreeState  valueTree;
 	juce::Colour modColor;
 };

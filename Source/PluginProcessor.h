@@ -15,9 +15,10 @@
 /**
 */
 class SimpleARAProcessor  : public juce::AudioProcessor
-                            #if JucePlugin_Enable_ARA
-                             , public juce::AudioProcessorARAExtension
-                            #endif
+, public juce::ValueTree::Listener
+#if JucePlugin_Enable_ARA
+ , public juce::AudioProcessorARAExtension
+#endif
 {
 public:
     //==============================================================================
@@ -61,6 +62,11 @@ public:
 	
 	PlayHeadState playHeadState;
 private:
+    juce::AudioProcessorValueTreeState valueTreeState;
+    juce::AudioProcessorValueTreeState::ParameterLayout _getParameterLayout();
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier &property) override;
+    bool valueTreeHasChanged = false;
+    void _updateParameters();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleARAProcessor)
 };

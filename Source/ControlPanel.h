@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 class SimpleARAEditor;
 class NavigationMenu;
+class ARAFocusButtons;
 //==============================================================================
 /*
 */
@@ -28,5 +29,6 @@ public:
 private:
     SimpleARAEditor& mEditor;
     std::unique_ptr<NavigationMenu> navigationMenu;
+    std::unique_ptr<ARAFocusButtons> focusButtons;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlPanel)
 };

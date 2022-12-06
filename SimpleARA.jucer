@@ -24,6 +24,19 @@
       </GROUP>
       <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
         <GROUP id="{BEF115B7-FA4C-8093-14CA-8D7E091D58D8}" name="Sections">
+          <GROUP id="{06547AD7-E423-37E9-EEB7-B4EFAAD7D303}" name="ControlPanel">
+            <FILE id="kyrVgh" name="NavigationMenu.cpp" compile="1" resource="0"
+                  file="Source/NavigationMenu.cpp"/>
+            <FILE id="lBTQwY" name="NavigationMenu.h" compile="0" resource="0"
+                  file="Source/NavigationMenu.h"/>
+            <FILE id="Ww7xKM" name="ARAFocusButtons.cpp" compile="1" resource="0"
+                  file="Source/ARAFocusButtons.cpp"/>
+            <FILE id="dvCz9b" name="ARAFocusButtons.h" compile="0" resource="0"
+                  file="Source/ARAFocusButtons.h"/>
+            <FILE id="JzbrB6" name="ControlPanel.cpp" compile="1" resource="0"
+                  file="Source/ControlPanel.cpp"/>
+            <FILE id="iquvFZ" name="ControlPanel.h" compile="0" resource="0" file="Source/ControlPanel.h"/>
+          </GROUP>
           <FILE id="epLnjK" name="ARAViewSection.cpp" compile="1" resource="0"
                 file="Source/ARAViewSection.cpp"/>
           <FILE id="z30m3F" name="ARAViewSection.h" compile="0" resource="0"
@@ -32,17 +45,10 @@
                 file="Source/TopControlPanel.cpp"/>
           <FILE id="mKPK6V" name="TopControlPanel.h" compile="0" resource="0"
                 file="Source/TopControlPanel.h"/>
-          <FILE id="JzbrB6" name="ControlPanel.cpp" compile="1" resource="0"
-                file="Source/ControlPanel.cpp"/>
-          <FILE id="iquvFZ" name="ControlPanel.h" compile="0" resource="0" file="Source/ControlPanel.h"/>
           <FILE id="VUIyBc" name="HelperDisplay.cpp" compile="1" resource="0"
                 file="Source/HelperDisplay.cpp"/>
           <FILE id="KrR543" name="HelperDisplay.h" compile="0" resource="0" file="Source/HelperDisplay.h"/>
         </GROUP>
-        <FILE id="kyrVgh" name="NavigationMenu.cpp" compile="1" resource="0"
-              file="Source/NavigationMenu.cpp"/>
-        <FILE id="lBTQwY" name="NavigationMenu.h" compile="0" resource="0"
-              file="Source/NavigationMenu.h"/>
         <FILE id="c158IT" name="OverlayComponent.cpp" compile="1" resource="0"
               file="Source/OverlayComponent.cpp"/>
         <FILE id="oWDN3i" name="OverlayComponent.h" compile="0" resource="0"

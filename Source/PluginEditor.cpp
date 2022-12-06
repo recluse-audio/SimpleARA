@@ -21,7 +21,7 @@ SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
     : AudioProcessorEditor (&p), AudioProcessorEditorARAExtension(&p), audioProcessor (p)
 {
 
-	
+    this->isARAEditorView();
     araViewSection = std::make_unique<ARAViewSection>(*this);
     addAndMakeVisible(araViewSection.get());
     controlPanel = std::make_unique<ControlPanel>(*this);
