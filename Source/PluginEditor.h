@@ -33,7 +33,7 @@ public:
     void resized() override;
 
 	HelperDisplay* getHelperDisplay();
-    SimpleARAProcessor& getSimpleAudioProcessor() const;
+    SimpleARAProcessor* getSimpleAudioProcessor() ;
     PlayHeadState& getPlayHeadState();
     juce::ARADocument* getARADocument();
     ARA_DocumentSpecialisation* getARADocumentSpecialisation();

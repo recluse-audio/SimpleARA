@@ -20,7 +20,8 @@
 #include "WaveformCache.h"
 #include "PluginEditor.h"
 #include "HelperDisplay.h"
-
+#include "PluginProcessor.h"
+#include "ARA_AudioMod.h"
 
 //==============================================================================
 PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache)
@@ -29,7 +30,7 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
 	
 	auto* audioSource = playbackRegion.getAudioModification()->getAudioSource();
 
-	waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
+	//waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
 	
 	
 	audioSourceView = std::make_unique<AudioSourceView>(mEditor, *audioSource, waveformCache);
@@ -41,6 +42,13 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
 	activeRegionView = std::make_unique<ActiveRegionView>(mEditor, playbackRegion, waveformCache);
 	addAndMakeVisible(activeRegionView.get());
 	
+    slider = std::make_unique<juce::Slider>();
+    addAndMakeVisible(slider.get());
+    
+    auto processor = mEditor.getSimpleAudioProcessor();
+    auto gainParam = playbackRegion.getAudioModification<ARA_AudioMod>()->getGainParam();
+    sliderAttachment = std::make_unique<juce::SliderParameterAttachment>(*gainParam, *slider.get());
+    
 	playbackRegion.addListener(this);
 	
 }
@@ -48,8 +56,8 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
 //-------------------------------------
 PlaybackRegionView::~PlaybackRegionView()
 {
-	waveformCache.getOrCreateThumbnail (playbackRegion.getAudioModification()->getAudioSource())
-		.removeChangeListener (this);
+//	waveformCache.getOrCreateThumbnail (playbackRegion.getAudioModification()->getAudioSource())
+//		.removeChangeListener (this);
 	
 	playbackRegion.removeListener(this);
 }
@@ -84,6 +92,8 @@ void PlaybackRegionView::resized()
 	
 	repaint();
     activeRegionView->repaint();
+    
+    slider->setBoundsRelative(0.1f, 0.3f, 0.8f, 0.4f);
 }
 
 

@@ -59,6 +59,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 	using AudioProcessor::processBlock;
+    
+    juce::AudioProcessorValueTreeState& getValueTreeState();
 	
 	PlayHeadState playHeadState;
 private:

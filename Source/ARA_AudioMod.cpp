@@ -13,6 +13,9 @@
 ARA_AudioMod::ARA_AudioMod(juce::ARAAudioSource* audioSource, ARA::ARAAudioModificationHostRef hostRef, const juce::ARAAudioModification* optionalModificationToClone) : juce::ARAAudioModification(audioSource, hostRef, optionalModificationToClone)
 {
 	generateRandomColor();
+    
+    valueTree = std::make_unique<juce::ValueTree>("Audio Modification");
+    gain = std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", juce::NormalisableRange<float>(0.f, 1.f, 0.01f), 0.5f);
 }
 
 ARA_AudioMod::~ARA_AudioMod()
@@ -34,3 +37,4 @@ juce::Colour ARA_AudioMod::getColor() const
 {
 	return modColor;
 }
+

@@ -27,12 +27,13 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     if(document != nullptr)
     {
         documentView = std::make_unique<DocumentView> (mEditor, *document, mEditor.getPlayHeadState(), *waveCache.get() );
-       // addAndMakeVisible (documentView.get());
-        addChildComponent(documentView.get());
+        addAndMakeVisible (documentView.get());
+        //addChildComponent(documentView.get());
         
         auto regionZero = static_cast<ARA_PlaybackRegion*>(docSpecialisation->getRegionAtIndex(0));
         playbackRegionView = std::make_unique<PlaybackRegionView>(mEditor, *regionZero, *waveCache.get() );
-        addAndMakeVisible(playbackRegionView.get());
+        //addAndMakeVisible(playbackRegionView.get());
+        addChildComponent(playbackRegionView.get());
     }
     
     

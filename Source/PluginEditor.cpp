@@ -75,9 +75,9 @@ HelperDisplay* SimpleARAEditor::getHelperDisplay()
 	return helperDisplay.get();
 }
 
-SimpleARAProcessor& SimpleARAEditor::getSimpleAudioProcessor() const
+SimpleARAProcessor* SimpleARAEditor::getSimpleAudioProcessor()
 {
-    return audioProcessor;
+    return &audioProcessor;
 }
 
 PlayHeadState& SimpleARAEditor::getPlayHeadState()
