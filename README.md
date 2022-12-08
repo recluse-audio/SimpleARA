@@ -6,6 +6,8 @@ The goal is to demonstrate basic ARA functionality and to provide a jumping off 
 
 To maintain correct releases of JUCE / ARA, this repository keeps the JUCE and the ARA_SDK repos as submodules
 
+Here are some [useful diagrams](https://miro.com/app/board/uXjVP9SCFcM=/?share_link_id=561272638003)
+
 ## Versions 
 JUCE      7.0.3 
 
