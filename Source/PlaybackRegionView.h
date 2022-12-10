@@ -68,7 +68,7 @@ private:
 	std::unique_ptr<AudioSourceView> audioSourceView;
     
     std::unique_ptr<juce::Slider> slider;
-    std::unique_ptr<juce::SliderParameterAttachment> sliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachment;
 	
 	void _updateRegionBounds();
 	juce::StringRef _getARAObjectAddressStrings();

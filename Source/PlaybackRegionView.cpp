@@ -46,8 +46,10 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
     addAndMakeVisible(slider.get());
     
     auto processor = mEditor.getSimpleAudioProcessor();
-    auto gainParam = playbackRegion.getAudioModification<ARA_AudioMod>()->getGainParam();
-    sliderAttachment = std::make_unique<juce::SliderParameterAttachment>(*gainParam, *slider.get());
+    auto audioMod = playbackRegion.getAudioModification<ARA_AudioMod>();
+    
+    using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+    sliderAttachment = std::make_unique<Attachment>(audioMod->getValueTreeState(), "GAIN", *slider.get());
     
 	playbackRegion.addListener(this);
 	

@@ -60,15 +60,15 @@ public:
 
 	using AudioProcessor::processBlock;
     
-    juce::AudioProcessorValueTreeState& getValueTreeState();
+   // juce::AudioProcessorValueTreeState& getValueTreeState();
 	
 	PlayHeadState playHeadState;
 private:
-    juce::AudioProcessorValueTreeState valueTreeState;
-    juce::AudioProcessorValueTreeState::ParameterLayout _getParameterLayout();
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier &property) override;
-    bool valueTreeHasChanged = false;
-    void _updateParameters();
+   // juce::AudioProcessorValueTreeState valueTreeState;
+//    juce::AudioProcessorValueTreeState::ParameterLayout _getParameterLayout();
+//    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier &property) override;
+//    bool valueTreeHasChanged = false;
+//    void _updateParameters();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleARAProcessor)
 };

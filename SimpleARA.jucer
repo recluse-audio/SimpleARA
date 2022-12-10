@@ -88,9 +88,15 @@
         </GROUP>
       </GROUP>
       <GROUP id="{28EADBB1-911D-3C92-9EF8-482AA0FDBA4B}" name="ARA">
-        <FILE id="WDLMP2" name="ARA_AudioMod.cpp" compile="1" resource="0"
-              file="Source/ARA_AudioMod.cpp"/>
-        <FILE id="rJXXjG" name="ARA_AudioMod.h" compile="0" resource="0" file="Source/ARA_AudioMod.h"/>
+        <GROUP id="{4D63B22D-0A76-65BF-F7D7-18EDD0112AE5}" name="Audio Mod">
+          <FILE id="WDLMP2" name="ARA_AudioMod.cpp" compile="1" resource="0"
+                file="Source/ARA_AudioMod.cpp"/>
+          <FILE id="rJXXjG" name="ARA_AudioMod.h" compile="0" resource="0" file="Source/ARA_AudioMod.h"/>
+          <FILE id="O4hqYs" name="AudioMod_AudioProcessor.cpp" compile="1" resource="0"
+                file="Source/AudioMod_AudioProcessor.cpp"/>
+          <FILE id="E1FOAF" name="AudioMod_AudioProcessor.h" compile="0" resource="0"
+                file="Source/AudioMod_AudioProcessor.h"/>
+        </GROUP>
         <FILE id="KAUcUw" name="ARA_DocumentSpecialisation.cpp" compile="1"
               resource="0" file="Source/ARA_DocumentSpecialisation.cpp"/>
         <FILE id="Bbftd9" name="ARA_DocumentSpecialisation.h" compile="0" resource="0"
