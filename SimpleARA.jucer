@@ -96,6 +96,10 @@
                 file="Source/AudioMod_AudioProcessor.cpp"/>
           <FILE id="E1FOAF" name="AudioMod_AudioProcessor.h" compile="0" resource="0"
                 file="Source/AudioMod_AudioProcessor.h"/>
+          <FILE id="uePK3O" name="AudioMod_UndoAction.cpp" compile="1" resource="0"
+                file="Source/AudioMod_UndoAction.cpp"/>
+          <FILE id="Im0E5w" name="AudioMod_UndoAction.h" compile="0" resource="0"
+                file="Source/AudioMod_UndoAction.h"/>
         </GROUP>
         <FILE id="KAUcUw" name="ARA_DocumentSpecialisation.cpp" compile="1"
               resource="0" file="Source/ARA_DocumentSpecialisation.cpp"/>

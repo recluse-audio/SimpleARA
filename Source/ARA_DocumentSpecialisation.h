@@ -28,6 +28,12 @@ public:
         [region sequence][playback region]
     */
     juce::ARAPlaybackRegion* getRegionAtIndex(int index);
+    
+    juce::UndoManager& getUndoManager()
+    {
+        return undoManager;
+    }
+    
 protected:
 	juce::ARAPlaybackRenderer* doCreatePlaybackRenderer() noexcept override;
 
@@ -46,4 +52,5 @@ protected:
 	bool doStoreObjectsToStream (ARAOutputStream& output, const ARAStoreObjectsFilter* filter) noexcept override;
 	
 private:
+    juce::UndoManager undoManager;
 };

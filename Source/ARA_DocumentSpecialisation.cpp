@@ -33,7 +33,7 @@ juce::ARAEditorRenderer* ARA_DocumentSpecialisation::doCreateEditorRenderer() no
 
 juce::ARAAudioModification* ARA_DocumentSpecialisation::doCreateAudioModification(juce::ARAAudioSource *audioSource, ARA::ARAAudioModificationHostRef hostRef, const ARAAudioModification *optionalModificationToClone) noexcept
 {
-	return new ARA_AudioMod(audioSource, hostRef, optionalModificationToClone);
+	return new ARA_AudioMod(audioSource, hostRef, optionalModificationToClone, undoManager);
 }
 
 juce::ARAPlaybackRegion* ARA_DocumentSpecialisation::doCreatePlaybackRegion(juce::ARAAudioModification *modification, ARA::ARAPlaybackRegionHostRef hostRef) noexcept

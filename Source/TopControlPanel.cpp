@@ -10,13 +10,23 @@
 
 #include <JuceHeader.h>
 #include "TopControlPanel.h"
+#include "PluginEditor.h"
+#include "ARA_DocumentSpecialisation.h"
 
 //==============================================================================
-TopControlPanel::TopControlPanel()
+TopControlPanel::TopControlPanel(SimpleARAEditor& editor)
+: mEditor(editor)
+, undoManager(editor.getARADocumentSpecialisation()->getUndoManager())
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+    undoButton = std::make_unique<juce::TextButton>("UNDO");
+    undoButton->addListener(this);
+    addAndMakeVisible(undoButton.get());
+    
+    redoButton = std::make_unique<juce::TextButton>("REDO");
+    redoButton->addListener(this);
+    addAndMakeVisible(redoButton.get());
 
+    
 }
 
 TopControlPanel::~TopControlPanel()
@@ -30,7 +40,19 @@ void TopControlPanel::paint (juce::Graphics& g)
 
 void TopControlPanel::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+    undoButton->setBoundsRelative(0.8f, 0.1f, 0.1f, 0.8f);
+    redoButton->setBoundsRelative(0.9f, 0.1f, 0.1f, 0.8f);
 
+}
+
+void TopControlPanel::buttonClicked(juce::Button *b)
+{
+    if(b == undoButton.get())
+    {
+        undoManager.undo();
+    }
+    if(b == redoButton.get())
+    {
+        undoManager.redo();
+    }
 }

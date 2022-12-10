@@ -26,7 +26,7 @@ SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
     addAndMakeVisible(araViewSection.get());
     controlPanel = std::make_unique<ControlPanel>(*this);
     addAndMakeVisible(controlPanel.get());
-    topControlPanel = std::make_unique<TopControlPanel>();
+    topControlPanel = std::make_unique<TopControlPanel>(*this);
     addAndMakeVisible(topControlPanel.get());
 	helperDisplay = std::make_unique<HelperDisplay>();
 	addAndMakeVisible(helperDisplay.get());

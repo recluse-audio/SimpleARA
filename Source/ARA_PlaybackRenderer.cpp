@@ -132,7 +132,7 @@ bool ARA_PlaybackRenderer::processBlock (juce::AudioBuffer<float>& buffer,
 				continue;
 			}
 
-            auto gain = playbackRegion->getAudioModification<ARA_AudioMod>()->getGain();
+            auto gain = playbackRegion->getAudioModification<ARA_AudioMod>()->getParameterValue("GAIN");
             readBuffer.applyGain(gain);
             
 			if (didRenderAnyRegion)

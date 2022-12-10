@@ -10,13 +10,15 @@
 
 #include "ARA_AudioMod.h"
 
-ARA_AudioMod::ARA_AudioMod(juce::ARAAudioSource* audioSource, ARA::ARAAudioModificationHostRef hostRef, const juce::ARAAudioModification* optionalModificationToClone) :
-    juce::ARAAudioModification(audioSource, hostRef, optionalModificationToClone)
-,   AudioMod_AudioProcessor()
+ARA_AudioMod::ARA_AudioMod(juce::ARAAudioSource* audioSource, ARA::ARAAudioModificationHostRef hostRef,
+                           const juce::ARAAudioModification* optionalModificationToClone, juce::UndoManager& undoManager)
+:   juce::ARAAudioModification(audioSource, hostRef, optionalModificationToClone)
+,   AudioMod_AudioProcessor(undoManager)
+
 {
+    
 	generateRandomColor();
     
-
 }
 
 ARA_AudioMod::~ARA_AudioMod()
@@ -43,4 +45,10 @@ juce::Colour ARA_AudioMod::getColor() const
 juce::AudioProcessorValueTreeState& ARA_AudioMod::getValueTreeState()
 {
     return this->_getValueTreeState();
+}
+
+//====================================
+float ARA_AudioMod::getParameterValue(juce::Identifier paramID) const
+{
+    return valueTreeState.getRawParameterValue(paramID)->load();
 }

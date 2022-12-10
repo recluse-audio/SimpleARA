@@ -9,10 +9,11 @@
 */
 
 #include "AudioMod_AudioProcessor.h"
+#include "AudioMod_UndoAction.h"
 
 //=======================
-AudioMod_AudioProcessor::AudioMod_AudioProcessor() :
-valueTreeState(*this, nullptr, "Audio Modification Value Tree", this->_createParameterLayout())
+AudioMod_AudioProcessor::AudioMod_AudioProcessor(juce::UndoManager& undoManagerRef) :
+valueTreeState(*this, &undoManagerRef, "Audio Modification Value Tree", this->_createParameterLayout())
 {
     valueTreeState.state.addListener(this);
 }

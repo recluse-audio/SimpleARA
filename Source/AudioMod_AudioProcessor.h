@@ -22,7 +22,7 @@ class AudioMod_AudioProcessor : public juce::AudioProcessor
 , public juce::ValueTree::Listener
 {
 public:
-    AudioMod_AudioProcessor();
+    AudioMod_AudioProcessor(juce::UndoManager& undoManagerRef);
     ~AudioMod_AudioProcessor();
     
     //==============================================================================
@@ -59,6 +59,11 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     
+//    juce::UndoManager& getUndoManager()
+//    {
+//        return undoManager;
+//    }
+    
 protected:
     double mSampleRate = -1;
     bool shouldUpdate = false;
@@ -67,6 +72,8 @@ protected:
     void valueTreePropertyChanged (juce::ValueTree& tree, const juce::Identifier& property) override;
     juce::AudioProcessorValueTreeState::ParameterLayout _createParameterLayout();
     juce::AudioProcessorValueTreeState& _getValueTreeState();
+    
+    //juce::UndoManager&   undoManager;
 
 private:
     

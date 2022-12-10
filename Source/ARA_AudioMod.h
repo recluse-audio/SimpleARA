@@ -16,7 +16,7 @@ class ARA_AudioMod : public juce::ARAAudioModification
 , private AudioMod_AudioProcessor
 {
 public:
-	ARA_AudioMod(juce::ARAAudioSource* audioSource, ARA::ARAAudioModificationHostRef hostRef, const juce::ARAAudioModification* optionalModificationToClone);
+	ARA_AudioMod(juce::ARAAudioSource* audioSource, ARA::ARAAudioModificationHostRef hostRef, const juce::ARAAudioModification* optionalModificationToClone, juce::UndoManager& undoManager);
     
 	~ARA_AudioMod() override;
 	
@@ -25,10 +25,8 @@ public:
     
     juce::AudioProcessorValueTreeState& getValueTreeState();
 
-    float getGain()
-    {
-        return valueTreeState.getRawParameterValue("GAIN")->load();
-    }
+    float getParameterValue(juce::Identifier paramID) const;
+
 private:
 	juce::Colour modColor;
     
