@@ -66,7 +66,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioMod_AudioProcessor::_cr
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
     
     params.push_back (std::make_unique<AudioParameterFloat>("FOCUS VIEW", "Focus View", 0.0f, 2.0f, 1.f));
-    params.push_back (std::make_unique<AudioParameterFloat>("GAIN", "Gain", 0.0f, 1.0f, 0.01f));
+    params.push_back (std::make_unique<AudioParameterFloat>("GAIN", "GAIN", 0.0f, 1.0f, 0.01f));
 //    params.push_back (std::make_unique<AudioParameterFloat>("ATTACK", "Attack", 0.0f, 2.0f, 0.01f));
 //    params.push_back (std::make_unique<AudioParameterFloat>("DECAY", "Decay", 0.0f, 2.0f, 2.0f));
 //    params.push_back (std::make_unique<AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));

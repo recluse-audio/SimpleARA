@@ -9,6 +9,7 @@
 */
 
 #include "ARA_PlaybackRenderer.h"
+#include "ARA_AudioMod.h"
 
 //==============================================================================
 void ARA_PlaybackRenderer::prepareToPlay (double sampleRateIn, int maximumSamplesPerBlockIn, int numChannelsIn, juce::AudioProcessor::ProcessingPrecision, AlwaysNonRealtime alwaysNonRealtime)
@@ -67,6 +68,7 @@ bool ARA_PlaybackRenderer::processBlock (juce::AudioBuffer<float>& buffer,
 	bool success = true;
 	bool didRenderAnyRegion = false;
 
+    
 	if (isPlaying)
 	{
 		const auto blockRange = Range<int64>::withStartAndLength (blockTimePosInSamples, numSamples);
@@ -130,6 +132,9 @@ bool ARA_PlaybackRenderer::processBlock (juce::AudioBuffer<float>& buffer,
 				continue;
 			}
 
+            auto gain = playbackRegion->getAudioModification<ARA_AudioMod>()->getGain();
+            readBuffer.applyGain(gain);
+            
 			if (didRenderAnyRegion)
 			{
 				// Mix local buffer into the output buffer.

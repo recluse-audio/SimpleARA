@@ -43,6 +43,10 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
 	addAndMakeVisible(activeRegionView.get());
 	
     slider = std::make_unique<juce::Slider>();
+    slider->setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    slider->setColour(juce::Slider::ColourIds::textBoxBackgroundColourId, juce::Colours::grey);
+    slider->setColour(juce::Slider::ColourIds::backgroundColourId, juce::Colours::black);
+
     addAndMakeVisible(slider.get());
     
     auto processor = mEditor.getSimpleAudioProcessor();

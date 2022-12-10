@@ -25,6 +25,10 @@ public:
     
     juce::AudioProcessorValueTreeState& getValueTreeState();
 
+    float getGain()
+    {
+        return valueTreeState.getRawParameterValue("GAIN")->load();
+    }
 private:
 	juce::Colour modColor;
     
