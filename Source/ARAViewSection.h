@@ -27,7 +27,13 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    
+    // Sets which ARA view will be in focus
+   // void setFocus(SimpleARAEditor::FocusView focus);
+    void setDocumentFocus();
+    void setSequenceFocus();
+    void setRegionFocus();
+    
 private:
     SimpleARAEditor& mEditor;
     std::unique_ptr<DocumentView> documentView;

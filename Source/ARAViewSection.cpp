@@ -27,28 +27,14 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     if(document != nullptr)
     {
         documentView = std::make_unique<DocumentView> (mEditor, *document, mEditor.getPlayHeadState(), *waveCache.get() );
-        addAndMakeVisible (documentView.get());
-        //addChildComponent(documentView.get());
+        //addAndMakeVisible (documentView.get());
+        addChildComponent(documentView.get());
         
         auto regionZero = static_cast<ARA_PlaybackRegion*>(docSpecialisation->getRegionAtIndex(0));
         playbackRegionView = std::make_unique<PlaybackRegionView>(mEditor, *regionZero, *waveCache.get() );
         //addAndMakeVisible(playbackRegionView.get());
         addChildComponent(playbackRegionView.get());
     }
-    
-    
-//    if (auto* editorView = mEditor.getARAEditorView())
-//    {
-//        auto* document = ARADocumentControllerSpecialisation::getSpecialisedDocumentController<ARA_DocumentSpecialisation>(editorView->getDocumentController())->getDocument();
-//        documentView = std::make_unique<DocumentView> (mEditor, *document, mEditor.getPlayHeadState() );
-////        addAndMakeVisible (documentView.get());
-//        addChildComponent(documentView.get());
-//
-//
-//
-//    }
-
-
 }
 
 ARAViewSection::~ARAViewSection()
@@ -70,3 +56,36 @@ void ARAViewSection::resized()
 
 }
 
+//========================
+//void ARAViewSection::setFocus(SimpleARAEditor::FocusView focus)
+//{
+////    switch(focus)
+////    {
+////        case 0:
+////            documentView->setVisible(true);
+////            playbackRegionView->setVisible(false);
+////        case 1:
+////            documentView->setVisible(false);
+////            playbackRegionView->setVisible(true);
+////    }
+//}
+
+//=======================
+void ARAViewSection::setDocumentFocus()
+{
+    documentView->setVisible(true);
+    playbackRegionView->setVisible(false);
+}
+
+//=======================
+void ARAViewSection::setSequenceFocus()
+{
+    
+}
+
+//=======================
+void ARAViewSection::setRegionFocus()
+{
+    documentView->setVisible(false);
+    playbackRegionView->setVisible(true);
+}

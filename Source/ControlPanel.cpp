@@ -26,7 +26,7 @@ ControlPanel::ControlPanel(SimpleARAEditor& editor) : mEditor(editor)
         addAndMakeVisible(navigationMenu.get());
     }
     
-    focusButtons = std::make_unique<ARAFocusButtons>();
+    focusButtons = std::make_unique<ARAFocusButtons>(editor);
     addAndMakeVisible(focusButtons.get());
 }
 

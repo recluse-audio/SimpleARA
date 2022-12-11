@@ -24,4 +24,9 @@ static juce::int64 getAudioSourceStartInTimeLine(juce::ARAPlaybackRegion* playba
 	return sourceStartInTimeline;
 }
 
-
+enum class Focus
+{
+    DocumentFocus = 0,
+    SequenceFocus = 1,
+    RegionFocus = 2
+};

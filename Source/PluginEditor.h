@@ -10,13 +10,13 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "GlobalDefines.h"
 
 class ARAViewSection;
 class TopControlPanel;
 class ControlPanel;
 class HelperDisplay;
 class ARA_DocumentSpecialisation;
-
 
 //==============================================================================
 /**
@@ -32,13 +32,21 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+
+    
+    // Sets the ARA focus and adjusts control panels / displays / zoom states
+    void setFocus(Focus focusView);
+    Focus getFocus() const;
+    
 	HelperDisplay* getHelperDisplay();
-    SimpleARAProcessor* getSimpleAudioProcessor() ;
+    SimpleARAProcessor* getSimpleAudioProcessor();
     PlayHeadState& getPlayHeadState();
     juce::ARADocument* getARADocument();
     ARA_DocumentSpecialisation* getARADocumentSpecialisation();
 
 private:
+    int currentFocusView;
+    
 	std::unique_ptr<juce::Component> documentView;
     std::unique_ptr<ARAViewSection> araViewSection;
     std::unique_ptr<ControlPanel>   controlPanel;
@@ -47,5 +55,9 @@ private:
 	
     SimpleARAProcessor& audioProcessor;
 
+    void _setDocumentFocus();
+    void _setSequenceFocus();
+    void _setRegionFocus();
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleARAEditor)
 };

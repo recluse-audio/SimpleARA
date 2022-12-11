@@ -35,6 +35,8 @@ SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
 	// into the host UI
 	setResizable (true, false);
 	setSize (400, 300);
+    
+    setFocus(Focus::DocumentFocus);
 }
 
 SimpleARAEditor::~SimpleARAEditor()
@@ -115,4 +117,46 @@ ARA_DocumentSpecialisation* SimpleARAEditor::getARADocumentSpecialisation()
     jassert(araDocumentSpecialisation != nullptr);
     
     return araDocumentSpecialisation;
+}
+
+//=============================
+Focus SimpleARAEditor::getFocus() const
+{
+    return static_cast<Focus>(currentFocusView);
+}
+
+//=============================
+void SimpleARAEditor::setFocus(Focus focus)
+{
+    currentFocusView = static_cast<int>(focus);
+    
+    switch(focus)
+    {
+        case Focus::DocumentFocus:
+            _setDocumentFocus(); break;
+        case Focus::SequenceFocus:
+            _setSequenceFocus(); break;
+        case Focus::RegionFocus:
+            _setRegionFocus(); break;
+    }
+            
+}
+
+
+//=============================
+void SimpleARAEditor::_setDocumentFocus()
+{
+    araViewSection->setDocumentFocus();
+}
+
+//=============================
+void SimpleARAEditor::_setSequenceFocus()
+{
+    araViewSection->setSequenceFocus();
+}
+
+//=============================
+void SimpleARAEditor::_setRegionFocus()
+{
+    araViewSection->setRegionFocus();
 }

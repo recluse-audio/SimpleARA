@@ -15,7 +15,10 @@ class SimpleARAEditor;
 class NavigationMenu;
 class ARAFocusButtons;
 //==============================================================================
-/*
+/**
+    This class represents the control panel on the left side of the plugin
+ 
+    The navigation menu represents the ARA playback regions organized by region sequence
 */
 class ControlPanel  : public juce::Component
 {
