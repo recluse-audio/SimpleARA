@@ -10,6 +10,7 @@
 
 #include "ARA_PlaybackRenderer.h"
 #include "ARA_AudioMod.h"
+#include "ARA_PlaybackRegion.h"
 
 //==============================================================================
 void ARA_PlaybackRenderer::prepareToPlay (double sampleRateIn, int maximumSamplesPerBlockIn, int numChannelsIn, juce::AudioProcessor::ProcessingPrecision, AlwaysNonRealtime alwaysNonRealtime)
@@ -22,10 +23,12 @@ void ARA_PlaybackRenderer::prepareToPlay (double sampleRateIn, int maximumSample
 
 	useBufferedAudioSourceReader = alwaysNonRealtime == AlwaysNonRealtime::no;
 
-	for (const auto playbackRegion : getPlaybackRegions())
+	for (const auto playbackRegion : getPlaybackRegions<ARA_PlaybackRegion>())
 	{
-		auto audioSource = playbackRegion->getAudioModification()->getAudioSource();
+        playbackRegion->setSampleRate(sampleRateIn);
 
+		auto audioSource = playbackRegion->getAudioModification()->getAudioSource();
+        
 		if (audioSourceReaders.find (audioSource) == audioSourceReaders.end())
 		{
 			auto reader = std::make_unique<juce::ARAAudioSourceReader> (audioSource);
@@ -73,41 +76,22 @@ bool ARA_PlaybackRenderer::processBlock (juce::AudioBuffer<float>& buffer,
 	{
 		const auto blockRange = Range<int64>::withStartAndLength (blockTimePosInSamples, numSamples);
 
-		for (const auto& playbackRegion : getPlaybackRegions())
+		for (const auto& playbackRegion : getPlaybackRegions<ARA_PlaybackRegion>())
 		{
-			// Evaluate region borders in song time, calculate sample range to render in song time.
-			// Note that this example does not use head- or tailtime, so the includeHeadAndTail
-			// parameter is set to false here - this might need to be adjusted in actual plug-ins.
-			juce::Range<int64> playbackRegionSampleRange { playbackRegion->getStartInPlaybackSamples(sampleRate),
-												   playbackRegion->getEndInPlaybackSamples(sampleRate) };
-			
- 			auto renderRange = blockRange.getIntersectionWith (playbackRegionSampleRange);
+	
 
-			if (renderRange.isEmpty())
-				continue;
+            auto readRange = playbackRegion->getRangeToReadInAudioSource(blockRange);
+            if(readRange.isEmpty())
+                continue;
+            
 
-			// Evaluate region borders in modification/source time and calculate offset between
-			// song and source samples, then clip song samples accordingly
-			// (if an actual plug-in supports time stretching, this must be taken into account here).
-			juce::Range<int64> modificationSampleRange { playbackRegion->getStartInAudioModificationSamples(),
-												   playbackRegion->getEndInAudioModificationSamples() };
-			
-			const auto modificationSampleOffset = modificationSampleRange.getStart() - playbackRegionSampleRange.getStart();
-
-			renderRange = renderRange.getIntersectionWith (modificationSampleRange.movedToStartAt (playbackRegionSampleRange.getStart()));
-
-			if (renderRange.isEmpty())
-				continue;
 
 			// Get the audio source for the region and find the reader for that source.
-			// This simplified example code only produces audio if sample rate and channel count match -
-			// a robust plug-in would need to do conversion, see ARA SDK documentation.
 			const auto audioSource = playbackRegion->getAudioModification()->getAudioSource();
 			const auto readerIt = audioSourceReaders.find (audioSource);
 
-			auto audioSourceTuple = std::make_tuple (audioSource->getChannelCount(), audioSource->getSampleRate());
-			auto hostTuple = std::make_tuple (numChannels, sampleRate);
-			bool sourceAndHostMatch = (audioSourceTuple == hostTuple);
+            bool sourceAndHostMatch = this->_sourceMatchesHost(audioSource);
+            
 			if ( !sourceAndHostMatch || (readerIt == audioSourceReaders.end()))
 			{
 				success = false;
@@ -117,11 +101,13 @@ bool ARA_PlaybackRenderer::processBlock (juce::AudioBuffer<float>& buffer,
 			auto& reader = readerIt->second;
 			reader.setReadTimeout (realtime == AudioProcessor::Realtime::no ? 100 : 0);
 
+            
 			// Calculate buffer offsets.
-			const int numSamplesToRead = (int) renderRange.getLength();
-			const int startInBuffer = (int) (renderRange.getStart() - blockRange.getStart());
-			auto startInSource = renderRange.getStart() + modificationSampleOffset;
+			const int numSamplesToRead = (int) readRange.getLength();
+			const int startInBuffer = (int) (readRange.getStart() - blockRange.getStart());
+			auto startInSource = readRange.getStart() + playbackRegion->getModOffset();
 
+            
 			// Read samples:
 			// first region can write directly into output, later regions need to use local buffer.
 			auto& readBuffer = (didRenderAnyRegion) ? *tempBuffer : buffer;
@@ -163,4 +149,14 @@ bool ARA_PlaybackRenderer::processBlock (juce::AudioBuffer<float>& buffer,
 		buffer.clear();
 
 	return success;
+}
+
+
+//============================
+bool ARA_PlaybackRenderer::_sourceMatchesHost(juce::ARAAudioSource* audioSource)
+{
+    auto audioSourceTuple = std::make_tuple (audioSource->getChannelCount(), audioSource->getSampleRate());
+    auto hostTuple = std::make_tuple (numChannels, sampleRate);
+    bool sourceAndHostMatch = (audioSourceTuple == hostTuple);
+    return sourceAndHostMatch;
 }

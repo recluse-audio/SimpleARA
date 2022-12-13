@@ -52,4 +52,7 @@ private:
 	std::map<ARA::PlugIn::AudioSource*, PossiblyBufferedReader> audioSourceReaders;
 	
 	std::unique_ptr<AudioBuffer<float>> tempBuffer;
+    
+    /** Checks if an audio source matches the host in channel layout and sample rate etc.*/
+    bool _sourceMatchesHost(juce::ARAAudioSource* source);
 };
