@@ -41,6 +41,7 @@ private:
     
     std::unique_ptr<WaveformCache> waveCache;
     
+    void _initializeViews(juce::ARADocument* document);
     // Prepare the playback region to show 
     void _preparePlaybackRegionView(juce::ARADocument* document, int indexOfRegionToView);
     

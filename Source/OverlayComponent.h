@@ -15,6 +15,7 @@
 
 //==============================================================================
 /*
+    Catches clicks and draw the transport playhead
 */
 class OverlayComponent : public juce::Component,
 private juce::Timer

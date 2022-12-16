@@ -49,6 +49,10 @@
                 file="Source/HelperDisplay.cpp"/>
           <FILE id="KrR543" name="HelperDisplay.h" compile="0" resource="0" file="Source/HelperDisplay.h"/>
         </GROUP>
+        <FILE id="TZIX1h" name="MultiTrackTimeline.cpp" compile="1" resource="0"
+              file="Source/MultiTrackTimeline.cpp"/>
+        <FILE id="F78Qxy" name="MultiTrackTimeline.h" compile="0" resource="0"
+              file="Source/MultiTrackTimeline.h"/>
         <FILE id="c158IT" name="OverlayComponent.cpp" compile="1" resource="0"
               file="Source/OverlayComponent.cpp"/>
         <FILE id="oWDN3i" name="OverlayComponent.h" compile="0" resource="0"
