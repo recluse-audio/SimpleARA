@@ -16,17 +16,21 @@
 #include "ARA_DocumentSpecialisation.h"
 #include "PluginEditor.h"
 #include "ARA_PlaybackRegion.h"
+#include "MultiTrackTimeline.h"
+#include "TrackLane.h"
+
 //==============================================================================
 ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 {
     waveCache = std::make_unique<WaveformCache>();
     
-    auto document = mEditor.getARADocument();
-    
-    if(document != nullptr)
-        _initializeViews(document);
+//    auto document = mEditor.getARADocument();
+//    
+//    if(document != nullptr)
+//        _initializeViews(document);
 
-    
+    timeline = std::make_unique<MultiTrackTimeline>(mEditor.getPlayHeadState());
+    addAndMakeVisible(timeline.get());
 }
 
 ARAViewSection::~ARAViewSection()
@@ -48,7 +52,7 @@ void ARAViewSection::_initializeViews(juce::ARADocument* document)
 
 void ARAViewSection::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::grey.withAlpha(0.7f));
+    g.fillAll(juce::Colours::pink.withAlpha(0.7f));
 }
 
 void ARAViewSection::resized()
@@ -58,6 +62,8 @@ void ARAViewSection::resized()
     
     if(playbackRegionView != nullptr)
         playbackRegionView->setBoundsRelative(0.f, 0.f, 1.f, 1.f);
+    
+    timeline->setBounds(getLocalBounds());
 
 }
 
@@ -78,8 +84,8 @@ void ARAViewSection::resized()
 //=======================
 void ARAViewSection::setDocumentFocus()
 {
-    documentView->setVisible(true);
-    playbackRegionView->setVisible(false);
+    //documentView->setVisible(true);
+    //playbackRegionView->setVisible(false);
 }
 
 //=======================
@@ -91,6 +97,6 @@ void ARAViewSection::setSequenceFocus()
 //=======================
 void ARAViewSection::setRegionFocus()
 {
-    documentView->setVisible(false);
-    playbackRegionView->setVisible(true);
+    //documentView->setVisible(false);
+    //playbackRegionView->setVisible(true);
 }

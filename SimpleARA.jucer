@@ -23,6 +23,35 @@
         <FILE id="gsu3bc" name="UtilObjects.h" compile="0" resource="0" file="Source/UtilObjects.h"/>
       </GROUP>
       <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
+        <GROUP id="{A86BA177-240F-A70E-54CC-6DBA6C997220}" name="MultiTrackTimeLine">
+          <FILE id="zUP3wl" name="TrackRegion.cpp" compile="1" resource="0" file="Source/TrackRegion.cpp"/>
+          <FILE id="IigeBM" name="TrackRegion.h" compile="0" resource="0" file="Source/TrackRegion.h"/>
+          <FILE id="eTpEYE" name="TimelineContent.cpp" compile="1" resource="0"
+                file="Source/TimelineContent.cpp"/>
+          <FILE id="D1m81z" name="TimelineContent.h" compile="0" resource="0"
+                file="Source/TimelineContent.h"/>
+          <FILE id="W9O5c1" name="TimelineViewport.cpp" compile="1" resource="0"
+                file="Source/TimelineViewport.cpp"/>
+          <FILE id="SbbTvI" name="TimelineViewport.h" compile="0" resource="0"
+                file="Source/TimelineViewport.h"/>
+          <FILE id="A32SHq" name="TrackHeader.cpp" compile="1" resource="0" file="Source/TrackHeader.cpp"/>
+          <FILE id="alJKKB" name="TrackHeader.h" compile="0" resource="0" file="Source/TrackHeader.h"/>
+          <FILE id="hpLgfq" name="VerticalLayoutViewport.h" compile="0" resource="0"
+                file="Source/VerticalLayoutViewport.h"/>
+          <FILE id="lJM1hF" name="VerticalLayoutViewportContent.h" compile="0"
+                resource="0" file="Source/VerticalLayoutViewportContent.h"/>
+          <FILE id="voncYt" name="ZoomControls.h" compile="0" resource="0" file="Source/ZoomControls.h"/>
+          <FILE id="c158IT" name="OverlayComponent.cpp" compile="1" resource="0"
+                file="Source/OverlayComponent.cpp"/>
+          <FILE id="oWDN3i" name="OverlayComponent.h" compile="0" resource="0"
+                file="Source/OverlayComponent.h"/>
+          <FILE id="GXNwcw" name="TrackLane.cpp" compile="1" resource="0" file="Source/TrackLane.cpp"/>
+          <FILE id="flN5kK" name="TrackLane.h" compile="0" resource="0" file="Source/TrackLane.h"/>
+          <FILE id="F78Qxy" name="MultiTrackTimeline.h" compile="0" resource="0"
+                file="Source/MultiTrackTimeline.h"/>
+          <FILE id="TZIX1h" name="MultiTrackTimeline.cpp" compile="1" resource="0"
+                file="Source/MultiTrackTimeline.cpp"/>
+        </GROUP>
         <GROUP id="{BEF115B7-FA4C-8093-14CA-8D7E091D58D8}" name="Sections">
           <GROUP id="{06547AD7-E423-37E9-EEB7-B4EFAAD7D303}" name="ControlPanel">
             <FILE id="kyrVgh" name="NavigationMenu.cpp" compile="1" resource="0"
@@ -49,21 +78,6 @@
                 file="Source/HelperDisplay.cpp"/>
           <FILE id="KrR543" name="HelperDisplay.h" compile="0" resource="0" file="Source/HelperDisplay.h"/>
         </GROUP>
-        <FILE id="TZIX1h" name="MultiTrackTimeline.cpp" compile="1" resource="0"
-              file="Source/MultiTrackTimeline.cpp"/>
-        <FILE id="F78Qxy" name="MultiTrackTimeline.h" compile="0" resource="0"
-              file="Source/MultiTrackTimeline.h"/>
-        <FILE id="c158IT" name="OverlayComponent.cpp" compile="1" resource="0"
-              file="Source/OverlayComponent.cpp"/>
-        <FILE id="oWDN3i" name="OverlayComponent.h" compile="0" resource="0"
-              file="Source/OverlayComponent.h"/>
-        <FILE id="A32SHq" name="TrackHeader.cpp" compile="1" resource="0" file="Source/TrackHeader.cpp"/>
-        <FILE id="alJKKB" name="TrackHeader.h" compile="0" resource="0" file="Source/TrackHeader.h"/>
-        <FILE id="hpLgfq" name="VerticalLayoutViewport.h" compile="0" resource="0"
-              file="Source/VerticalLayoutViewport.h"/>
-        <FILE id="lJM1hF" name="VerticalLayoutViewportContent.h" compile="0"
-              resource="0" file="Source/VerticalLayoutViewportContent.h"/>
-        <FILE id="voncYt" name="ZoomControls.h" compile="0" resource="0" file="Source/ZoomControls.h"/>
       </GROUP>
       <GROUP id="{748BF6FD-1CDE-63EC-6E44-C5B289A3011C}" name="ARA_Views">
         <GROUP id="{F39CCB1F-5DC6-FE16-AD40-56645A1FB87F}" name="ARAObjectViews">

@@ -15,6 +15,7 @@ class SimpleARAEditor;
 class DocumentView;
 class PlaybackRegionView;
 class WaveformCache;
+class MultiTrackTimeline;
 
 //==============================================================================
 /*
@@ -38,6 +39,7 @@ private:
     SimpleARAEditor& mEditor;
     std::unique_ptr<DocumentView> documentView;
     std::unique_ptr<PlaybackRegionView> playbackRegionView;
+    std::unique_ptr<MultiTrackTimeline> timeline;
     
     std::unique_ptr<WaveformCache> waveCache;
     

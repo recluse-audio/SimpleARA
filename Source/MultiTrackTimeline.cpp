@@ -10,13 +10,47 @@
 
 #include <JuceHeader.h>
 #include "MultiTrackTimeline.h"
+#include "TimelineContent.h"
+#include "TimelineViewport.h"
+#include "TrackLane.h"
+#include "ZoomControls.h"
+#include "OverlayComponent.h"
+#include "UtilObjects.h"
 
 //==============================================================================
-MultiTrackTimeline::MultiTrackTimeline()
+MultiTrackTimeline::MultiTrackTimeline(PlayHeadState& pState) : playheadState(pState)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+    overlay = std::make_unique<OverlayComponent>(playheadState);
+    overlay->setZoomLevel (zoomLevelPixelPerSecond);
+    addAndMakeVisible (overlay.get());
 
+    zoomControls = std::make_unique<ZoomControls>();
+    zoomControls->setZoomInCallback  ([this] { zoom (2.0); });
+    zoomControls->setZoomOutCallback ([this] { zoom (0.5); });
+    addAndMakeVisible (zoomControls.get());
+    this->zoom(0.5f);
+    
+    timelineContent = std::make_unique<TimelineContent>();
+
+    timelineViewport = std::make_unique<TimelineViewport>();
+    timelineViewport->onVisibleAreaChanged = [this] (const auto& r)
+    {
+        viewportHeightOffset = r.getY();
+        overlay->setHorizontalOffset (r.getX());
+        resized();
+    };
+    
+    timelineViewport->setViewedComponent(timelineContent.get());
+    addAndMakeVisible(timelineViewport.get());
+    
+    setSize(300, 300);
+    
+    for(int i = 0; i < 12; i++)
+    {
+        addTrackLane(new TrackLane(i));
+
+    }
+    
 }
 
 MultiTrackTimeline::~MultiTrackTimeline()
@@ -25,27 +59,47 @@ MultiTrackTimeline::~MultiTrackTimeline()
 
 void MultiTrackTimeline::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("MultiTrackTimeline", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
+    g.fillAll(juce::Colours::darkred.darker());
 }
 
 void MultiTrackTimeline::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+    timelineViewport->setBounds(getLocalBounds());
 
 }
+
+//====================
+void MultiTrackTimeline::addTrackLane(TrackLane *newTrackLane)
+{
+    timelineContent->addAndMakeVisible(newTrackLane);
+    updateViewport();
+}
+
+
+//====================
+void MultiTrackTimeline::zoom(float widthFactor, float heightFactor)
+{
+    widthPixelPerSecond = jlimit (minimumZoom, minimumZoom * 32, widthPixelPerSecond * widthFactor);
+    
+    this->_updatePixelsPerSecond (widthPixelPerSecond, 1.f);
+}
+
+//====================
+void MultiTrackTimeline::_updatePixelsPerSecond(double wPixPerSecond, double hPixPerSecond)
+{
+    overlay->setZoomLevel(wPixPerSecond);
+    timelineContent->updateZoomLevel(wPixPerSecond, hPixPerSecond);
+}
+
+//===================
+void MultiTrackTimeline::updateViewport()
+{
+    timelineLength = 120.0;
+
+    timelineContent->resized();
+
+    resized();
+}
+
+
+
