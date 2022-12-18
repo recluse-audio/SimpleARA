@@ -20,11 +20,13 @@ TrackLane::TrackLane(MultiTrackTimeLine& timeLine)
 
 }
 
-TrackLane::TrackLane(MultiTrackTimeLine& timeLine, int index) : orderIndex(index)
+TrackLane::TrackLane(MultiTrackTimeLine& timeLine, int index)
+: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
+, orderIndex(index)
 {
-    addRegion(new TrackRegion(1.f, 5.f));
-    addRegion(new TrackRegion(7.f, 9.f));
-    addRegion(new TrackRegion(11.f, 15.f));
+    addRegion(new TrackRegion(timeLine, 1.f, 5.f));
+    addRegion(new TrackRegion(timeLine, 7.f, 9.f));
+    addRegion(new TrackRegion(timeLine, 11.f, 15.f));
 
 }
 
@@ -60,6 +62,19 @@ void TrackLane::resized()
     }
 }
 
+void TrackLane::updateZoomState()
+{
+	auto zoomState = mTimeLine.getZoomState();
+	
+	auto trackWidth = this->getDuration() * zoomState.getPixelsPerSecond();
+	auto trackHeight = zoomState.getTrackHeight();
+	this->setSize(trackWidth, trackHeight);
+	
+	
+	resized();
+	
+}
+
 void TrackLane::setOrderIndex(int newIndex)
 {
     orderIndex = newIndex;
@@ -75,11 +90,6 @@ float TrackLane::getDuration() const
     return duration;
 }
 
-void TrackLane::setZoomLevel(double pixelsPerSecond)
-{
-    zoomLevelPixelPerSecond = pixelsPerSecond;
-}
-
 void TrackLane::addRegion(TrackRegion *region)
 {
     this->addAndMakeVisible(region);
@@ -87,7 +97,4 @@ void TrackLane::addRegion(TrackRegion *region)
     resized();
 }
 
-void TrackLane::updateZoomState()
-{
-	
-}
+

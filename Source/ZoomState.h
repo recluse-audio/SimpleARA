@@ -17,6 +17,8 @@
 	This class changes as the zoom buttons are clicked, and then components update their state according to the zoom when they are good and ready
 	
 	Probably best if the MultiTrackTimeLine holds the instance of this and the TrackContentl/ Lanes/ etc. get a reference or use a getter function
+	
+	TO DO: Consider making this into a ChangeBroadcaster and the objects listeners
  */
 class ZoomState
 {
@@ -54,7 +56,7 @@ public:
 	}
 	
 	//====================
-	int getPixelPerSecond() const
+	int getPixelsPerSecond() const
 	{
 		auto pixelPerSecond = basePixelPerSecond * mWidthFactor;
 		jassert(pixelPerSecond >= minZoom * basePixelPerSecond);

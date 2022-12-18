@@ -36,7 +36,7 @@ MultiTrackTimeline::MultiTrackTimeline(PlayHeadState& pState) : playheadState(pS
     timelineViewport->setViewedComponent(timelineContent.get());
     addAndMakeVisible(timelineViewport.get());
     
-	overlay = std::make_unique<OverlayComponent>(this);
+	overlay = std::make_unique<OverlayComponent>(*this);
 	overlay->setZoomLevel (widthPixelPerSecond);
 	addAndMakeVisible (overlay.get());
 
@@ -51,7 +51,7 @@ MultiTrackTimeline::MultiTrackTimeline(PlayHeadState& pState) : playheadState(pS
     
     for(int i = 0; i < 12; i++)
     {
-        addTrackLane(new TrackLane(this, i));
+        addTrackLane(new TrackLane(*this, i));
 
     }
 	
@@ -89,7 +89,7 @@ void MultiTrackTimeline::addTrackLane(TrackLane *newTrackLane)
 void MultiTrackTimeline::zoom(float widthFactor, float heightFactor)
 {
 	zoomState->setHorizontalZoom(widthFactor);
-	_updateZoom();
+	_updateZoomStates();
 }
 
 //====================
@@ -110,9 +110,9 @@ void MultiTrackTimeline::updateViewport()
 }
 
 //===================
-void MultiTrackTimeline::_updateZoom()
+void MultiTrackTimeline::_updateZoomStates()
 {
-	
+	timelineContent->updateZoomState();
 }
 
 //===================

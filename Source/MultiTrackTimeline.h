@@ -60,7 +60,7 @@ private:
 
     PlayHeadState& playheadState;
     
-	void _updateZoom();
+	void _updateZoomStates();
     // Called from zoom() this sets the zoom level of the timelineContent
     void _updatePixelsPerSecond(double widthPixPerSec, double heightPixPerSecond);
     

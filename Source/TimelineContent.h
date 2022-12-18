@@ -42,6 +42,8 @@ protected:
     int trackHeight = 60;
 	static auto constexpr  defaultDuration = 120.f;
 	
+	std::map<ObjectKey, std::unique_ptr<TrackLane>> trackLanesMap;
+
     
     // Returns the duration of the longest track. i.e. how long this timeline is plus some buffer
     float _getMaxDuration() const;

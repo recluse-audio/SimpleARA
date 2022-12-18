@@ -17,8 +17,7 @@ TrackRegion::TrackRegion(MultiTrackTimeLine& timeLine, float startPos, float dur
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
     rangeInSeconds = std::make_unique<juce::Range<float>>(startPos, startPos +  duration);
-	if(!rangeInSeconds->isEmpty())
-		DBG(startPos);
+
 }
 
 TrackRegion::~TrackRegion()

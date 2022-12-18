@@ -187,9 +187,7 @@ void DocumentView::addTrackViews (juce::ARARegionSequence* regionSequence)
 		return *(it.first->second);
 	};
 
-	auto& regionSequenceView = insertIntoMap (
-		regionSequenceViews,
-		RegionSequenceViewKey { regionSequence },
+	auto& regionSequenceView = insertIntoMap ( regionSequenceViews, RegionSequenceViewKey { regionSequence },
 		std::make_unique<RegionSequenceView> (mEditor, *regionSequence, waveCache, zoomLevelPixelPerSecond));
 
 	regionSequenceView.addChangeListener (this);

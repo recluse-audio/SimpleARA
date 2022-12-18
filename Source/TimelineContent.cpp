@@ -37,6 +37,7 @@ void TimelineContent::resized()
 {
     auto bounds = this->getLocalBounds();
 
+	
     for (auto* component : this->getChildren())
     {
         auto trackLane = dynamic_cast<TrackLane*>(component);
@@ -63,7 +64,7 @@ void TimelineContent::updateZoomState()
 	auto zoomState = mTimeLine.getZoomState();
 	auto timelineLength = _getMaxDuration();
 
-	auto timelineWidth = roundToInt (timelineLength * zoomState.getPixelPerSecond());
+	auto timelineWidth = roundToInt (timelineLength * zoomState.getPixelsPerSecond());
 	auto timelineHeight = roundToInt (this->getNumTracks() * zoomState.getTrackHeight());
 	auto heightBuffer = zoomState.getTrackHeight() * 3;
 	this->setSize (timelineWidth, timelineHeight + heightBuffer);
@@ -71,13 +72,6 @@ void TimelineContent::updateZoomState()
 
 
 
-
-
-//====================
-void TimelineContent::updateZoomLevel(double wPixPerSecond, double hPixPerSecond)
-{
-
-}
 
 //==================
 int TimelineContent::getNumTracks() const
@@ -137,4 +131,8 @@ juce::Array<TrackLane*> TimelineContent::_getTrackLanes() const
     
 }
 
-
+//==================
+void TimelineContent::addTrackLane(TrackLane *newTrackLane)
+{
+	trackLanesMap
+}
