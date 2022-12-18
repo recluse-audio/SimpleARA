@@ -11,16 +11,19 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "MultiTrackObjectBase.h"
 class TrackLane;
 class TrackID;
+class MultiTrackTimeLine;
 //==============================================================================
 /**
     This is basically a big rectangle with track lanes 
 */
-class TimelineContent  : public juce::Component
+class TimelineContent : public juce::Component,
+						public MultiTrackObjectBase
 {
 public:
-    TimelineContent();
+    TimelineContent(MultiTrackTimeLine&);
     ~TimelineContent() override;
 
     void paint (juce::Graphics&) override;
@@ -29,12 +32,16 @@ public:
     void setTrackHeight(int newHeight);
     void addTrackLane(TrackLane* newTrackLane);
     
+	void updateZoomState() override;
+	
     // Updates sizes of this and subcomponents based on new pixel per second zoom level
     void updateZoomLevel(double wPixPerSecond, double hPixPerSecond);
     int getNumTracks() const;
     
-protected:
+protected:	
     int trackHeight = 60;
+	static auto constexpr  defaultDuration = 120.f;
+	
     
     // Returns the duration of the longest track. i.e. how long this timeline is plus some buffer
     float _getMaxDuration() const;

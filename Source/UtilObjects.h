@@ -14,17 +14,14 @@
 struct TrackID
 {
     int orderIndex = -1;
-
-};
-
-//==============================================================================
-struct PreviewState
-{
-    std::atomic<double> previewTime { 0.0 };
-    std::atomic<juce::ARAPlaybackRegion*> previewedRegion { nullptr };
 };
 
 
+
+
+
+
+//=========================
 class SharedTimeSliceThread  : public juce::TimeSliceThread
 {
 public:
@@ -36,6 +33,8 @@ public:
 };
 
 
+
+//========================
 struct PlayHeadState
 {
     void update (juce::AudioPlayHead* aph)
@@ -57,8 +56,10 @@ struct PlayHeadState
     std::atomic<double> timeInSeconds { 0.0 };
 };
 
-/** Given a playback region, this returns a formatted*/
-static juce::StringRef getPlaybackRegionHexString(juce::ARAPlaybackRegion* pRegion)
+
+//==============================================================================
+struct PreviewState
 {
-	
-}
+	std::atomic<double> previewTime { 0.0 };
+	std::atomic<juce::ARAPlaybackRegion*> previewedRegion { nullptr };
+};

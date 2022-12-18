@@ -16,21 +16,14 @@
 #include "ZoomControls.h"
 #include "OverlayComponent.h"
 #include "UtilObjects.h"
+#include "ZoomState.h"
 
 //==============================================================================
 MultiTrackTimeline::MultiTrackTimeline(PlayHeadState& pState) : playheadState(pState)
 {
-    overlay = std::make_unique<OverlayComponent>(playheadState);
-    overlay->setZoomLevel (zoomLevelPixelPerSecond);
-    addAndMakeVisible (overlay.get());
 
-    zoomControls = std::make_unique<ZoomControls>();
-    zoomControls->setZoomInCallback  ([this] { zoom (2.0); });
-    zoomControls->setZoomOutCallback ([this] { zoom (0.5); });
-    addAndMakeVisible (zoomControls.get());
-    this->zoom(0.5f);
     
-    timelineContent = std::make_unique<TimelineContent>();
+    timelineContent = std::make_unique<TimelineContent>(this);
 
     timelineViewport = std::make_unique<TimelineViewport>();
     timelineViewport->onVisibleAreaChanged = [this] (const auto& r)
@@ -43,14 +36,28 @@ MultiTrackTimeline::MultiTrackTimeline(PlayHeadState& pState) : playheadState(pS
     timelineViewport->setViewedComponent(timelineContent.get());
     addAndMakeVisible(timelineViewport.get());
     
+	overlay = std::make_unique<OverlayComponent>(this);
+	overlay->setZoomLevel (widthPixelPerSecond);
+	addAndMakeVisible (overlay.get());
+
+	zoomControls = std::make_unique<ZoomControls>();
+	zoomControls->setZoomInCallback  ([this] { zoom (2.0, 1.0); });
+	zoomControls->setZoomOutCallback ([this] { zoom (0.5, 1.0); });
+	addAndMakeVisible (zoomControls.get());
+	
     setSize(300, 300);
+	
+	zoomState = std::make_unique<ZoomState>();
     
     for(int i = 0; i < 12; i++)
     {
-        addTrackLane(new TrackLane(i));
+        addTrackLane(new TrackLane(this, i));
 
     }
-    
+	
+	/** TO DO: This has to happen after */
+	this->zoom(0.5f, 1.5f);
+
 }
 
 MultiTrackTimeline::~MultiTrackTimeline()
@@ -65,6 +72,8 @@ void MultiTrackTimeline::paint (juce::Graphics& g)
 void MultiTrackTimeline::resized()
 {
     timelineViewport->setBounds(getLocalBounds());
+ 	overlay->setBounds(getLocalBounds());
+	zoomControls->setBoundsRelative(0.9f, 0.8f, 0.05f, 0.1f);
 
 }
 
@@ -79,9 +88,8 @@ void MultiTrackTimeline::addTrackLane(TrackLane *newTrackLane)
 //====================
 void MultiTrackTimeline::zoom(float widthFactor, float heightFactor)
 {
-    widthPixelPerSecond = jlimit (minimumZoom, minimumZoom * 32, widthPixelPerSecond * widthFactor);
-    
-    this->_updatePixelsPerSecond (widthPixelPerSecond, 1.f);
+	zoomState->setHorizontalZoom(widthFactor);
+	_updateZoom();
 }
 
 //====================
@@ -101,5 +109,20 @@ void MultiTrackTimeline::updateViewport()
     resized();
 }
 
+//===================
+void MultiTrackTimeline::_updateZoom()
+{
+	
+}
 
+//===================
+PlayHeadState& MultiTrackTimeline::getPlayHeadState() const
+{
+	return playheadState;
+}
 
+//===================
+ZoomState& MultiTrackTimeline::getZoomState() const
+{
+	return *zoomState.get();
+}

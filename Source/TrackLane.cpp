@@ -13,13 +13,14 @@
 #include "TrackRegion.h"
 
 //==============================================================================
-TrackLane::TrackLane()
+TrackLane::TrackLane(MultiTrackTimeLine& timeLine)
+: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
 
 
 }
 
-TrackLane::TrackLane(int index) : orderIndex(index)
+TrackLane::TrackLane(MultiTrackTimeLine& timeLine, int index) : orderIndex(index)
 {
     addRegion(new TrackRegion(1.f, 5.f));
     addRegion(new TrackRegion(7.f, 9.f));
@@ -84,4 +85,9 @@ void TrackLane::addRegion(TrackRegion *region)
     this->addAndMakeVisible(region);
     trackRegions.add(region);
     resized();
+}
+
+void TrackLane::updateZoomState()
+{
+	
 }

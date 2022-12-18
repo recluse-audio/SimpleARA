@@ -10,12 +10,15 @@
 
 #include <JuceHeader.h>
 #include "TrackRegion.h"
+#include "MultiTrackTimeline.h"
 
 //==============================================================================
-TrackRegion::TrackRegion(float startPos, float dur)
+TrackRegion::TrackRegion(MultiTrackTimeLine& timeLine, float startPos, float duration)
+: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
-    rangeInSeconds = std::make_unique<juce::Range<float>>(startPos, startPos + dur);
-
+    rangeInSeconds = std::make_unique<juce::Range<float>>(startPos, startPos +  duration);
+	if(!rangeInSeconds->isEmpty())
+		DBG(startPos);
 }
 
 TrackRegion::~TrackRegion()
@@ -32,14 +35,16 @@ void TrackRegion::resized()
 
 }
 
-//=======================
-void TrackRegion::setZoomLevel(double zoomLevelPixPerSecond)
-{
-    
-}
+
 
 //=======================
 juce::Range<float>* TrackRegion::getRangeInSeconds() const
 {
     return rangeInSeconds.get();
+}
+
+//=======================
+void TrackRegion::updateZoomState()
+{
+	
 }

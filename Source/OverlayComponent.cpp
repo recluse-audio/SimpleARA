@@ -10,14 +10,15 @@
 
 #include <JuceHeader.h>
 #include "OverlayComponent.h"
+#include "MultiTrackTimeline.h"
 
 //==============================================================================
-OverlayComponent::OverlayComponent(PlayHeadState& playHeadStateIn)
-: playHeadState (&playHeadStateIn)
+OverlayComponent::OverlayComponent(MultiTrackTimeLine& timeLine)
+: mTimeLine(timeLine)
 {
-addChildComponent (playheadMarker);
-setInterceptsMouseClicks (false, false);
-startTimerHz (30);
+	addChildComponent (playheadMarker);
+	setInterceptsMouseClicks (false, false);
+	startTimerHz (30);
 }
 
 OverlayComponent::~OverlayComponent()
@@ -46,7 +47,9 @@ void OverlayComponent::setHorizontalOffset (int offset)
 // PRIVATE FUNCTIONS
 void OverlayComponent::doResize()
 {
-	if (playHeadState->isPlaying.load())
+	auto playHeadState = mTimeLine.getPlayHeadState();
+	
+	if (playHeadState.isPlaying.load())
 	{
 		const auto markerX = playHeadState->timeInSeconds.load() * pixelPerSecond;
 		const auto playheadLine = getLocalBounds().withTrimmedLeft ((int) (markerX - markerWidth / 2.0) - horizontalOffset)

@@ -11,18 +11,22 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "MultiTrackObjectBase.h"
 class TrackRegion;
+class MultiTrackTimeLine;
 //==============================================================================
 /*
     This class represents one track in a multi track timeline.
  
     It is meant to be interface well with playhead and timeline positions
 */
-class TrackLane  : public juce::Component
+class TrackLane
+: public juce::Component
+, public MultiTrackObjectBase
 {
 public:
-    TrackLane();
-    TrackLane(int index);
+    TrackLane(MultiTrackTimeLine& timeLine);
+    TrackLane(MultiTrackTimeLine& timeLine, int index);
     ~TrackLane() override;
 
     void paint (juce::Graphics&) override;
@@ -36,12 +40,12 @@ public:
     
     virtual float getDuration() const;
     
+	void updateZoomState() override;
     virtual void setZoomLevel(double pixelsPerSecond);
     
 protected:
     int orderIndex;
     float duration = 120.f;
-    double zoomLevelPixelPerSecond;
 
 private:
     std::unique_ptr<juce::Label> trackLabel;

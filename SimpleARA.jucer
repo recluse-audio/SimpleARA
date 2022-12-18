@@ -24,6 +24,11 @@
       </GROUP>
       <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
         <GROUP id="{A86BA177-240F-A70E-54CC-6DBA6C997220}" name="MultiTrackTimeLine">
+          <FILE id="Al2oQD" name="MultiTrackObjectBase.cpp" compile="1" resource="0"
+                file="Source/MultiTrackObjectBase.cpp"/>
+          <FILE id="dqjhAQ" name="MultiTrackObjectBase.h" compile="0" resource="0"
+                file="Source/MultiTrackObjectBase.h"/>
+          <FILE id="BCx5nD" name="ZoomState.h" compile="0" resource="0" file="Source/ZoomState.h"/>
           <FILE id="zUP3wl" name="TrackRegion.cpp" compile="1" resource="0" file="Source/TrackRegion.cpp"/>
           <FILE id="IigeBM" name="TrackRegion.h" compile="0" resource="0" file="Source/TrackRegion.h"/>
           <FILE id="eTpEYE" name="TimelineContent.cpp" compile="1" resource="0"

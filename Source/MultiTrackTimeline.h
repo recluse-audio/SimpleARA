@@ -17,6 +17,7 @@ class TimelineViewport;
 class OverlayComponent;
 class ZoomControls;
 class PlayHeadState;
+class ZoomState;
 
 //==============================================================================
 /*
@@ -38,6 +39,9 @@ public:
     
     void zoom(float widthFactor, float heightFactor);
     void updateViewport();
+	
+	PlayHeadState& getPlayHeadState() const;
+	ZoomState& getZoomState() const;
     
 private:
     int viewportHeightOffset = 0;
@@ -45,14 +49,18 @@ private:
     static constexpr auto trackHeight = 60;
     double timelineLength = 0;
     double widthPixelPerSecond = minimumZoom * 4;
+	double heightPixelPerSecond = minimumZoom;
 
     std::unique_ptr<TimelineContent> timelineContent;
     std::unique_ptr<TimelineViewport> timelineViewport;
     std::unique_ptr<OverlayComponent> overlay;
     std::unique_ptr<ZoomControls> zoomControls;
+	
+	std::unique_ptr<ZoomState> zoomState;
 
     PlayHeadState& playheadState;
     
+	void _updateZoom();
     // Called from zoom() this sets the zoom level of the timelineContent
     void _updatePixelsPerSecond(double widthPixPerSec, double heightPixPerSecond);
     
@@ -67,3 +75,6 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MultiTrackTimeline)
 };
+
+
+

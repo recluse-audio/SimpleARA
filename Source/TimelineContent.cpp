@@ -11,10 +11,11 @@
 #include <JuceHeader.h>
 #include "TimelineContent.h"
 #include "TrackLane.h"
-
+#include "MultiTrackTimeline.h"
 
 //==============================================================================
-TimelineContent::TimelineContent()
+TimelineContent::TimelineContent(MultiTrackTimeLine& timeLine)
+: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
 
 
@@ -57,14 +58,25 @@ void TimelineContent::setTrackHeight(int newHeight)
 }
 
 //====================
+void TimelineContent::updateZoomState()
+{
+	auto zoomState = mTimeLine.getZoomState();
+	auto timelineLength = _getMaxDuration();
+
+	auto timelineWidth = roundToInt (timelineLength * zoomState.getPixelPerSecond());
+	auto timelineHeight = roundToInt (this->getNumTracks() * zoomState.getTrackHeight());
+	auto heightBuffer = zoomState.getTrackHeight() * 3;
+	this->setSize (timelineWidth, timelineHeight + heightBuffer);
+}
+
+
+
+
+
+//====================
 void TimelineContent::updateZoomLevel(double wPixPerSecond, double hPixPerSecond)
 {
-    auto timelineLength = _getMaxDuration();
 
-    auto timelineWidth = roundToInt (timelineLength * wPixPerSecond);
-    auto timelineHeight = roundToInt (this->getNumTracks() * trackHeight * hPixPerSecond);
-    auto heightBuffer = trackHeight * 3;
-    this->setSize (timelineWidth, timelineHeight + heightBuffer);
 }
 
 //==================
@@ -83,8 +95,12 @@ int TimelineContent::_calculateWidth(float duration, double pixPerSecond)
 //===================
 float TimelineContent::_getMaxDuration() const
 {
-    auto maxDur = 0.f;
-    
+    auto maxDur = defaultDuration;
+	auto trackLanes = this->_getTrackLanes();
+	
+	if(trackLanes.isEmpty())
+		return maxDur;
+	
     for(auto trackLane : this->_getTrackLanes())
     {
         if(trackLane->getDuration() > maxDur)

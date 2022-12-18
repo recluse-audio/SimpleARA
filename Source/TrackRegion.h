@@ -11,23 +11,27 @@
 #pragma once
 
 #include <JuceHeader.h>
-
+#include "MultiTrackObjectBase.h"
+class MultiTrackTimeLine;
 //==============================================================================
 /*
 */
-class TrackRegion  : public juce::Component
+class TrackRegion
+: public juce::Component
+, public MultiTrackObjectBase
 {
 public:
-    TrackRegion(float startPos, float dur);
+    TrackRegion(MultiTrackTimeLine& timeLine, float startPos, float duration);
     ~TrackRegion() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
     virtual juce::Range<float>* getRangeInSeconds() const;
-    virtual void setZoomLevel(double newPixPerSecond);
-    
+
+	void updateZoomState() override;
 private:
+
     std::unique_ptr<juce::Range<float>> rangeInSeconds;
     
     juce::Colour bgColor {75, 75, 75};
