@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 #include "ARAViewSection.h"
-#include "DocumentView.h"
+//#include "DocumentView.h"
 #include "PlaybackRegionView.h"
 #include "WaveformCache.h"
 #include "ARA_DocumentSpecialisation.h"
@@ -39,15 +39,15 @@ ARAViewSection::~ARAViewSection()
 
 void ARAViewSection::_initializeViews(juce::ARADocument* document)
 {
-    auto docSpecialisation = mEditor.getARADocumentSpecialisation();
-
-    documentView = std::make_unique<DocumentView> (mEditor, *document, mEditor.getPlayHeadState(), *waveCache.get() );
-    addChildComponent(documentView.get());
-    
-    /** TO DO : make regionZero into the last selected region */
-    auto regionZero = static_cast<ARA_PlaybackRegion*>(docSpecialisation->getRegionAtIndex(0));
-    playbackRegionView = std::make_unique<PlaybackRegionView>(mEditor, *regionZero, *waveCache.get() );
-    addChildComponent(playbackRegionView.get());
+//    auto docSpecialisation = mEditor.getARADocumentSpecialisation();
+//
+//    documentView = std::make_unique<DocumentView> (mEditor, *document, mEditor.getPlayHeadState(), *waveCache.get() );
+//    addChildComponent(documentView.get());
+//
+//    /** TO DO : make regionZero into the last selected region */
+//    auto regionZero = static_cast<ARA_PlaybackRegion*>(docSpecialisation->getRegionAtIndex(0));
+//    playbackRegionView = std::make_unique<PlaybackRegionView>(mEditor, *regionZero, *waveCache.get() );
+//    addChildComponent(playbackRegionView.get());
 }
 
 void ARAViewSection::paint (juce::Graphics& g)
@@ -57,11 +57,11 @@ void ARAViewSection::paint (juce::Graphics& g)
 
 void ARAViewSection::resized()
 {
-    if(documentView != nullptr)
-        documentView->setBoundsRelative(0.f, 0.f, 1.f, 1.f);
-    
-    if(playbackRegionView != nullptr)
-        playbackRegionView->setBoundsRelative(0.f, 0.f, 1.f, 1.f);
+//    if(documentView != nullptr)
+//        documentView->setBoundsRelative(0.f, 0.f, 1.f, 1.f);
+//    
+//    if(playbackRegionView != nullptr)
+//        playbackRegionView->setBoundsRelative(0.f, 0.f, 1.f, 1.f);
     
     timeline->setBounds(getLocalBounds());
 

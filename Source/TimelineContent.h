@@ -14,7 +14,7 @@
 #include "MultiTrackObjectBase.h"
 class TrackLane;
 class TrackID;
-class MultiTrackTimeLine;
+class MultiTrackTimeline;
 //==============================================================================
 /**
     This is basically a big rectangle with track lanes 
@@ -23,7 +23,7 @@ class TimelineContent : public juce::Component,
 						public MultiTrackObjectBase
 {
 public:
-    TimelineContent(MultiTrackTimeLine&);
+    TimelineContent(MultiTrackTimeline&);
     ~TimelineContent() override;
 
     void paint (juce::Graphics&) override;

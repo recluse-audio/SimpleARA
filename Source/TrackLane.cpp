@@ -11,16 +11,18 @@
 #include <JuceHeader.h>
 #include "TrackLane.h"
 #include "TrackRegion.h"
+#include "MultiTrackTimeline.h"
+#include "ZoomState.h"
 
 //==============================================================================
-TrackLane::TrackLane(MultiTrackTimeLine& timeLine)
+TrackLane::TrackLane(MultiTrackTimeline& timeLine)
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
 
 
 }
 
-TrackLane::TrackLane(MultiTrackTimeLine& timeLine, int index)
+TrackLane::TrackLane(MultiTrackTimeline& timeLine, int index)
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 , orderIndex(index)
 {
@@ -54,8 +56,9 @@ void TrackLane::resized()
         auto startPos = range->getStart();
         auto duration = range->getLength();
         
-        const auto xPos = roundToInt(startPos * zoomLevelPixelPerSecond);
-        const auto width = roundToInt (duration * zoomLevelPixelPerSecond);
+        const auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
+        const auto xPos = roundToInt(startPos * pixPerSecond);
+        const auto width = roundToInt (duration * pixPerSecond);
         
         auto regionBounds = juce::Rectangle<int>(xPos, 5, width, this->getHeight() - 10);
         region->setBounds(regionBounds);
@@ -64,10 +67,9 @@ void TrackLane::resized()
 
 void TrackLane::updateZoomState()
 {
-	auto zoomState = mTimeLine.getZoomState();
-	
-	auto trackWidth = this->getDuration() * zoomState.getPixelsPerSecond();
-	auto trackHeight = zoomState.getTrackHeight();
+    const auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
+	auto trackWidth = this->getDuration() * pixPerSecond;
+	auto trackHeight = mTimeline.getZoomState().getTrackHeight();
 	this->setSize(trackWidth, trackHeight);
 	
 	

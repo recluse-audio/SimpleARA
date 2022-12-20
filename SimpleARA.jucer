@@ -24,6 +24,7 @@
       </GROUP>
       <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
         <GROUP id="{A86BA177-240F-A70E-54CC-6DBA6C997220}" name="MultiTrackTimeLine">
+          <FILE id="fFS4z6" name="ObjectKey.h" compile="0" resource="0" file="Source/ObjectKey.h"/>
           <FILE id="Al2oQD" name="MultiTrackObjectBase.cpp" compile="1" resource="0"
                 file="Source/MultiTrackObjectBase.cpp"/>
           <FILE id="dqjhAQ" name="MultiTrackObjectBase.h" compile="0" resource="0"

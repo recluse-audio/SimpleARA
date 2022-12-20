@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "MultiTrackObjectBase.h"
 class TrackRegion;
-class MultiTrackTimeLine;
+class MultiTrackTimeline;
 //==============================================================================
 /*
     This class represents one track in a multi track timeline.
@@ -25,8 +25,8 @@ class TrackLane
 , public MultiTrackObjectBase
 {
 public:
-    TrackLane(MultiTrackTimeLine& timeLine);
-    TrackLane(MultiTrackTimeLine& timeLine, int index);
+    TrackLane(MultiTrackTimeline& timeLine);
+    explicit TrackLane(MultiTrackTimeline& timeLine, int index);
     ~TrackLane() override;
 
     void paint (juce::Graphics&) override;
@@ -35,8 +35,8 @@ public:
     void addRegion(TrackRegion* region);
     void removeRegion(TrackRegion* region);
     
-    virtual void setOrderIndex(int newIndex);
-    virtual int getOrderIndex() const;
+    void setOrderIndex(int newIndex) override;
+    int getOrderIndex() const override;
     
     virtual float getDuration() const;
     

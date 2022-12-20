@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include "MultiTrackObjectBase.h"
-class MultiTrackTimeLine;
+class MultiTrackTimeline;
 //==============================================================================
 /*
 */
@@ -21,7 +21,7 @@ class TrackRegion
 , public MultiTrackObjectBase
 {
 public:
-    TrackRegion(MultiTrackTimeLine& timeLine, float startPos, float duration);
+    TrackRegion(MultiTrackTimeline& timeLine, float startPos, float duration);
     ~TrackRegion() override;
 
     void paint (juce::Graphics&) override;

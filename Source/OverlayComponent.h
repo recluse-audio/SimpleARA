@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "UtilObjects.h"
 
-class MultiTrackTimeLine;
+class MultiTrackTimeline;
 //==============================================================================
 /*
     Catches clicks and draw the transport playhead
@@ -27,7 +27,7 @@ public:
         void paint (juce::Graphics& g) override { g.fillAll (juce::Colours::yellow.darker (0.2f)); }
     };
 
-	OverlayComponent (MultiTrackTimeLine& timeLine);
+	OverlayComponent (MultiTrackTimeline& timeLine);
 
 	~OverlayComponent() override;
 	
@@ -40,7 +40,7 @@ public:
 	void updateZoomState();
 
 private:
-	MultiTrackTimeLine& mTimeLine;
+	MultiTrackTimeline& mTimeline;
 
 	void doResize();
 

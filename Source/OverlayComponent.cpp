@@ -13,8 +13,8 @@
 #include "MultiTrackTimeline.h"
 
 //==============================================================================
-OverlayComponent::OverlayComponent(MultiTrackTimeLine& timeLine)
-: mTimeLine(timeLine)
+OverlayComponent::OverlayComponent(MultiTrackTimeline& timeLine)
+: mTimeline(timeLine)
 {
 	addChildComponent (playheadMarker);
 	setInterceptsMouseClicks (false, false);
@@ -47,11 +47,11 @@ void OverlayComponent::setHorizontalOffset (int offset)
 // PRIVATE FUNCTIONS
 void OverlayComponent::doResize()
 {
-	auto playHeadState = mTimeLine.getPlayHeadState();
+    PlayHeadState& playHeadState = mTimeline.getPlayHeadState();
 	
 	if (playHeadState.isPlaying.load())
 	{
-		const auto markerX = playHeadState->timeInSeconds.load() * pixelPerSecond;
+		const auto markerX = playHeadState.timeInSeconds.load() * pixelPerSecond;
 		const auto playheadLine = getLocalBounds().withTrimmedLeft ((int) (markerX - markerWidth / 2.0) - horizontalOffset)
 												  .removeFromLeft ((int) markerWidth);
 		playheadMarker.setVisible (true);

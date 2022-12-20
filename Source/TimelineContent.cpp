@@ -12,9 +12,10 @@
 #include "TimelineContent.h"
 #include "TrackLane.h"
 #include "MultiTrackTimeline.h"
+#include "ZoomState.h"
 
 //==============================================================================
-TimelineContent::TimelineContent(MultiTrackTimeLine& timeLine)
+TimelineContent::TimelineContent(MultiTrackTimeline& timeLine)
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
 
@@ -61,13 +62,12 @@ void TimelineContent::setTrackHeight(int newHeight)
 //====================
 void TimelineContent::updateZoomState()
 {
-	auto zoomState = mTimeLine.getZoomState();
+	auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
 	auto timelineLength = _getMaxDuration();
 
-	auto timelineWidth = roundToInt (timelineLength * zoomState.getPixelsPerSecond());
-	auto timelineHeight = roundToInt (this->getNumTracks() * zoomState.getTrackHeight());
-	auto heightBuffer = zoomState.getTrackHeight() * 3;
-	this->setSize (timelineWidth, timelineHeight + heightBuffer);
+	auto timelineWidth = roundToInt (timelineLength * pixPerSecond);
+	auto timelineHeight = roundToInt (this->getNumTracks() * mTimeline.getZoomState().getTrackHeight());
+	this->setSize (timelineWidth, timelineHeight );
 }
 
 
@@ -132,7 +132,18 @@ juce::Array<TrackLane*> TimelineContent::_getTrackLanes() const
 }
 
 //==================
-void TimelineContent::addTrackLane(TrackLane *newTrackLane)
+void TimelineContent::addTrackLane(TrackLane* newTrackLane)
 {
-	trackLanesMap
+    const auto insertIntoMap = [](auto& map, auto key, auto value) -> auto&
+    {
+        auto it = map.insert ({ std::move (key), std::move (value) });
+        return *(it.first->second);
+    };
+    
+    auto& trackLane = insertIntoMap ( trackLanesMap, ObjectKey { newTrackLane, newTrackLane->getOrderIndex() },
+                                     std::make_unique<TrackLane> (newTrackLane));
+    
+    this->addAndMakeVisible(trackLane);
+    
+    resized();
 }

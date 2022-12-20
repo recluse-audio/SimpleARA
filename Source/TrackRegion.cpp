@@ -13,7 +13,7 @@
 #include "MultiTrackTimeline.h"
 
 //==============================================================================
-TrackRegion::TrackRegion(MultiTrackTimeLine& timeLine, float startPos, float duration)
+TrackRegion::TrackRegion(MultiTrackTimeline& timeLine, float startPos, float duration)
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
     rangeInSeconds = std::make_unique<juce::Range<float>>(startPos, startPos +  duration);

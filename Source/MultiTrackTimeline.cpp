@@ -80,8 +80,8 @@ void MultiTrackTimeline::resized()
 //====================
 void MultiTrackTimeline::addTrackLane(TrackLane *newTrackLane)
 {
-    timelineContent->addAndMakeVisible(newTrackLane);
-    updateViewport();
+    timelineContent->addTrackLane(newTrackLane);
+    resized();
 }
 
 
@@ -92,22 +92,6 @@ void MultiTrackTimeline::zoom(float widthFactor, float heightFactor)
 	_updateZoomStates();
 }
 
-//====================
-void MultiTrackTimeline::_updatePixelsPerSecond(double wPixPerSecond, double hPixPerSecond)
-{
-    overlay->setZoomLevel(wPixPerSecond);
-    timelineContent->updateZoomLevel(wPixPerSecond, hPixPerSecond);
-}
-
-//===================
-void MultiTrackTimeline::updateViewport()
-{
-    timelineLength = 120.0;
-
-    timelineContent->resized();
-
-    resized();
-}
 
 //===================
 void MultiTrackTimeline::_updateZoomStates()
