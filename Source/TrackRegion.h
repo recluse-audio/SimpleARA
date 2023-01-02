@@ -21,18 +21,19 @@ class TrackRegion
 , public MultiTrackObjectBase
 {
 public:
-    TrackRegion(MultiTrackTimeline& timeLine, float startPos, float duration);
+    TrackRegion(MultiTrackTimeline& timeLine, double startPos, double duration);
     ~TrackRegion() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    virtual juce::Range<float>* getRangeInSeconds() const;
+    virtual juce::Range<double>* getRangeInSeconds() const;
+    double getDuration() const;
 
 	void updateZoomState() override;
+    
 private:
-
-    std::unique_ptr<juce::Range<float>> rangeInSeconds;
+    std::unique_ptr<juce::Range<double>> rangeInSeconds;
     
     juce::Colour bgColor {75, 75, 75};
     juce::Colour outlineColor { 230, 230, 230 };

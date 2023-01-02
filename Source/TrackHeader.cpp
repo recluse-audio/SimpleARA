@@ -10,12 +10,12 @@
 
 #include <JuceHeader.h>
 #include "TrackHeader.h"
+#include "MultiTrackTimeline.h"
 
 //==============================================================================
-TrackHeader::TrackHeader(const juce::ARARegionSequence& regionSequenceIn) : regionSequence (regionSequenceIn)
+TrackHeader::TrackHeader(MultiTrackTimeline& timeLine)
+: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
-	update();
-
 	addAndMakeVisible (trackNameLabel);
 }
 
@@ -34,19 +34,16 @@ void TrackHeader::resized()
 }
 
 
-//========================
-// PRIVATE FUNCTIONS
-void TrackHeader::update()
+void TrackHeader::setName(juce::StringRef newName)
 {
-	const auto getWithDefaultValue =
-		[] (const ARA::PlugIn::OptionalProperty<ARA::ARAUtf8String>& optional, juce::String defaultValue)
-	{
-		if (const ARA::ARAUtf8String value = optional)
-			return juce::String (value);
-
-		return defaultValue;
-	};
-
-	trackNameLabel.setText (getWithDefaultValue (regionSequence.getName(), "No track name"),
-							juce::NotificationType::dontSendNotification);
+    trackNameLabel.setText(newName, juce::NotificationType::dontSendNotification);
 }
+
+void TrackHeader::updateZoomState()
+{
+    auto width = mTimeline.getZoomState().getHeaderWidth();
+    auto height = mTimeline.getZoomState().getTrackHeight();
+    this->setSize(width, height);
+}
+
+

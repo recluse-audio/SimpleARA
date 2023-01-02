@@ -14,28 +14,27 @@
 #include "UtilObjects.h"
 
 class MultiTrackTimeline;
+class PlayheadMarker;
 //==============================================================================
 /*
-    Catches clicks and draw the transport playhead
+    Draws a vertical line representing the playhead.  
 */
-class OverlayComponent : public juce::Component,
+class PlayHeadOverlay : public juce::Component,
 private juce::Timer
 {
 public:
-    class PlayheadMarkerComponent : public juce::Component
-    {
-        void paint (juce::Graphics& g) override { g.fillAll (juce::Colours::yellow.darker (0.2f)); }
-    };
 
-	OverlayComponent (MultiTrackTimeline& timeLine);
 
-	~OverlayComponent() override;
+    PlayHeadOverlay (MultiTrackTimeline& timeLine);
+
+	~PlayHeadOverlay() override;
 	
 	void resized() override;
 
 	void setZoomLevel (double pixelPerSecondIn);
 
-	void setHorizontalOffset (int offset);
+    /** How far we have scrolled along the timeline in pixels */
+	void setHorizontalScrollOffset (int offset);
 	
 	void updateZoomState();
 
@@ -49,10 +48,10 @@ private:
     static constexpr double markerWidth = 2.0;
 
     double pixelPerSecond = 1.0;
-    int horizontalOffset = 0;
-    PlayheadMarkerComponent playheadMarker;
+    int horizontalScrollOffset = 0;
+    std::unique_ptr<PlayheadMarker> playheadMarker;
 	
 	
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OverlayComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlayHeadOverlay)
 };

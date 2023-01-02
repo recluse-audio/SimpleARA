@@ -23,6 +23,7 @@ public:
 	MultiTrackObjectBase(MultiTrackTimeline& timeLine, int orderIndex);
 	~MultiTrackObjectBase();
 	
+    /** Object will call this on its subcomponents (if any), then update its own size, which then calls 'resized()' where position of sub-objects will occur */
 	virtual void updateZoomState() = 0;
 	
 	virtual void setOrderIndex(int newIndex);
@@ -33,23 +34,6 @@ public:
 protected:
 	MultiTrackTimeline& mTimeline;
 	int orderIndex = -1;
-	
-    class ObjectKey
-    {
-    public:
-        explicit ObjectKey (MultiTrackObjectBase* object, int index)
-            : orderIndex (index), pObject (object)
-        {
-        }
-
-        bool operator< (const ObjectKey& other) const
-        {
-            return std::tie (orderIndex, pObject) < std::tie (other.orderIndex, other.pObject);
-        }
-
-        ARA::ARAInt32 orderIndex;
-        MultiTrackObjectBase* pObject;
-    };
 };
 
 

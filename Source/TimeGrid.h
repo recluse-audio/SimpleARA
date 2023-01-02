@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    TimeRuler.h
-    Created: 21 Dec 2022 2:26:06pm
+    TimeGrid.h
+    Created: 22 Dec 2022 3:45:19pm
     Author:  Ryan Devens
 
   ==============================================================================
@@ -11,24 +11,20 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "MultiTrackObjectBase.h"
 class MultiTrackTimeline;
 //==============================================================================
 /*
 */
-class TimeRuler  : public juce::Component,
-                    public MultiTrackObjectBase
+class TimeGrid  : public juce::Component
 {
 public:
-    TimeRuler(MultiTrackTimeline& timeLine);
-    ~TimeRuler() override;
+    TimeGrid(MultiTrackTimeline& timeLine);
+    ~TimeGrid() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void updateZoomState() override;
-    
 private:
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeRuler)
+    MultiTrackTimeline& mTimeline;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeGrid)
 };

@@ -41,15 +41,17 @@ public:
     virtual float getDuration() const;
     
 	void updateZoomState() override;
-    virtual void setZoomLevel(double pixelsPerSecond);
     
+    void generateThreeRandomRegions();
 protected:
     int orderIndex;
     float duration = 120.f;
+    
+    // Looks at the end position (in seconds) of every region starting with the last added
+    void _updateDuration();
 
 private:
-    std::unique_ptr<juce::Label> trackLabel;
-    juce::OwnedArray<TrackRegion> trackRegions;
+    juce::OwnedArray<TrackRegion> regionArray;
     
     juce::Colour bgColor {55, 55, 55};
     juce::Colour outlineColor { 230, 230, 230 };

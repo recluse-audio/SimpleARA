@@ -11,21 +11,25 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "MultiTrackObjectBase.h"
 
+class MultiTrackTimeline;
 //==============================================================================
 /*
 */
-class TrackHeader : public juce::Component
+class TrackHeader : public juce::Component,
+                    public MultiTrackObjectBase
 {
 public:
-	explicit TrackHeader (const juce::ARARegionSequence& regionSequenceIn);
+	explicit TrackHeader (MultiTrackTimeline& timeLine);
 	
 	void resized() override;
 	void paint (juce::Graphics& g) override;
-	
+    
+    void setName(juce::StringRef newName);
+    void updateZoomState() override;
+    void setHeaderWidth(int newWidth);
 private:
-	void update();
-
-    const juce::ARARegionSequence& regionSequence;
+    int headerWidth = 0;
 	juce::Label trackNameLabel;
 };

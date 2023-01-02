@@ -9,61 +9,67 @@
 */
 
 #include <JuceHeader.h>
-#include "OverlayComponent.h"
+#include "PlayHeadOverlay.h"
 #include "MultiTrackTimeline.h"
 
+class PlayheadMarker : public juce::Component
+{
+    void paint (juce::Graphics& g) override { g.fillAll (juce::Colours::yellow.darker (0.2f)); }
+};
+
 //==============================================================================
-OverlayComponent::OverlayComponent(MultiTrackTimeline& timeLine)
+PlayHeadOverlay::PlayHeadOverlay(MultiTrackTimeline& timeLine)
 : mTimeline(timeLine)
 {
-	addChildComponent (playheadMarker);
+    playheadMarker = std::unique_ptr<PlayheadMarker>();
+	addChildComponent (playheadMarker.get());
 	setInterceptsMouseClicks (false, false);
 	startTimerHz (30);
 }
 
-OverlayComponent::~OverlayComponent()
+PlayHeadOverlay::~PlayHeadOverlay()
 {
 	stopTimer();
 }
 
-void OverlayComponent::resized()
+void PlayHeadOverlay::resized()
 {
 	doResize();
 }
 
 
-void OverlayComponent::setZoomLevel(double pixelPerSecondIn)
+void PlayHeadOverlay::setZoomLevel(double pixelPerSecondIn)
 {
 	pixelPerSecond = pixelPerSecondIn;
 }
 
-void OverlayComponent::setHorizontalOffset (int offset)
+void PlayHeadOverlay::setHorizontalScrollOffset (int offset)
 {
-	horizontalOffset = offset;
+	horizontalScrollOffset = offset;
 }
 
 
 //========================
 // PRIVATE FUNCTIONS
-void OverlayComponent::doResize()
+void PlayHeadOverlay::doResize()
 {
     PlayHeadState& playHeadState = mTimeline.getPlayHeadState();
 	
 	if (playHeadState.isPlaying.load())
 	{
 		const auto markerX = playHeadState.timeInSeconds.load() * pixelPerSecond;
-		const auto playheadLine = getLocalBounds().withTrimmedLeft ((int) (markerX - markerWidth / 2.0) - horizontalOffset)
+		const auto playheadLine = getLocalBounds().withTrimmedLeft ((int) (markerX - markerWidth / 2.0) - horizontalScrollOffset)
 												  .removeFromLeft ((int) markerWidth);
-		playheadMarker.setVisible (true);
-		playheadMarker.setBounds (playheadLine);
+		playheadMarker->setVisible (true);
+		playheadMarker->setBounds (playheadLine);
 	}
 	else
 	{
-		playheadMarker.setVisible (false);
+		playheadMarker->setVisible (false);
 	}
 }
 
-void OverlayComponent::timerCallback() 
+void PlayHeadOverlay::timerCallback()
 {
 	doResize();
 }

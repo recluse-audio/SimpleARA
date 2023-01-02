@@ -88,13 +88,13 @@
 //void DocumentView::onNewSelection (const ARA::PlugIn::ViewSelection& viewSelection)
 //{
 //    const auto& effectiveRegions = viewSelection.getEffectivePlaybackRegions<ARA_PlaybackRegion>();
-//    
+//
 //    for(auto region : effectiveRegions)
 //    {
 //        region->setCurrentlyInView(true);
 //    }
 //
-//    
+//
 //	DBG("NEW SELECTION");
 //}
 //
@@ -130,7 +130,7 @@
 //	tracksBackground.setBounds (bounds);
 //	viewport.setBounds (bounds);
 //	overlay.setBounds (bounds);
-//	
+//
 //	for (auto& view : regionSequenceViews)
 //	{
 //		auto regionSequenceView = view.second.get();
@@ -171,7 +171,7 @@
 //
 //	auto timelineWidth = roundToInt (timelineLength * zoomLevelPixelPerSecond);
 //	auto timelineHeight = roundToInt ((int) regionSequenceViews.size() * trackHeight);
-//	
+//
 //    // This is setting the
 //	viewport.content.setSize (timelineWidth, timelineHeight);
 //	viewport.content.resized();
@@ -198,7 +198,7 @@
 //									   std::make_unique<TrackHeader> (*regionSequence));
 //
 //	addAndMakeVisible (trackHeader);
-//	
+//
 //	updateViewport();
 //}
 //
@@ -250,13 +250,13 @@
 //void DocumentView::updateViewSelection()
 //{
 //    auto viewSelection = araEditorView.getViewSelection();
-//    
+//
 //    const auto& regions = viewSelection.getPlaybackRegions<ARA_PlaybackRegion>();
 //    const auto& effectiveRegions = viewSelection.getEffectivePlaybackRegions<ARA_PlaybackRegion>();
-//    
+//
 //    auto time = viewSelection.getTimeRange();
 //    auto effectiveTime = viewSelection.getEffectiveTimeRange();
-//    
+//
 //    for(auto region : regions)
 //    {
 //        region->setCurrentlyInView(true);
@@ -265,6 +265,6 @@
 //    {
 //        region->setCurrentlyInView(true);
 //    }
-//    
+//
 //    updateViewport();
 //}

@@ -30,7 +30,7 @@ public:
 		
 	}
 	//====================
-	ZoomState(int pixelPerSecond, double pixelsPerRegion)
+	ZoomState(int pixelsPerSecond, double pixelsPerRegion)
 	{
 		
 	}
@@ -41,41 +41,93 @@ public:
 		
 	}
 	
-	//====================
-	void setHorizontalZoom(double widthFactor)
-	{
-		mWidthFactor = jlimit ( minZoom, maxZoom, widthFactor);
-	}
+    //====================
+    void setZoom(double widthFactor, double heightFactor)
+    {
+        setHorizontalZoom(widthFactor);
+        mHeightFactor = jlimit ( minZoom, maxZoom, heightFactor);
+
+    }
+    
+    //===================
+    void increaseHorizontalZoom(double widthFactor)
+    {
+        mWidthFactor = jlimit ( minZoom, maxZoom, mWidthFactor * widthFactor);
+        auto pixelsPerSecond = basePixelsPerSecond * mWidthFactor;
+        this->_updatePixelsPerSecond(pixelsPerSecond);
+    }
 	
-	//====================
-	void setZoom(double widthFactor, double heightFactor)
-	{
-		
-		mWidthFactor = jlimit ( minZoom, maxZoom, widthFactor);
-		mHeightFactor = jlimit ( minZoom, maxZoom, heightFactor);
-	}
+    //====================
+    void setHorizontalZoom(double widthFactor)
+    {
+        mWidthFactor = jlimit ( minZoom, maxZoom, widthFactor);
+        auto pixelsPerSecond = basePixelsPerSecond * mWidthFactor;
+        this->_updatePixelsPerSecond(pixelsPerSecond);
+    }
+
+    
+    //====================
+    /** Zooms to show a duration in seconds over a width in pixels*/
+    void zoomToShowDuration(double widthInPixels, double durationInSeconds)
+    {
+        this->_updatePixelsPerSecond(widthInPixels / durationInSeconds);
+    }
 	
+    //====================
+    /** Zooms to show a number of tracks over a height in pixels... this can be a fractional number of tracks*/
+    void zoomToShowTracks(double heightInPixels, double numTracks)
+    {
+        this->_updateTrackHeight(heightInPixels / numTracks);
+    }
+    
+
+    
 	//====================
 	int getPixelsPerSecond() const
 	{
-		auto pixelPerSecond = basePixelPerSecond * mWidthFactor;
-		jassert(pixelPerSecond >= minZoom * basePixelPerSecond);
-		jassert(pixelPerSecond <= maxZoom * basePixelPerSecond);
-		return pixelPerSecond;
+		jassert(currentPixelsPerSecond >= minZoom * basePixelsPerSecond);
+		jassert(currentPixelsPerSecond <= maxZoom * basePixelsPerSecond);
+		return (int)currentPixelsPerSecond;
 	}
+    
 	
 	//====================
 	int getTrackHeight() const
 	{
-		return baseTrackHeight;
+        jassert(currentTrackHeight >= minZoom * baseTrackHeight);
+        jassert(currentTrackHeight <= maxZoom * baseTrackHeight);
+		return (int)currentTrackHeight;
 	}
+    
+    int getHeaderWidth() const
+    {
+        return baseHeaderWidth;
+    }
 	
 private:
 	static constexpr auto minZoom = 1.0;
 	static constexpr auto maxZoom = 32.0;
-	std::atomic<int> basePixelPerSecond { 10 };  // Atleast 10 pixels per second
-	std::atomic<int> baseTrackHeight { 60 };  // Atleast 60 pixels per Region
 	std::atomic<double> mWidthFactor  { minZoom };
 	std::atomic<double> mHeightFactor { minZoom };
+    
+    std::atomic<double> baseTrackHeight { 60.0 };  // Atleast 60 pixels per Region
+    std::atomic<double> currentTrackHeight { 60.0 };
+
+    std::atomic<double> basePixelsPerSecond { 10.0 };  // Atleast 10 pixels per second
+    std::atomic<double> currentPixelsPerSecond { 10.0 };
+    
+    std::atomic<int> baseHeaderWidth { 60 }; // not really zoom related but shared in the same way... maybe don't put this here?
 	
+    
+    //====================
+    void _updatePixelsPerSecond(double pixPerSecond)
+    {
+        currentPixelsPerSecond = pixPerSecond;
+    }
+    
+    //====================
+    void _updateTrackHeight(double trackHeight)
+    {
+        currentTrackHeight = trackHeight;
+    }
 };

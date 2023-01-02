@@ -12,12 +12,12 @@
 #include "MultiTrackTimeline.h"
 
 //===================
-MultiTrackObjectBase::MultiTrackObjectBase(MultiTrackTimeLine& timeLine) : mTimeLine(timeLine)
+MultiTrackObjectBase::MultiTrackObjectBase(MultiTrackTimeline& timeLine) : mTimeline(timeLine)
 {
 }
 
 //===================
-MultiTrackObjectBase::MultiTrackObjectBase(MultiTrackTimeLine& timeLine, int newIndex) : mTimeLine(timeLine), orderIndex(newIndex)
+MultiTrackObjectBase::MultiTrackObjectBase(MultiTrackTimeline& timeLine, int newIndex) : mTimeline(timeLine), orderIndex(newIndex)
 {
 }
 
@@ -40,3 +40,4 @@ int MultiTrackObjectBase::getOrderIndex() const
 	return orderIndex;
 	
 }
+

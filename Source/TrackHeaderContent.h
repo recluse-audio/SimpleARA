@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    TimeRuler.h
-    Created: 21 Dec 2022 2:26:06pm
+    TrackHeaderContent.h
+    Created: 2 Jan 2023 11:03:50am
     Author:  Ryan Devens
 
   ==============================================================================
@@ -12,23 +12,26 @@
 
 #include <JuceHeader.h>
 #include "MultiTrackObjectBase.h"
+class TrackHeader;
+class TrackData;
 class MultiTrackTimeline;
 //==============================================================================
 /*
 */
-class TimeRuler  : public juce::Component,
-                    public MultiTrackObjectBase
+class TrackHeaderContent  : public juce::Component,
+                            public MultiTrackObjectBase
 {
 public:
-    TimeRuler(MultiTrackTimeline& timeLine);
-    ~TimeRuler() override;
+    TrackHeaderContent(MultiTrackTimeline& timeLine);
+    ~TrackHeaderContent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
-
     void updateZoomState() override;
+
+    void addTrackHeader(Track* trackToMakeHeaderFor);
     
 private:
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeRuler)
+    juce::OwnedArray<TrackHeader> trackHeaders;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TrackHeaderContent)
 };

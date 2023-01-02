@@ -1,58 +1,46 @@
 /*
   ==============================================================================
 
-    TimeRuler.cpp
-    Created: 21 Dec 2022 2:26:06pm
+    TimeGrid.cpp
+    Created: 22 Dec 2022 3:45:19pm
     Author:  Ryan Devens
 
   ==============================================================================
 */
 
 #include <JuceHeader.h>
-#include "TimeRuler.h"
+#include "TimeGrid.h"
 #include "MultiTrackTimeline.h"
 #include "ZoomState.h"
 //==============================================================================
-TimeRuler::TimeRuler(MultiTrackTimeline& timeLine)
-: MultiTrackObjectBase(timeLine)
+TimeGrid::TimeGrid(MultiTrackTimeline& timeLine) : mTimeline(timeLine)
 {
+    // In your constructor, you should add any child components, and
+    // initialise any special settings that your component needs.
 
 }
 
-TimeRuler::~TimeRuler()
+TimeGrid::~TimeGrid()
 {
 }
 
-void TimeRuler::paint (juce::Graphics& g)
+void TimeGrid::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::grey);
     auto pixWidth = this->getWidth();
     auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
     
-    g.setColour(juce::Colours::whitesmoke);
+    g.setColour(juce::Colours::whitesmoke.withAlpha(0.2f));
     // One at zero and one at every second after
     int tickMarkPosition = 0;
-    float timePos = 0.f;
     while( tickMarkPosition < pixWidth)
     {
         g.drawVerticalLine(tickMarkPosition, 0, this->getHeight());
-        g.drawText(juce::String(timePos), tickMarkPosition + 1, 0, 10, 7, juce::Justification::centredLeft);
         tickMarkPosition += pixPerSecond;
-        timePos += 1.f;
-        if(timePos > 10)
-            DBG(timePos);
     }
-    
 }
 
-void TimeRuler::resized()
+void TimeGrid::resized()
 {
     repaint();
 
-}
-
-//========================
-void TimeRuler::updateZoomState()
-{
-    
 }

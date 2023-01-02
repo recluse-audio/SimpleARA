@@ -27,17 +27,18 @@ public:
     void setZoomInCallback  (std::function<void()> cb)   { zoomInButton.onClick  = std::move (cb); }
     void setZoomOutCallback (std::function<void()> cb)   { zoomOutButton.onClick = std::move (cb); }
 
+    void setVertical(bool orientVertically)
+    {
+        isVertical = orientVertically;
+    }
+    
     void resized() override
     {
-        FlexBox fb;
-        fb.justifyContent = FlexBox::JustifyContent::flexEnd;
-
-        for (auto* button : { &zoomInButton, &zoomOutButton })
-            fb.items.add (FlexItem (*button).withMinHeight (30.0f).withMinWidth (30.0f).withMargin ({ 5, 5, 5, 0 }));
-
-        fb.performLayout (getLocalBounds());
+        zoomInButton.setBoundsRelative(0.55f, 0.f, 0.35f, 1.f);
+        zoomOutButton.setBoundsRelative(0.1, 0.f, 0.35f, 1.f);
     }
 
 private:
+    bool isVertical = false;
     TextButton zoomInButton { "+" }, zoomOutButton { "-" };
 };

@@ -18,18 +18,14 @@
 TrackLane::TrackLane(MultiTrackTimeline& timeLine)
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 {
-
-
+    generateThreeRandomRegions();
 }
 
 TrackLane::TrackLane(MultiTrackTimeline& timeLine, int index)
 : MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
 , orderIndex(index)
 {
-    addRegion(new TrackRegion(timeLine, 1.f, 5.f));
-    addRegion(new TrackRegion(timeLine, 7.f, 9.f));
-    addRegion(new TrackRegion(timeLine, 11.f, 15.f));
-
+    generateThreeRandomRegions();
 }
 
 TrackLane::~TrackLane()
@@ -38,9 +34,8 @@ TrackLane::~TrackLane()
 
 void TrackLane::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::darkmagenta);
-    g.setColour(juce::Colours::white);
-    g.drawText(juce::String(orderIndex), 0, 0, 30, this->getHeight(), juce::Justification::centred);
+    g.fillAll(juce::Colours::transparentBlack.withAlpha(0.f));
+//    g.drawText(juce::String(orderIndex), 0, 0, 30, this->getHeight(), juce::Justification::centred);
     g.setColour(juce::Colours::black);
     g.drawHorizontalLine(this->getHeight()-2, 0, this->getWidth());
 
@@ -48,7 +43,7 @@ void TrackLane::paint (juce::Graphics& g)
 
 void TrackLane::resized()
 {
-    for (auto region : trackRegions)
+    for (auto region : regionArray)
     {
         
         auto range = region->getRangeInSeconds();
@@ -57,23 +52,27 @@ void TrackLane::resized()
         auto duration = range->getLength();
         
         const auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
-        const auto xPos = roundToInt(startPos * pixPerSecond);
-        const auto width = roundToInt (duration * pixPerSecond);
+        const auto xPos = roundToInt(startPos * pixPerSecond) + mTimeline.getTrackLabelWidth();
+        region->setTopLeftPosition(xPos, 0);
         
-        auto regionBounds = juce::Rectangle<int>(xPos, 5, width, this->getHeight() - 10);
-        region->setBounds(regionBounds);
+//        const auto width = roundToInt (duration * pixPerSecond);
+//        
+//        auto regionBounds = juce::Rectangle<int>(xPos, 5, width, this->getHeight() - 10);
+//        region->setBounds(regionBounds);
     }
 }
 
 void TrackLane::updateZoomState()
 {
+    for(auto region : regionArray)
+    {
+        region->updateZoomState();
+    }
+    
     const auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
 	auto trackWidth = this->getDuration() * pixPerSecond;
 	auto trackHeight = mTimeline.getZoomState().getTrackHeight();
 	this->setSize(trackWidth, trackHeight);
-	
-	
-	resized();
 	
 }
 
@@ -95,8 +94,33 @@ float TrackLane::getDuration() const
 void TrackLane::addRegion(TrackRegion *region)
 {
     this->addAndMakeVisible(region);
-    trackRegions.add(region);
+    regionArray.add(region);
+    this->_updateDuration();
     resized();
 }
 
+// generate three regions max range of 5,
+void TrackLane::generateThreeRandomRegions()
+{
+    for(int i = 0; i < 5; i++)
+    {
+        auto timelineOffset = i * 30;
+        float randStart = juce::Random().nextInt(10) + timelineOffset;
+        float randDur = juce::Random().nextInt(5);
+        
+        addRegion(new TrackRegion(mTimeline, randStart, randDur));
+    }
 
+}
+
+
+//========================
+void TrackLane::_updateDuration()
+{
+    for(auto region : regionArray)
+    {
+        auto regionRange = region->getRangeInSeconds();
+        if(regionRange->getEnd() > duration)
+            duration = regionRange->getEnd();
+    }
+}
