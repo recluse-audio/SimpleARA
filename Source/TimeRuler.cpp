@@ -13,8 +13,7 @@
 #include "MultiTrackTimeline.h"
 #include "ZoomState.h"
 //==============================================================================
-TimeRuler::TimeRuler(MultiTrackTimeline& timeLine)
-: MultiTrackObjectBase(timeLine)
+TimeRuler::TimeRuler(ARAViewSection& section) : viewSection(section)
 {
 
 }
@@ -27,7 +26,7 @@ void TimeRuler::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::grey);
     auto pixWidth = this->getWidth();
-    auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
+    auto pixPerSecond = viewSection.getZoomState().getPixelsPerSecond();
     
     g.setColour(juce::Colours::whitesmoke);
     // One at zero and one at every second after
@@ -54,5 +53,5 @@ void TimeRuler::resized()
 //========================
 void TimeRuler::updateZoomState()
 {
-    
+    repaint();
 }

@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 
+class ARA_PlaybackRegion;
+class ARA_AudioMod;
 //==============================================================================
 /**
 	A class that takes ARA objects and displays relevant info on a label as a string
@@ -26,7 +28,8 @@ public:
     void resized() override;
 
 	void clearDisplay();
-	void displayPlaybackRegion(juce::ARAPlaybackRegion* pRegion);
+	void displayPlaybackRegion(const ARA_PlaybackRegion& pRegion);
+    void displayAudioMod(const ARA_AudioMod& pMod);
 private:
 	std::unique_ptr<juce::Label> displayLabel;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HelperDisplay)

@@ -13,6 +13,7 @@
 #include "ActiveRegionView.h"
 #include "AudioModView.h"
 #include "AudioSourceView.h"
+#include "ARAViewSection.h"
 
 #include "ARA_DocumentSpecialisation.h"
 #include "ARA_PlaybackRegion.h"
@@ -24,8 +25,9 @@
 #include "ARA_AudioMod.h"
 
 //==============================================================================
-PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache)
-: mEditor(editor), playbackRegion (region), waveformCache (cache)
+PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegion& region)
+: araSection(section)
+, playbackRegion(region)
 {
 	
 	auto* audioSource = playbackRegion.getAudioModification()->getAudioSource();
@@ -33,13 +35,13 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
 	//waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
 	
 	
-	audioSourceView = std::make_unique<AudioSourceView>(mEditor, *audioSource, waveformCache);
+	audioSourceView = std::make_unique<AudioSourceView>(araSection, region.getAudioModification()->getAudioSource());
 	addAndMakeVisible(audioSourceView.get());
 	
-	audioModView = std::make_unique<AudioModView>(mEditor, playbackRegion);
+	audioModView = std::make_unique<AudioModView>(araSection, playbackRegion);
 	addAndMakeVisible(audioModView.get());
 	
-	activeRegionView = std::make_unique<ActiveRegionView>(mEditor, playbackRegion, waveformCache);
+	activeRegionView = std::make_unique<ActiveRegionView>(araSection, playbackRegion);
 	addAndMakeVisible(activeRegionView.get());
 	
     slider = std::make_unique<juce::Slider>();
@@ -49,7 +51,7 @@ PlaybackRegionView::PlaybackRegionView(SimpleARAEditor& editor, ARA_PlaybackRegi
 
     addAndMakeVisible(slider.get());
     
-    auto processor = mEditor.getSimpleAudioProcessor();
+    auto processor = araSection.getEditor().getSimpleAudioProcessor();
     auto audioMod = playbackRegion.getAudioModification<ARA_AudioMod>();
     
     using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
@@ -66,13 +68,6 @@ PlaybackRegionView::~PlaybackRegionView()
 //		.removeChangeListener (this);
 	
 	playbackRegion.removeListener(this);
-}
-
-
-//-------------------------------------
-void PlaybackRegionView::changeListenerCallback(juce::ChangeBroadcaster* changeBroadcaster)
-{
-	repaint();
 }
 
 
@@ -129,13 +124,15 @@ void PlaybackRegionView::_updateRegionBounds()
 
 void PlaybackRegionView::mouseEnter(const juce::MouseEvent& e)
 {
-	auto helperDisplay = mEditor.getHelperDisplay();
-	helperDisplay->displayPlaybackRegion(&playbackRegion);
+	auto helperDisplay = araSection.getEditor().getHelperDisplay();
+	helperDisplay->displayPlaybackRegion(playbackRegion);
 
 }
 
 void PlaybackRegionView::mouseExit(const juce::MouseEvent& e)
 {
+    auto helperDisplay = araSection.getEditor().getHelperDisplay();
+    helperDisplay->clearDisplay();
 }
 
 void PlaybackRegionView::mouseDown(const juce::MouseEvent& e)
@@ -152,4 +149,15 @@ void PlaybackRegionView::didUpdatePlaybackRegionProperties(juce::ARAPlaybackRegi
         resized();
         repaint();
     }
+}
+
+
+//==============
+void PlaybackRegionView::updateZoomState()
+{
+    auto duration = playbackRegion.getDurationInPlaybackTime();
+    auto width = duration * araSection.getZoomState().getPixelsPerSecond();
+    auto height = araSection.getZoomState().getTrackHeight();
+    
+    this->setSize(width, height);
 }

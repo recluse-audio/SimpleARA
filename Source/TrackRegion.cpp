@@ -13,10 +13,9 @@
 #include "MultiTrackTimeline.h"
 
 //==============================================================================
-TrackRegion::TrackRegion(MultiTrackTimeline& timeLine, double startPos, double duration)
-: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
+TrackRegion::TrackRegion()
 {
-    rangeInSeconds = std::make_unique<juce::Range<double>>(startPos, startPos +  duration);
+    rangeInSeconds = std::make_unique<juce::Range<double>>(0, 1);
 
 }
 
@@ -50,11 +49,4 @@ double TrackRegion::getDuration() const
     return rangeInSeconds->getLength();
 }
 
-//=======================
-void TrackRegion::updateZoomState()
-{
-    const auto pixPerSecond = mTimeline.getZoomState().getPixelsPerSecond();
-    auto regionWidth = this->getDuration() * pixPerSecond;
-    auto regionHeight = mTimeline.getZoomState().getTrackHeight();
-    this->setSize(regionWidth, regionHeight);
-}
+

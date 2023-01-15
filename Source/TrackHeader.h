@@ -17,17 +17,16 @@ class MultiTrackTimeline;
 //==============================================================================
 /*
 */
-class TrackHeader : public juce::Component,
-                    public MultiTrackObjectBase
+class TrackHeader : public juce::Component
 {
 public:
-	explicit TrackHeader (MultiTrackTimeline& timeLine);
+	explicit TrackHeader ();
 	
 	void resized() override;
 	void paint (juce::Graphics& g) override;
     
     void setName(juce::StringRef newName);
-    void updateZoomState() override;
+    void updateZoomState(ZoomState& zoomState);
     void setHeaderWidth(int newWidth);
 private:
     int headerWidth = 0;

@@ -10,11 +10,10 @@
 
 #include <JuceHeader.h>
 #include "TrackHeader.h"
-#include "MultiTrackTimeline.h"
+#include "ZoomState.h"
 
 //==============================================================================
-TrackHeader::TrackHeader(MultiTrackTimeline& timeLine)
-: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
+TrackHeader::TrackHeader()
 {
 	addAndMakeVisible (trackNameLabel);
 }
@@ -39,11 +38,11 @@ void TrackHeader::setName(juce::StringRef newName)
     trackNameLabel.setText(newName, juce::NotificationType::dontSendNotification);
 }
 
-void TrackHeader::updateZoomState()
-{
-    auto width = mTimeline.getZoomState().getHeaderWidth();
-    auto height = mTimeline.getZoomState().getTrackHeight();
-    this->setSize(width, height);
-}
+//void TrackHeader::updateZoomState(ZoomState& zoomState)
+//{
+//    auto width = zoomState().getHeaderWidth();
+//    auto height = zoomState().getTrackHeight();
+//    this->setSize(width, height);
+//}
 
 

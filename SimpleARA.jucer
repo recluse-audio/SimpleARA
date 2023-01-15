@@ -17,17 +17,10 @@
                 file="Source/TrackHeaderContent.cpp"/>
           <FILE id="dILgyW" name="TrackHeaderContent.h" compile="0" resource="0"
                 file="Source/TrackHeaderContent.h"/>
-          <FILE id="bkhqsN" name="TimeGrid.cpp" compile="1" resource="0" file="Source/TimeGrid.cpp"/>
-          <FILE id="VTmTIr" name="TimeGrid.h" compile="0" resource="0" file="Source/TimeGrid.h"/>
-          <FILE id="DLQj7F" name="PlayheadMarker.h" compile="0" resource="0"
-                file="Source/PlayheadMarker.h"/>
-          <FILE id="L5WRzD" name="TimeRuler.cpp" compile="1" resource="0" file="Source/TimeRuler.cpp"/>
-          <FILE id="RK3sW1" name="TimeRuler.h" compile="0" resource="0" file="Source/TimeRuler.h"/>
           <FILE id="Al2oQD" name="MultiTrackObjectBase.cpp" compile="1" resource="0"
                 file="Source/MultiTrackObjectBase.cpp"/>
           <FILE id="dqjhAQ" name="MultiTrackObjectBase.h" compile="0" resource="0"
                 file="Source/MultiTrackObjectBase.h"/>
-          <FILE id="BCx5nD" name="ZoomState.h" compile="0" resource="0" file="Source/ZoomState.h"/>
           <FILE id="eTpEYE" name="TimelineContent.cpp" compile="1" resource="0"
                 file="Source/TimelineContent.cpp"/>
           <FILE id="D1m81z" name="TimelineContent.h" compile="0" resource="0"
@@ -89,10 +82,6 @@
                   file="Source/ControlPanel.cpp"/>
             <FILE id="iquvFZ" name="ControlPanel.h" compile="0" resource="0" file="Source/ControlPanel.h"/>
           </GROUP>
-          <FILE id="epLnjK" name="ARAViewSection.cpp" compile="1" resource="0"
-                file="Source/ARAViewSection.cpp"/>
-          <FILE id="z30m3F" name="ARAViewSection.h" compile="0" resource="0"
-                file="Source/ARAViewSection.h"/>
           <FILE id="s2qwWI" name="TopControlPanel.cpp" compile="1" resource="0"
                 file="Source/TopControlPanel.cpp"/>
           <FILE id="mKPK6V" name="TopControlPanel.h" compile="0" resource="0"
@@ -103,6 +92,32 @@
         </GROUP>
       </GROUP>
       <GROUP id="{748BF6FD-1CDE-63EC-6E44-C5B289A3011C}" name="ARA_Views">
+        <FILE id="bkhqsN" name="TimeGrid.cpp" compile="1" resource="0" file="Source/TimeGrid.cpp"/>
+        <FILE id="VTmTIr" name="TimeGrid.h" compile="0" resource="0" file="Source/TimeGrid.h"/>
+        <FILE id="DLQj7F" name="PlayheadMarker.h" compile="0" resource="0"
+              file="Source/PlayheadMarker.h"/>
+        <FILE id="L5WRzD" name="TimeRuler.cpp" compile="1" resource="0" file="Source/TimeRuler.cpp"/>
+        <FILE id="RK3sW1" name="TimeRuler.h" compile="0" resource="0" file="Source/TimeRuler.h"/>
+        <GROUP id="{ADE027B5-9849-FF5A-7979-0F7FC44190D4}" name="ZoomState">
+          <FILE id="RPRGNr" name="Zoomer.h" compile="0" resource="0" file="Source/Zoomer.h"/>
+          <FILE id="BCx5nD" name="ZoomState.h" compile="0" resource="0" file="Source/ZoomState.h"/>
+          <FILE id="Iubvc4" name="ZoomStateOwner.h" compile="0" resource="0"
+                file="Source/ZoomStateOwner.h"/>
+        </GROUP>
+        <GROUP id="{F17BF76D-79DD-B1D7-5C57-992289DC1D76}" name="ARAViewSection">
+          <FILE id="epLnjK" name="ARAViewSection.cpp" compile="1" resource="0"
+                file="Source/ARAViewSection.cpp"/>
+          <FILE id="z30m3F" name="ARAViewSection.h" compile="0" resource="0"
+                file="Source/ARAViewSection.h"/>
+          <FILE id="iITI7l" name="SequenceHeader.cpp" compile="1" resource="0"
+                file="Source/SequenceHeader.cpp"/>
+          <FILE id="S3XccO" name="SequenceHeader.h" compile="0" resource="0"
+                file="Source/SequenceHeader.h"/>
+          <FILE id="E0A2fT" name="SequenceHeaderContent.cpp" compile="1" resource="0"
+                file="Source/SequenceHeaderContent.cpp"/>
+          <FILE id="vP92Nn" name="SequenceHeaderContent.h" compile="0" resource="0"
+                file="Source/SequenceHeaderContent.h"/>
+        </GROUP>
         <GROUP id="{F39CCB1F-5DC6-FE16-AD40-56645A1FB87F}" name="ARAObjectViews">
           <FILE id="wYA3Hk" name="AudioSourceView.cpp" compile="1" resource="0"
                 file="Source/AudioSourceView.cpp"/>

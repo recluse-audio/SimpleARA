@@ -13,13 +13,14 @@
 #include <JuceHeader.h>
 class WaveformCache;
 class SimpleARAEditor;
+class ARAViewSection;
 //==============================================================================
 /*
 */
 class AudioSourceView  : public juce::Component
 {
 public:
-	AudioSourceView(SimpleARAEditor& editor, juce::ARAAudioSource& source, WaveformCache& cache);
+	AudioSourceView(ARAViewSection& section, juce::ARAAudioSource& source);
     ~AudioSourceView() override;
 
     void paint (juce::Graphics&) override;
@@ -31,8 +32,8 @@ public:
 private:
 	juce::ARAAudioSource& audioSource;
 	WaveformCache& waveCache;
-	SimpleARAEditor& mEditor;
-
+    ARAViewSection& araSection;
+    
 	void _drawAudioSource(juce::Graphics& g);
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioSourceView)
 };

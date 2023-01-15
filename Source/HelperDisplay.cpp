@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "HelperDisplay.h"
 #include "GlobalDefines.h"
+#include "ARA_PlaybackRegion.h"
 
 //==============================================================================
 HelperDisplay::HelperDisplay()
@@ -40,14 +41,11 @@ void HelperDisplay::clearDisplay()
 	displayLabel->setText("", juce::NotificationType::dontSendNotification);
 }
 
-void HelperDisplay::displayPlaybackRegion(juce::ARAPlaybackRegion *pRegion)
+void HelperDisplay::displayPlaybackRegion(const ARA_PlaybackRegion& pRegion)
 {
-	if(pRegion == nullptr)
-		return;
-	
-	auto audioSourceAddress = "Audio Source: " + HexStringForPointer(pRegion->getAudioModification()->getAudioSource()) + " -- " ;
-	auto audioModAddress = "Audio Mod: " + HexStringForPointer(pRegion->getAudioModification()) + " -- ";
-	auto playbackRegionAddress = "Playback Region: " + HexStringForPointer(pRegion);
+	auto audioSourceAddress = "Audio Source: " + HexStringForPointer(pRegion.getAudioModification()->getAudioSource()) + " -- " ;
+	auto audioModAddress = "Audio Mod: " + HexStringForPointer(pRegion.getAudioModification()) + " -- ";
+	auto playbackRegionAddress = "Playback Region: " + HexStringForPointer(&pRegion);
 	
 	auto address = audioSourceAddress + audioModAddress + playbackRegionAddress;
 	displayLabel->setText(address, juce::NotificationType::dontSendNotification);

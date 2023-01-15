@@ -29,7 +29,6 @@ public:
     void resized() override;
     void updateZoomState() override;
 
-    void addTrackHeader(Track* trackToMakeHeaderFor);
     
 private:
     juce::OwnedArray<TrackHeader> trackHeaders;

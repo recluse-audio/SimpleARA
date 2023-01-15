@@ -14,10 +14,14 @@
 #include "PluginEditor.h"
 #include "HelperDisplay.h"
 #include "ARA_PlaybackRegion.h"
+#include "ARAViewSection.h"
+
 
 //==============================================================================
-ActiveRegionView::ActiveRegionView(SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache)
-: mEditor(editor), playbackRegion(region), waveCache(cache)
+ActiveRegionView::ActiveRegionView(ARAViewSection& section, ARA_PlaybackRegion& region)
+: araSection(section)
+, playbackRegion(region)
+, waveCache(section.getWaveCache())
 {
 
     // In your constructor, you should add any child components, and
@@ -66,11 +70,13 @@ void ActiveRegionView::_drawPlaybackRegion(juce::Graphics& g)
 
 void ActiveRegionView::mouseEnter(const juce::MouseEvent& e)
 {
-	auto helperDisplay = mEditor.getHelperDisplay();
-	helperDisplay->displayPlaybackRegion(&playbackRegion);
+	auto helperDisplay = araSection.getEditor().getHelperDisplay();
+	helperDisplay->displayPlaybackRegion(playbackRegion);
 }
 
 void ActiveRegionView::mouseExit(const juce::MouseEvent& e)
 {
-	auto helperDisplay = mEditor.getHelperDisplay();
-	helperDisplay->clearDisplay();}
+	auto helperDisplay = araSection.getEditor().getHelperDisplay();
+	helperDisplay->clearDisplay();
+    
+}

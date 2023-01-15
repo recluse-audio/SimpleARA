@@ -13,14 +13,17 @@
 #include "WaveformCache.h"
 #include "PluginEditor.h"
 #include "HelperDisplay.h"
+#include "ARAViewSection.h"
 
 //==============================================================================
-AudioSourceView::AudioSourceView(SimpleARAEditor& editor, juce::ARAAudioSource& source, WaveformCache& cache)
-: mEditor(editor), audioSource(source), waveCache(cache)
+AudioSourceView::AudioSourceView(ARAViewSection& section, juce::ARAAudioSource& source)
+: araSection(section)
+, audioSource(source)
+, waveCache(section.getWaveCache())
 {
 	this->setInterceptsMouseClicks(false, false);
 
-	waveCache.getOrCreateThumbnail(&audioSource);
+    waveCache.getOrCreateThumbnail(&audioSource);
 
 }
 

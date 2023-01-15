@@ -104,6 +104,21 @@ public:
         return baseHeaderWidth;
     }
 	
+
+    
+    int getTimeRulerHeight() const
+    {
+        return baseTimeRulerHeight;
+    }
+    
+    
+    void copy(ZoomState& stateToCopy)
+    {
+        this->_updateTrackHeight(stateToCopy.getTrackHeight());
+        this->_updatePixelsPerSecond(stateToCopy.getPixelsPerSecond());
+    }
+    
+    
 private:
 	static constexpr auto minZoom = 1.0;
 	static constexpr auto maxZoom = 32.0;
@@ -117,17 +132,20 @@ private:
     std::atomic<double> currentPixelsPerSecond { 10.0 };
     
     std::atomic<int> baseHeaderWidth { 60 }; // not really zoom related but shared in the same way... maybe don't put this here?
-	
+    std::atomic<int> baseTimeRulerHeight { 30 };
     
     //====================
     void _updatePixelsPerSecond(double pixPerSecond)
     {
         currentPixelsPerSecond = pixPerSecond;
+        mWidthFactor = currentPixelsPerSecond / basePixelsPerSecond;
     }
     
     //====================
+    
     void _updateTrackHeight(double trackHeight)
     {
         currentTrackHeight = trackHeight;
+        mHeightFactor = currentTrackHeight / baseTrackHeight;
     }
 };

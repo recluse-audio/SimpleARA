@@ -12,23 +12,26 @@
 
 #include <JuceHeader.h>
 #include "MultiTrackObjectBase.h"
-class MultiTrackTimeline;
+#include "ZoomStateOwner.h"
+#include "ARAViewSection.h"
+
+class ZoomState;
 //==============================================================================
 /*
 */
-class TimeRuler  : public juce::Component,
-                    public MultiTrackObjectBase
+class TimeRuler  : public juce::Component
+, public ZoomStateOwner
 {
 public:
-    TimeRuler(MultiTrackTimeline& timeLine);
+    TimeRuler(ARAViewSection& section);
     ~TimeRuler() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void updateZoomState() override;
+    void updateZoomState();
     
 private:
-    
+    ARAViewSection& viewSection;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeRuler)
 };

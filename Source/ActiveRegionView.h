@@ -11,9 +11,10 @@
 #pragma once
 
 #include <JuceHeader.h>
+
 class WaveformCache;
 class PlaybackRegionView;
-class SimpleARAEditor;
+class ARAViewSection;
 class ARA_PlaybackRegion;
 
 //==============================================================================
@@ -25,7 +26,7 @@ class ARA_PlaybackRegion;
 class ActiveRegionView  : public juce::Component
 {
 public:
-    ActiveRegionView(SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache);
+    ActiveRegionView(ARAViewSection& section, ARA_PlaybackRegion& region);
     ~ActiveRegionView() override;
 	
     void paint (juce::Graphics&) override;
@@ -37,8 +38,8 @@ public:
 private:
 	ARA_PlaybackRegion& playbackRegion;
 	WaveformCache& waveCache;
-	SimpleARAEditor& mEditor;
-	
+    ARAViewSection& araSection;
+    
 	void _drawPlaybackRegion(juce::Graphics& g);
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ActiveRegionView)

@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "WaveformCache.h"
+#include "ARAViewSection.h"
 
 class ActiveRegionView;
 class AudioModView;
@@ -32,16 +33,13 @@ class ARA_PlaybackRegion;
 	
 */
 class PlaybackRegionView : public juce::Component
-, public juce::ChangeListener
 , private juce::ARAPlaybackRegion::Listener
-
 {
 public:
-	PlaybackRegionView (SimpleARAEditor& editor, ARA_PlaybackRegion& region, WaveformCache& cache);
+	PlaybackRegionView (ARAViewSection& section, ARA_PlaybackRegion& region);
 
 	~PlaybackRegionView() override;
 
-	void changeListenerCallback (juce::ChangeBroadcaster*) override;
 
 	void paint (juce::Graphics& g) override;
 
@@ -58,11 +56,12 @@ public:
 	void updateGlobalAddressLabel();
 	void resetGlobalAddressLabel();
 	
-private:
-	SimpleARAEditor& mEditor;
-    ARA_PlaybackRegion& playbackRegion;
-	WaveformCache& waveformCache;
+    void updateZoomState();
 
+private:
+    ARA_PlaybackRegion& playbackRegion;
+    ARAViewSection& araSection;
+    
 	std::unique_ptr<ActiveRegionView> activeRegionView;
 	std::unique_ptr<AudioModView> audioModView;
 	std::unique_ptr<AudioSourceView> audioSourceView;
@@ -72,6 +71,8 @@ private:
 	
 	void _updateRegionBounds();
 	juce::StringRef _getARAObjectAddressStrings();
+    
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlaybackRegionView);
 };

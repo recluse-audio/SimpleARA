@@ -7,131 +7,70 @@
 
   ==============================================================================
 */
-//
-//#pragma once
-//
-//#include <JuceHeader.h>
-//#include "UtilObjects.h"
-//#include "VerticalLayoutViewport.h"
-//#include "OverlayComponent.h"
-//#include "RegionSequenceView.h"
-//#include "TrackHeader.h"
-//#include "ZoomControls.h"
-//
-//class SimpleARAEditor;
-//class WaveformCache;
-////==============================================================================
-///*
-//*/
-//class DocumentView  : public juce::Component,
-//public juce::ChangeListener,
-//private juce::ARADocument::Listener,
-//private juce::ARAEditorView::Listener
-//{
-//public:
-//	explicit DocumentView (SimpleARAEditor& mEditor, juce::ARADocument& document, PlayHeadState& playHeadState, WaveformCache& cache);
-//
-//	~DocumentView() override;
-//
-//    //==============================================================================
-//    // ARADocument::Listener overrides
-//	void didReorderRegionSequencesInDocument (juce::ARADocument*) override;
-//
-//	void didAddRegionSequenceToDocument (juce::ARADocument*, juce::ARARegionSequence*) override;
-//
-//	void willRemoveRegionSequenceFromDocument (juce::ARADocument*, juce::ARARegionSequence* regionSequence) override;
-//
-//	void didEndEditing (juce::ARADocument*) override;
-//
-//    //==============================================================================
-//	void changeListenerCallback (juce::ChangeBroadcaster*) override;
-//
-//    //==============================================================================
-//    // ARAEditorView::Listener overrides
-//	void onNewSelection (const ARA::PlugIn::ViewSelection&) override;
-//
-//	void onHideRegionSequences (const std::vector<juce::ARARegionSequence*>&) override;
-//
-//    //==============================================================================
-//	void paint (juce::Graphics& g) override;
-//
-//	void resized() override;
-//
-//    //==============================================================================
-//	void setZoomLevel (double pixelPerSecond);
-//    
-//    void updateViewSelection();
-//
-//    static constexpr int headerWidth = 120;
-//
-//private:
-//    struct RegionSequenceViewKey
-//    {
-//        explicit RegionSequenceViewKey (juce::ARARegionSequence* regionSequence)
-//            : orderIndex (regionSequence->getOrderIndex()), sequence (regionSequence)
-//        {
-//        }
-//
-//        bool operator< (const RegionSequenceViewKey& other) const
-//        {
-//            return std::tie (orderIndex, sequence) < std::tie (other.orderIndex, other.sequence);
-//        }
-//
-//        ARA::ARAInt32 orderIndex;
-//		juce::ARARegionSequence* sequence;
-//    };
-//
-//
-//	template <typename T>
-//	void layOutVertically (Rectangle<int> bounds, T& components, int verticalOffset = 0)
-//	{
-//		bounds = bounds.withY (bounds.getY() - verticalOffset).withHeight (bounds.getHeight() + verticalOffset);
-//
-//		for (auto& component : components)
-//		{
-//			component.second->setBounds (bounds.removeFromTop (trackHeight));
-//			component.second->resized();
-//		}
-//	}
-//	
-//	void zoom (double factor);
-//
-//	void updateViewport();
-//
-//	void addTrackViews (juce::ARARegionSequence* regionSequence);
-//
-//	void removeRegionSequenceView (juce::ARARegionSequence* regionSequence);
-//
-//	void invalidateRegionSequenceViews();
-//
-//	void rebuildRegionSequenceViews();
-//
-//
-//
-//    static constexpr auto minimumZoom = 10.0;
-//    static constexpr auto trackHeight = 60;
-//
-//	juce::ARADocument& araDocument;
-//    juce::ARAEditorView& araEditorView;
-//    WaveformCache& waveCache;
-//
-//    bool regionSequenceViewsAreValid = false;
-//    double timelineLength = 0;
-//    double zoomLevelPixelPerSecond = minimumZoom * 4;
-//
-//    juce::Component tracksBackground;
-//	
-//    std::map<RegionSequenceViewKey, std::unique_ptr<TrackHeader>> trackHeaders;
-//    std::map<RegionSequenceViewKey, std::unique_ptr<RegionSequenceView>> regionSequenceViews;
-//    
-//	VerticalLayoutViewport viewport;
-//    OverlayComponent overlay;
-//    ZoomControls zoomControls;
-//
-//    int viewportHeightOffset = 0;
-//
-//private:
-//	SimpleARAEditor& mEditor;
-//	
-//    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DocumentView)
-//};
+
+#pragma once
+
+#include <JuceHeader.h>
+#include "UtilObjects.h"
+#include "ZoomStateOwner.h"
+
+class SimpleARAEditor;
+class WaveformCache;
+class ZoomState;
+class PlayheadOverlay;
+class PlayheadMarker;
+class TimeGrid;
+class RegionSequenceView;
+class ZoomControls;
+class ARAViewSection;
+//==============================================================================
+/*
+    This class is for the timeline and can scroll horizontally and vertically.  
+*/
+class DocumentView  : public juce::Component
+{
+public:
+	explicit DocumentView (ARAViewSection& viewSection, juce::ARADocument& document);
+
+	~DocumentView() override;
+
+    //==============================================================================
+	void paint (juce::Graphics& g) override;
+
+	void resized() override;
+
+    //==============================================================================
+    void updateViewSelection();
+    void updatePlayheadPosition(double positionInSeconds);
+    
+    void clear()
+    {
+        regionSequences.clear();
+    }
+    
+    void addRegionSequence(juce::ARARegionSequence* newSequence)
+    {
+        //regionSequences.add(newSequence);
+    }
+    
+    void updateZoomState();
+
+private:
+    ARAViewSection& araSection;
+	juce::ARADocument& araDocument;
+    ZoomState& zoomState;
+	
+    std::unique_ptr<PlayheadOverlay> playheadOverlay;
+    std::unique_ptr<TimeGrid> timeGrid;
+    std::unique_ptr<PlayheadMarker> playheadMarker;
+    
+
+    juce::OwnedArray<RegionSequenceView> regionSequences;
+    
+    double playheadPos = 0.0;
+    
+    /** Get duration of longest region sequence */
+    double _getMaxDuration() const;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DocumentView)
+};

@@ -16,23 +16,21 @@
 class MultiTrackTimeline;
 class TrackLane;
 class TrackHeader;
+class ZoomState;
 
 //==============================================================================
 /*
 */
 class Track  : public juce::Component
-               , public MultiTrackObjectBase
 {
 public:
-    Track(MultiTrackTimeline& timeLine);
-    Track(MultiTrackTimeline& timeLine, int orderIndex);
-
+    Track();
     ~Track() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void updateZoomState() override;
+    void updateZoomState(ZoomState& zoomState);
     
     void setTrackName(juce::StringRef newName);
     

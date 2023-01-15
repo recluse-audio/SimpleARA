@@ -16,12 +16,10 @@ class MultiTrackTimeline;
 //==============================================================================
 /*
 */
-class TrackRegion
-: public juce::Component
-, public MultiTrackObjectBase
+class TrackRegion : public juce::Component
 {
 public:
-    TrackRegion(MultiTrackTimeline& timeLine, double startPos, double duration);
+    TrackRegion();
     ~TrackRegion() override;
 
     void paint (juce::Graphics&) override;
@@ -30,7 +28,6 @@ public:
     virtual juce::Range<double>* getRangeInSeconds() const;
     double getDuration() const;
 
-	void updateZoomState() override;
     
 private:
     std::unique_ptr<juce::Range<double>> rangeInSeconds;

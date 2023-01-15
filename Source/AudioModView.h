@@ -12,16 +12,19 @@
 
 #include <JuceHeader.h>
 #include "WaveformCache.h"
+#include "ARAViewSection.h"
 
 class PlaybackRegionView;
 class SimpleARAEditor;
+class ARA_PlaybackRegion;
+class ARA_AudioMod;
 //==============================================================================
 /*
 */
 class AudioModView  : public juce::Component
 {
 public:
-	AudioModView(SimpleARAEditor& editor, juce::ARAPlaybackRegion& region);
+	AudioModView(ARAViewSection& section, ARA_AudioMod& mod);
     ~AudioModView() override;
 
     void paint (juce::Graphics&) override;
@@ -33,10 +36,9 @@ public:
 private:
 	juce::StringRef _getARAObjectAddressStrings();
 
-
-	juce::ARAPlaybackRegion& playbackRegion;
-	SimpleARAEditor& mEditor;
-	
+	ARA_AudioMod& audioMod;
+    ARAViewSection& araSection;
+    
 	void _drawAudioMod(juce::Graphics& g);
 	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioModView)

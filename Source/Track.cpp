@@ -10,14 +10,12 @@
 
 #include <JuceHeader.h>
 #include "Track.h"
-#include "MultiTrackTimeline.h"
 #include "TrackLane.h"
 #include "TrackHeader.h"
 #include "ZoomState.h"
 
 //==============================================================================
-Track::Track(MultiTrackTimeline& timeLine)
-: MultiTrackObjectBase::MultiTrackObjectBase(timeLine)
+Track::Track()
 {
     trackHeader = std::make_unique<TrackHeader>(timeLine);
     addAndMakeVisible(trackHeader.get());
@@ -27,16 +25,6 @@ Track::Track(MultiTrackTimeline& timeLine)
     
 }
 
-//==============================================================================
-Track::Track(MultiTrackTimeline& timeLine, int index)
-: MultiTrackObjectBase::MultiTrackObjectBase(timeLine, index)
-{
-    trackHeader = std::make_unique<TrackHeader>(timeLine);
-    addAndMakeVisible(trackHeader.get());
-    
-    trackLane = std::make_unique<TrackLane>(timeLine);
-    addAndMakeVisible(trackLane.get());
-}
 
 Track::~Track()
 {
@@ -55,7 +43,7 @@ void Track::resized()
     trackLane->setTopLeftPosition(trackHeader->getRight() + 1, 0); // drawn at right edge of trackHeader
 }
 
-void Track::updateZoomState()
+void Track::updateZoomState(ZoomState& zoomState)
 {
     trackHeader->updateZoomState();
     trackLane->updateZoomState();

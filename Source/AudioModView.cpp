@@ -11,13 +11,18 @@
 #include <JuceHeader.h>
 #include "AudioModView.h"
 #include "ARA_AudioMod.h"
-#include "PluginEditor.h"
+#include "ARAViewSection.h"
 #include "HelperDisplay.h"
+#include "ARA_PlaybackRegion.h"
+#include "PluginEditor.h"
 //==============================================================================
 
 
-AudioModView::AudioModView(SimpleARAEditor& editor, juce::ARAPlaybackRegion& region) : mEditor(editor), playbackRegion(region)
+AudioModView::AudioModView(ARAViewSection& section, ARA_AudioMod& modification)
+: araSection(section)
+, audioMod(modification)
 {
+    
 }
 
 
@@ -28,7 +33,7 @@ AudioModView::~AudioModView()
 
 void AudioModView::paint (juce::Graphics& g)
 {
-	auto modColor = playbackRegion.getAudioModification<ARA_AudioMod>()->getColor();
+	auto modColor = audioMod.getColor();
 	g.fillAll(modColor.withAlpha(0.3f));
 
 
@@ -61,13 +66,11 @@ void AudioModView::_drawAudioMod(juce::Graphics &g)
 
 void AudioModView::mouseEnter(const juce::MouseEvent& e)
 {
-	auto helperDisplay = mEditor.getHelperDisplay();
-	helperDisplay->displayPlaybackRegion(&playbackRegion);
+
 }
 
 void AudioModView::mouseExit(const juce::MouseEvent& e)
 {
-	auto helperDisplay = mEditor.getHelperDisplay();
-	helperDisplay->clearDisplay();
+
 	
 }

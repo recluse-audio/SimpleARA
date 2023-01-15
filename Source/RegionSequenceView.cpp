@@ -15,14 +15,14 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-RegionSequenceView::RegionSequenceView(SimpleARAEditor& editor, ARARegionSequence& rs, WaveformCache& wave, double pixelPerSec)
-: mEditor(editor), regionSequence (rs), waveformCache(wave), zoomLevelPixelPerSecond (pixelPerSec)
+RegionSequenceView::RegionSequenceView(ARAViewSection& section, juce::ARARegionSequence& sequence) :
+araSection(section)
+, regionSequence(sequence)
+, zoomState(section.getZoomState())
 {
 	regionSequence.addListener (this);
 
-    const auto& playbackRegions = regionSequence.getPlaybackRegions<ARA_PlaybackRegion>();
-	for (auto playbackRegion : playbackRegions)
-		createAndAddPlaybackRegionView (playbackRegion);
+    rebuild();
 
 	updatePlaybackDuration();
 }
@@ -31,8 +31,7 @@ RegionSequenceView::~RegionSequenceView()
 {
 	regionSequence.removeListener (this);
 
-	for (const auto& it : playbackRegionViewsMap)
-		it.first->removeListener (this);
+
 }
 
 void RegionSequenceView::paint(juce::Graphics &g)
@@ -51,23 +50,18 @@ void RegionSequenceView::paint(juce::Graphics &g)
 // ARA Document change callback overrides
 void RegionSequenceView::willRemovePlaybackRegionFromRegionSequence (juce::ARARegionSequence* regionSequence, juce::ARAPlaybackRegion* playbackRegion)
 {
-	playbackRegion->removeListener (this);
-	removeChildComponent (playbackRegionViewsMap[playbackRegion].get());
-	playbackRegionViewsMap.erase (playbackRegion);
 	updatePlaybackDuration();
 }
 
 void RegionSequenceView::didAddPlaybackRegionToRegionSequence (juce::ARARegionSequence* regionSequence, juce::ARAPlaybackRegion* playbackRegion)
 {
-	createAndAddPlaybackRegionView (playbackRegion);
+	_createAndAddPlaybackRegionView (playbackRegion);
 	updatePlaybackDuration();
 }
 
 void RegionSequenceView::willDestroyPlaybackRegion (ARAPlaybackRegion* playbackRegion)
 {
 	playbackRegion->removeListener (this);
-	removeChildComponent (playbackRegionViewsMap[playbackRegion].get());
-	playbackRegionViewsMap.erase (playbackRegion);
 	updatePlaybackDuration();
 }
 
@@ -82,60 +76,73 @@ void RegionSequenceView::didUpdatePlaybackRegionProperties (juce::ARAPlaybackReg
 
 void RegionSequenceView::resized()
 {
-	for (auto& pbr : playbackRegionViewsMap)
-	{
-		const auto playbackRegion = pbr.first;
-		auto regionView = pbr.second.get();
-		
-		auto sourceStartInTimeline = getAudioSourceStartInTimeLine(playbackRegion);
-		
-		auto sourceDuration = playbackRegion->getAudioModification()->getAudioSource()->getDuration();
-		
-		const auto xPos = roundToInt(sourceStartInTimeline * zoomLevelPixelPerSecond);
-		const auto width = roundToInt (sourceDuration * zoomLevelPixelPerSecond);
-		
-		auto regionViewBounds = juce::Rectangle<int>(xPos, 5, width, this->getHeight() - 10);
-		regionView->setBounds(regionViewBounds);
-	}
+
 }
+
 
 double RegionSequenceView::getPlaybackDuration() const noexcept
 {
 	return playbackDuration;
 }
 
-void RegionSequenceView::setZoomLevel (double pixelPerSecond)
+
+
+
+//=================
+void RegionSequenceView::rebuild()
 {
-	zoomLevelPixelPerSecond = pixelPerSecond;
-	resized();
-}
-
-
-
-
-//========================
-// PRIVATE FUNCTIONS
-
-void RegionSequenceView::createAndAddPlaybackRegionView (ARAPlaybackRegion* playbackRegion)
-{
-    auto pRegion = static_cast<ARA_PlaybackRegion*>(playbackRegion);
-	playbackRegionViewsMap[playbackRegion] = std::make_unique<PlaybackRegionView> (mEditor, *pRegion, waveformCache);
-	playbackRegion->addListener (this);
-	addAndMakeVisible (*playbackRegionViewsMap[playbackRegion]);
+    _clearRegionViews();
+    
+    auto regions = regionSequence.getPlaybackRegions<ARA_PlaybackRegion>();
+    for(auto region : regions)
+    {
+        _createAndAddPlaybackRegionView(region);
+    }
+    
 }
 
 
 void RegionSequenceView::updatePlaybackDuration()
 {
-	const auto iter = std::max_element (
-		playbackRegionViewsMap.begin(),
-		playbackRegionViewsMap.end(),
-		[] (const auto& a, const auto& b) { return a.first->getEndInPlaybackTime() < b.first->getEndInPlaybackTime(); });
-
-	playbackDuration = iter != playbackRegionViewsMap.end() ? iter->first->getEndInPlaybackTime() : 0.0;
 
     resized();
-	sendChangeMessage();
+}
+
+
+//=================
+void RegionSequenceView::updateZoomState()
+{
+    auto width = this->getPlaybackDuration() * zoomState.getPixelsPerSecond();
+    auto height = zoomState.getTrackHeight();
+    this->setSize(width, height);
+}
+
+
+//========================
+// PRIVATE FUNCTIONS
+
+void RegionSequenceView::_createAndAddPlaybackRegionView(juce::ARAPlaybackRegion *region)
+{
+    auto regionView = new PlaybackRegionView(araSection, *region);
+    
+    // don't re-add an existing view.  Happens due to weird timing of calls to ara listeners in different hosts
+    if(playbackRegionViews.contains(regionView))
+        return;
+    
+    this->addAndMakeVisible(regionView);
+    playbackRegionViews.add(regionView);
+    
+}
+
+void RegionSequenceView::_clearRegionViews()
+{
+    // Is this necessary or will calling clear also remove them as child components
+    for(auto view : playbackRegionViews)
+    {
+        this->removeChildComponent(view);
+    }
+    
+    playbackRegionViews.clear();
 }
 
 
