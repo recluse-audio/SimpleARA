@@ -47,7 +47,6 @@ void SequenceHeaderContent::addRegionSequence(juce::ARARegionSequence *sequence)
     int orderIndex = sequence->getOrderIndex();
     auto newHeader = new SequenceHeader(araSection, *sequence);
     headers.insert(orderIndex, newHeader);
-    newHeader = nullptr;
 }
 
 void SequenceHeaderContent::updateZoomState()

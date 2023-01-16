@@ -44,12 +44,11 @@ public:
     
     void clear();
     
-    void addRegionSequence(juce::ARARegionSequence* newSequence)
-    {
-        //regionSequences.add(newSequence);
-    }
+	void addRegionSequence(juce::ARARegionSequence* newSequence);
     
-    void updateZoomState();
+    void updateZoomState(); // rename this to update size?
+	
+	double getDuration() const;
 
 private:
     ARAViewSection& araSection;
@@ -59,7 +58,7 @@ private:
     std::unique_ptr<TimeGrid> timeGrid;
     std::unique_ptr<PlayheadMarker> playheadMarker;
     
-
+	
     juce::OwnedArray<RegionSequenceView> regionSequences;
     
     double playheadPos = 0.0;

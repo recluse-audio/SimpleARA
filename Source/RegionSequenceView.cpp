@@ -24,7 +24,10 @@ araSection(section)
 
     rebuild();
 
-	updatePlaybackDuration();
+	_updateEndOfLastRegion();
+	
+	updateZoomState();
+
 }
 
 RegionSequenceView::~RegionSequenceView()
@@ -46,45 +49,18 @@ void RegionSequenceView::paint(juce::Graphics &g)
 	g.drawFittedText ("Region Sequence View", getLocalBounds(), Justification::centred, 1);
 }
 
-//==============================================================================
-// ARA Document change callback overrides
-void RegionSequenceView::willRemovePlaybackRegionFromRegionSequence (juce::ARARegionSequence* regionSequence, juce::ARAPlaybackRegion* playbackRegion)
-{
-	updatePlaybackDuration();
-}
 
-void RegionSequenceView::didAddPlaybackRegionToRegionSequence (juce::ARARegionSequence* regionSequence, juce::ARAPlaybackRegion* playbackRegion)
-{
-	_createAndAddPlaybackRegionView (playbackRegion);
-	updatePlaybackDuration();
-}
-
-void RegionSequenceView::willDestroyPlaybackRegion (ARAPlaybackRegion* playbackRegion)
-{
-	playbackRegion->removeListener (this);
-	updatePlaybackDuration();
-}
-
-void RegionSequenceView::willUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion* playbackRegion, juce::ARAPlaybackRegion::PropertiesPtr regionProperties)
-{
-}
-
-void RegionSequenceView::didUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion*)
-{
-	updatePlaybackDuration();
-}
-
+//=================
 void RegionSequenceView::resized()
 {
 
 }
 
-
-double RegionSequenceView::getPlaybackDuration() const noexcept
+//=================
+double RegionSequenceView::getEndOfLastRegion() const
 {
-	return playbackDuration;
+	return endOfLastRegion;
 }
-
 
 
 
@@ -102,17 +78,11 @@ void RegionSequenceView::rebuild()
 }
 
 
-void RegionSequenceView::updatePlaybackDuration()
-{
-
-    resized();
-}
-
 
 //=================
 void RegionSequenceView::updateZoomState()
 {
-    auto width = this->getPlaybackDuration() * zoomState.getPixelsPerSecond();
+    auto width = getEndOfLastRegion() * zoomState.getPixelsPerSecond();
     auto height = zoomState.getTrackHeight();
     this->setSize(width, height);
 }
@@ -121,6 +91,19 @@ void RegionSequenceView::updateZoomState()
 //========================
 // PRIVATE FUNCTIONS
 
+//=================
+void RegionSequenceView::_updateEndOfLastRegion()
+{
+	for(auto region : regionSequence.getPlaybackRegions<ARA_PlaybackRegion>())
+	{
+		if(region->getEndInPlaybackTime() > endOfLastRegion )
+		{
+			endOfLastRegion = region->getEndInPlaybackTime();
+		}
+	}
+}
+
+//=================
 void RegionSequenceView::_createAndAddPlaybackRegionView(juce::ARAPlaybackRegion *region)
 {
     auto pRegion = dynamic_cast<ARA_PlaybackRegion*>(region);
@@ -135,6 +118,7 @@ void RegionSequenceView::_createAndAddPlaybackRegionView(juce::ARAPlaybackRegion
     
 }
 
+//=================
 void RegionSequenceView::_clearRegionViews()
 {
     // Is this necessary or will calling clear also remove them as child components
@@ -148,3 +132,34 @@ void RegionSequenceView::_clearRegionViews()
 
 
 
+//==============================================================================
+// ARA Document change callback overrides
+//=================
+void RegionSequenceView::willRemovePlaybackRegionFromRegionSequence (juce::ARARegionSequence* regionSequence, juce::ARAPlaybackRegion* playbackRegion)
+{
+	_updateEndOfLastRegion();
+}
+
+//=================
+void RegionSequenceView::didAddPlaybackRegionToRegionSequence (juce::ARARegionSequence* regionSequence, juce::ARAPlaybackRegion* playbackRegion)
+{
+	_createAndAddPlaybackRegionView (playbackRegion);
+	_updateEndOfLastRegion();
+}
+
+//=================
+void RegionSequenceView::willDestroyPlaybackRegion (ARAPlaybackRegion* playbackRegion)
+{
+	playbackRegion->removeListener (this);
+	_updateEndOfLastRegion();
+}
+
+//=================
+void RegionSequenceView::willUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion* playbackRegion, juce::ARAPlaybackRegion::PropertiesPtr regionProperties)
+{
+}
+
+void RegionSequenceView::didUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion*)
+{
+	_updateEndOfLastRegion();
+}

@@ -39,14 +39,19 @@ public:
     void timerCallback() override;
 
     void didAddRegionSequenceToDocument (juce::ARADocument* doc, juce::ARARegionSequence* sequence) override;
-    
-    // clears current 
-    void rebuildFromDocument();
+	void didEndEditing(juce::ARADocument* doc) override;
+	
+
+	
     // Sets which ARA view will be in focus
    // void setFocus(SimpleARAEditor::FocusView focus);
     void setDocumentFocus();
     void setSequenceFocus();
     void setRegionFocus();
+	
+	void setViewportTimeRange(double startInSeconds, double durationInSeconds);
+	void setViewportEndPos(double endInSeconds);
+	double getDuration() const;
 
     
     juce::ARADocument& getARADocument();
@@ -54,14 +59,16 @@ public:
     SimpleARAEditor& getEditor();
     WaveformCache& getWaveCache();
 private:
-    
     SimpleARAEditor& mEditor;
     PlayHeadState& playheadState;
     
+	juce::Range<double> viewportTimeRange;
+	bool shouldUpdateViewport = false;
+	int verticalScrollOffset = 0;
+	int horizontalScrollOffset = 0;
+	   
     std::unique_ptr<WaveformCache> waveCache;
     std::unique_ptr<ZoomState> zoomState;
-
-//    std::unique_ptr<DocumentView> documentView;
     
     std::unique_ptr<juce::Viewport> headerViewport;
     std::unique_ptr<SequenceHeaderContent> headerContent;
@@ -72,15 +79,23 @@ private:
     std::unique_ptr<juce::Viewport> timeRulerViewport;
     std::unique_ptr<TimeRuler> timeRulerContent;
     
+	//
     void _initializeViews(juce::ARADocument* document);
+	
     // Prepare the playback region to show 
     void _preparePlaybackRegionView(juce::ARADocument* document, int indexOfRegionToView);
     
     // updates zooms on this and all subcomponents according to this zoom state
     void _updateZoomState();
     
-    
+	//
     void _addRegionSequence(juce::ARARegionSequence* sequence);
+	
+	//
+	void _updateViewport();
+	
+	// clears current
+	void _rebuildFromDocument();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ARAViewSection)
 };

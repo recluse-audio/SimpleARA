@@ -10,7 +10,6 @@
 
 #include <JuceHeader.h>
 #include "TimeRuler.h"
-#include "MultiTrackTimeline.h"
 #include "ZoomState.h"
 //==============================================================================
 TimeRuler::TimeRuler(ARAViewSection& section) : viewSection(section)

@@ -33,7 +33,8 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     timeRulerViewport->setViewedComponent(timeRulerContent.get());
     addAndMakeVisible(timeRulerViewport.get());
     
-    
+    // must initialize before all the views... don't like this, should change
+	zoomState = std::make_unique<ZoomState>();
 
     
     
@@ -42,9 +43,8 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     if(document != nullptr)
         _initializeViews(document);
 
-    zoomState = std::make_unique<ZoomState>();
     
-    rebuildFromDocument();
+    _rebuildFromDocument();
     
     this->startTimerHz(60);
     
@@ -178,10 +178,14 @@ void ARAViewSection::didAddRegionSequenceToDocument (juce::ARADocument* doc, juc
     _addRegionSequence(sequence);
 }
 
-
+//======================
+void ARAViewSection::didEndEditing(juce::ARADocument *doc)
+{
+	_rebuildFromDocument();
+}
 
 // clears current
-void ARAViewSection::rebuildFromDocument()
+void ARAViewSection::_rebuildFromDocument()
 {
     headerContent.reset();
     documentContent.reset();
@@ -197,7 +201,7 @@ void ARAViewSection::rebuildFromDocument()
     {
         _addRegionSequence(sequence);
     }
-    
+	_updateZoomState();
 }
 
 //======================
@@ -205,4 +209,39 @@ void ARAViewSection::_addRegionSequence(juce::ARARegionSequence* sequence)
 {
     headerContent->addRegionSequence(sequence);
     documentContent->addRegionSequence(sequence);
+}
+
+
+
+//===================
+void ARAViewSection::setViewportTimeRange(double startInSeconds, double durationInSeconds)
+{
+	// This will adjust how much of the timeline is visible at a given moment
+	// This adjusts the pixPerSecond so do this first
+	zoomState->zoomToShowDuration(this->getWidth(), durationInSeconds);
+	viewportTimeRange.setStart(startInSeconds);
+	viewportTimeRange.setEnd(startInSeconds + durationInSeconds);
+	shouldUpdateViewport = true;
+}
+
+//==================
+void ARAViewSection::setViewportEndPos(double endInSeconds)
+{
+	viewportTimeRange = viewportTimeRange.movedToEndAt(endInSeconds);
+	shouldUpdateViewport = true;
+}
+
+void ARAViewSection::_updateViewport()
+{
+	auto proportionX = viewportTimeRange.getStart() / documentContent->getDuration();
+	auto xPositionInContent = documentContent->getWidth() * proportionX;
+	documentViewport->setViewPosition(xPositionInContent, verticalScrollOffset);
+	documentViewport->setViewPosition(xPositionInContent, 0);
+	shouldUpdateViewport = false;
+}
+
+
+double ARAViewSection::getDuration() const
+{
+	return documentContent->getDuration();
 }

@@ -41,8 +41,9 @@ public:
     //===============================
 	void resized() override;
 	void paint(juce::Graphics& g) override;
-
-	double getPlaybackDuration() const noexcept;
+	
+	/** Returns the end timeline position in seconds of the last region in the sequence*/
+	double getEndOfLastRegion() const;
 
     void updateZoomState();
     // clears out existing views, removing them as child components and deleting them, then re-adding them from the araDoc
@@ -56,9 +57,9 @@ private:
     juce::OwnedArray<PlaybackRegionView> playbackRegionViews;
     
 
-	void updatePlaybackDuration();
+	void _updateEndOfLastRegion();
 
-    double playbackDuration = 0.0;
+	double endOfLastRegion = 0.0;
 
     // creates a new playback region view
     void _createAndAddPlaybackRegionView(juce::ARAPlaybackRegion* region);

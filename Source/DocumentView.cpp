@@ -29,6 +29,7 @@ zoomState(section.getZoomState())
     playheadMarker->setAlwaysOnTop(true);
     addAndMakeVisible(playheadMarker.get());
 
+	updateZoomState();
     //araDocument.addListener(this);
 }
 
@@ -41,6 +42,8 @@ DocumentView::~DocumentView()
 
 void DocumentView::paint (juce::Graphics& g)
 {
+	g.fillAll(juce::Colours::grey);
+	
 	auto outline = this->getBounds();
 	g.setColour(juce::Colours::red);
 	g.drawRect(outline, 2.f);
@@ -61,6 +64,7 @@ void DocumentView::resized()
         auto yPos = i * zoomState.getTrackHeight();
         regionSequences[i]->setTopLeftPosition(0, yPos);
     }
+	repaint();
 }
 
 
@@ -71,12 +75,7 @@ void DocumentView::updatePlayheadPosition(double positionInSeconds)
     playheadMarker->setBounds((int)playheadPositionInPixels, 0, 3, this->getHeight());
 }
 
-//================
-double DocumentView::_getMaxDuration() const
-{
-    /** TO DO:  Actual code here, not just a fixed number */
-    return 120.0;
-}
+
 
 
 
@@ -89,7 +88,12 @@ void DocumentView::updateZoomState()
     }
     
     auto width = this->_getMaxDuration() * zoomState.getPixelsPerSecond();
-    auto height = regionSequences.size() * zoomState.getTrackHeight();
+	
+	int sequenceCount = regionSequences.size();
+	int minimum = 12; // even with 0 sequences we will still want the doc view to be a certain height
+	int numSequences = ( sequenceCount > minimum) ? sequenceCount : minimum;
+			
+    auto height = numSequences * zoomState.getTrackHeight();
     
     this->setSize(width, height);
     
@@ -100,4 +104,40 @@ void DocumentView::updateZoomState()
 void DocumentView::clear()
 {
     regionSequences.clear();
+}
+
+//================
+void DocumentView::addRegionSequence(juce::ARARegionSequence *newSequence)
+{
+	auto sequenceView = new RegionSequenceView(araSection, *newSequence);
+	
+	// don't re-add an existing view.  Happens due to weird timing of calls to ara listeners in different hosts
+	if(regionSequences.contains(sequenceView))
+		return;
+	
+	addAndMakeVisible(sequenceView);
+	regionSequences.add(sequenceView);
+	
+	updateZoomState();
+}
+
+//================
+double DocumentView::getDuration() const
+{
+	return _getMaxDuration();
+}
+
+
+//================
+double DocumentView::_getMaxDuration() const
+{
+	double maxDuration = 120.0;  //
+	
+	/** Region sequences don't return end positions, probably should subclass that, for now ask the component view of it*/
+	for(auto sequence : regionSequences)
+	{
+		if(sequence->getEndOfLastRegion() > maxDuration)
+			maxDuration = sequence->getEndOfLastRegion();
+	}
+	return maxDuration;
 }

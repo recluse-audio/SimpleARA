@@ -60,6 +60,8 @@ PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegi
     
 	playbackRegion.addListener(this);
 	
+	updateZoomState();
+	
 }
 
 //-------------------------------------

@@ -114,7 +114,7 @@ ARA_DocumentSpecialisation* SimpleARAEditor::getARADocumentSpecialisation()
         return araDocumentSpecialisation;
     }
     
-    jassert(araDocumentSpecialisation != nullptr);
+    // jassert(araDocumentSpecialisation != nullptr);
     
     return araDocumentSpecialisation;
 }

@@ -85,8 +85,6 @@ public:
 	//====================
 	int getPixelsPerSecond() const
 	{
-		jassert(currentPixelsPerSecond >= minZoom * basePixelsPerSecond);
-		jassert(currentPixelsPerSecond <= maxZoom * basePixelsPerSecond);
 		return (int)currentPixelsPerSecond;
 	}
     
@@ -94,8 +92,6 @@ public:
 	//====================
 	int getTrackHeight() const
 	{
-        jassert(currentTrackHeight >= minZoom * baseTrackHeight);
-        jassert(currentTrackHeight <= maxZoom * baseTrackHeight);
 		return (int)currentTrackHeight;
 	}
     
