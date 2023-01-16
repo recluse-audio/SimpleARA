@@ -15,6 +15,7 @@
 #include "HelperDisplay.h"
 #include "ARA_PlaybackRegion.h"
 #include "PluginEditor.h"
+
 //==============================================================================
 
 

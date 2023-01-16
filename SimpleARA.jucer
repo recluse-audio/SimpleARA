@@ -6,50 +6,6 @@
               companyName="recluse-audio">
   <MAINGROUP id="txu9ht" name="SimpleARA">
     <GROUP id="{23FEAE3D-FA35-C0BF-6594-7F689F119FA4}" name="Source">
-      <GROUP id="{A86BA177-240F-A70E-54CC-6DBA6C997220}" name="MultiTrackTimeline">
-        <GROUP id="{30BE4E06-8ACA-CF60-5A82-DEC2A1962781}" name="MultiTrackData">
-          <FILE id="gpcnaG" name="RegionData.h" compile="0" resource="0" file="Source/RegionData.h"/>
-          <FILE id="ZUitE0" name="SessionData.h" compile="0" resource="0" file="Source/SessionData.h"/>
-          <FILE id="j3wn8J" name="TrackData.h" compile="0" resource="0" file="Source/TrackData.h"/>
-        </GROUP>
-        <GROUP id="{8054A6D8-4284-1575-B01A-F0F37DD1B81A}" name="GUI">
-          <FILE id="Xlqnqc" name="TrackHeaderContent.cpp" compile="1" resource="0"
-                file="Source/TrackHeaderContent.cpp"/>
-          <FILE id="dILgyW" name="TrackHeaderContent.h" compile="0" resource="0"
-                file="Source/TrackHeaderContent.h"/>
-          <FILE id="Al2oQD" name="MultiTrackObjectBase.cpp" compile="1" resource="0"
-                file="Source/MultiTrackObjectBase.cpp"/>
-          <FILE id="dqjhAQ" name="MultiTrackObjectBase.h" compile="0" resource="0"
-                file="Source/MultiTrackObjectBase.h"/>
-          <FILE id="eTpEYE" name="TimelineContent.cpp" compile="1" resource="0"
-                file="Source/TimelineContent.cpp"/>
-          <FILE id="D1m81z" name="TimelineContent.h" compile="0" resource="0"
-                file="Source/TimelineContent.h"/>
-          <FILE id="W9O5c1" name="TimelineViewport.cpp" compile="1" resource="0"
-                file="Source/TimelineViewport.cpp"/>
-          <FILE id="SbbTvI" name="TimelineViewport.h" compile="0" resource="0"
-                file="Source/TimelineViewport.h"/>
-          <FILE id="voncYt" name="ZoomControls.h" compile="0" resource="0" file="Source/ZoomControls.h"/>
-          <FILE id="c158IT" name="PlayHeadOverlay.cpp" compile="1" resource="0"
-                file="Source/PlayHeadOverlay.cpp"/>
-          <FILE id="oWDN3i" name="PlayHeadOverlay.h" compile="0" resource="0"
-                file="Source/PlayHeadOverlay.h"/>
-          <FILE id="F78Qxy" name="MultiTrackTimeline.h" compile="0" resource="0"
-                file="Source/MultiTrackTimeline.h"/>
-          <FILE id="TZIX1h" name="MultiTrackTimeline.cpp" compile="1" resource="0"
-                file="Source/MultiTrackTimeline.cpp"/>
-          <GROUP id="{3B09E03F-31CA-0DD4-7BB7-C93766C46958}" name="Track">
-            <FILE id="A32SHq" name="TrackHeader.cpp" compile="1" resource="0" file="Source/TrackHeader.cpp"/>
-            <FILE id="alJKKB" name="TrackHeader.h" compile="0" resource="0" file="Source/TrackHeader.h"/>
-            <FILE id="GLumaR" name="Track.cpp" compile="1" resource="0" file="Source/Track.cpp"/>
-            <FILE id="LbBiHC" name="Track.h" compile="0" resource="0" file="Source/Track.h"/>
-            <FILE id="GXNwcw" name="TrackLane.cpp" compile="1" resource="0" file="Source/TrackLane.cpp"/>
-            <FILE id="flN5kK" name="TrackLane.h" compile="0" resource="0" file="Source/TrackLane.h"/>
-            <FILE id="zUP3wl" name="TrackRegion.cpp" compile="1" resource="0" file="Source/TrackRegion.cpp"/>
-            <FILE id="IigeBM" name="TrackRegion.h" compile="0" resource="0" file="Source/TrackRegion.h"/>
-          </GROUP>
-        </GROUP>
-      </GROUP>
       <FILE id="T6Lcjw" name="GlobalDefines.h" compile="0" resource="0" file="Source/GlobalDefines.h"/>
       <FILE id="aeFbEh" name="PossiblyBufferedReader.cpp" compile="1" resource="0"
             file="Source/PossiblyBufferedReader.cpp"/>
@@ -68,6 +24,11 @@
         <FILE id="gsu3bc" name="UtilObjects.h" compile="0" resource="0" file="Source/UtilObjects.h"/>
       </GROUP>
       <GROUP id="{602DBADF-F001-141E-56DB-18F3BDCA76F6}" name="Components">
+        <FILE id="voncYt" name="ZoomControls.h" compile="0" resource="0" file="Source/ZoomControls.h"/>
+        <FILE id="c158IT" name="PlayHeadOverlay.cpp" compile="1" resource="0"
+              file="Source/PlayHeadOverlay.cpp"/>
+        <FILE id="oWDN3i" name="PlayHeadOverlay.h" compile="0" resource="0"
+              file="Source/PlayHeadOverlay.h"/>
         <GROUP id="{BEF115B7-FA4C-8093-14CA-8D7E091D58D8}" name="Sections">
           <GROUP id="{06547AD7-E423-37E9-EEB7-B4EFAAD7D303}" name="ControlPanel">
             <FILE id="kyrVgh" name="NavigationMenu.cpp" compile="1" resource="0"

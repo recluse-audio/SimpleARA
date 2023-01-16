@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "ZoomStateOwner.h"
+
 class SimpleARAEditor;
 class DocumentView;
 class PlaybackRegionView;

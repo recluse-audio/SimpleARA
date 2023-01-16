@@ -11,12 +11,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "WaveformCache.h"
-#include "ARAViewSection.h"
 
-class PlaybackRegionView;
-class SimpleARAEditor;
-class ARA_PlaybackRegion;
+class ARAViewSection;
 class ARA_AudioMod;
 //==============================================================================
 /*

@@ -26,7 +26,6 @@ void TimeRuler::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::grey);
     auto pixWidth = this->getWidth();
-    auto pixPerSecond = viewSection.getZoomState().getPixelsPerSecond();
     
     g.setColour(juce::Colours::whitesmoke);
     // One at zero and one at every second after
@@ -36,7 +35,7 @@ void TimeRuler::paint (juce::Graphics& g)
     {
         g.drawVerticalLine(tickMarkPosition, 0, this->getHeight());
         g.drawText(juce::String(timePos), tickMarkPosition + 1, 0, 10, 7, juce::Justification::centredLeft);
-        tickMarkPosition += pixPerSecond;
+        tickMarkPosition += currentPixPerSecond;
         timePos += 1.f;
         if(timePos > 10)
             DBG(timePos);
@@ -53,5 +52,6 @@ void TimeRuler::resized()
 //========================
 void TimeRuler::updateZoomState()
 {
+    currentPixPerSecond = viewSection.getZoomState().getPixelsPerSecond();
     repaint();
 }

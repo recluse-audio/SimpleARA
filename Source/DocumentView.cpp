@@ -16,6 +16,9 @@
 #include "PlayheadMarker.h"
 #include "ARAViewSection.h"
 #include "RegionSequenceView.h"
+#include "TimeGrid.h"
+#include "PlayHeadOverlay.h"
+#include "ZoomState.h"
 //==============================================================================
 DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
 : araSection(section),
@@ -91,4 +94,10 @@ void DocumentView::updateZoomState()
     this->setSize(width, height);
     
     
+}
+
+//===============
+void DocumentView::clear()
+{
+    regionSequences.clear();
 }

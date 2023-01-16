@@ -12,7 +12,6 @@
 
 #include <JuceHeader.h>
 #include "UtilObjects.h"
-#include "ZoomStateOwner.h"
 
 class SimpleARAEditor;
 class WaveformCache;
@@ -30,7 +29,7 @@ class ARAViewSection;
 class DocumentView  : public juce::Component
 {
 public:
-	explicit DocumentView (ARAViewSection& viewSection, juce::ARADocument& document);
+	DocumentView (ARAViewSection& viewSection, juce::ARADocument& document);
 
 	~DocumentView() override;
 
@@ -43,10 +42,7 @@ public:
     void updateViewSelection();
     void updatePlayheadPosition(double positionInSeconds);
     
-    void clear()
-    {
-        regionSequences.clear();
-    }
+    void clear();
     
     void addRegionSequence(juce::ARARegionSequence* newSequence)
     {
@@ -60,7 +56,6 @@ private:
 	juce::ARADocument& araDocument;
     ZoomState& zoomState;
 	
-    std::unique_ptr<PlayheadOverlay> playheadOverlay;
     std::unique_ptr<TimeGrid> timeGrid;
     std::unique_ptr<PlayheadMarker> playheadMarker;
     

@@ -13,7 +13,7 @@
 #include "ARA_PlaybackRegion.h"
 #include "GlobalDefines.h"
 #include "PluginEditor.h"
-
+#include "ZoomState.h"
 //==============================================================================
 RegionSequenceView::RegionSequenceView(ARAViewSection& section, juce::ARARegionSequence& sequence) :
 araSection(section)
@@ -123,7 +123,8 @@ void RegionSequenceView::updateZoomState()
 
 void RegionSequenceView::_createAndAddPlaybackRegionView(juce::ARAPlaybackRegion *region)
 {
-    auto regionView = new PlaybackRegionView(araSection, *region);
+    auto pRegion = dynamic_cast<ARA_PlaybackRegion*>(region);
+    auto regionView = new PlaybackRegionView(araSection, *pRegion);
     
     // don't re-add an existing view.  Happens due to weird timing of calls to ara listeners in different hosts
     if(playbackRegionViews.contains(regionView))

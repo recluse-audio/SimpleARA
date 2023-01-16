@@ -12,15 +12,12 @@
 
 #include <JuceHeader.h>
 #include "MultiTrackObjectBase.h"
-#include "ZoomStateOwner.h"
 #include "ARAViewSection.h"
 
-class ZoomState;
 //==============================================================================
 /*
 */
 class TimeRuler  : public juce::Component
-, public ZoomStateOwner
 {
 public:
     TimeRuler(ARAViewSection& section);
@@ -33,5 +30,7 @@ public:
     
 private:
     ARAViewSection& viewSection;
+    
+    double currentPixPerSecond = 0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeRuler)
 };

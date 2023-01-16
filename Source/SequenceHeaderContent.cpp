@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "SequenceHeaderContent.h"
 #include "SequenceHeader.h"
+#include "ZoomState.h"
 //==============================================================================
 SequenceHeaderContent::SequenceHeaderContent(ARAViewSection& section, juce::ARADocument& document)
 : araSection(section)

@@ -19,23 +19,22 @@
 #include "MultiTrackTimeline.h"
 #include "TrackLane.h"
 #include "TimeRuler.h"
+#include "SequenceHeader.h"
 #include "SequenceHeaderContent.h"
+#include "RegionSequenceView.h"
 //==============================================================================
 ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 , playheadState(editor.getPlayHeadState())
 {
     waveCache = std::make_unique<WaveformCache>();
     
-    timeRulerContent = std::make_unique<TimeRuler>();
+    timeRulerContent = std::make_unique<TimeRuler>(*this);
     timeRulerViewport = std::make_unique<juce::Viewport>();
     timeRulerViewport->setViewedComponent(timeRulerContent.get());
     addAndMakeVisible(timeRulerViewport.get());
     
     
-    headerContent = std::make_unique<SequenceHeaderContent>();
-    headerViewport = std::make_unique<juce::Viewport>();
-    headerViewport->setViewedComponent(headerContent.get());
-    addAndMakeVisible(headerViewport.get());
+
     
     
     auto document = mEditor.getARADocument();
@@ -59,11 +58,15 @@ void ARAViewSection::_initializeViews(juce::ARADocument* document)
 {
     auto docSpecialisation = mEditor.getARADocumentSpecialisation();
 
-    documentContent = std::make_unique<DocumentView> (mEditor, *document, *waveCache.get() );
+    documentContent = std::make_unique<DocumentView> (*this, *document);
     documentViewport = std::make_unique<juce::Viewport>();
     documentViewport->setViewedComponent(documentContent.get());
     addAndMakeVisible(documentViewport.get());
     
+    headerContent = std::make_unique<SequenceHeaderContent>(*this, *document);
+    headerViewport = std::make_unique<juce::Viewport>();
+    headerViewport->setViewedComponent(headerContent.get());
+    addAndMakeVisible(headerViewport.get());
 //
 //    /** TO DO : make regionZero into the last selected region */
 //    auto regionZero = static_cast<ARA_PlaybackRegion*>(docSpecialisation->getRegionAtIndex(0));
@@ -183,8 +186,8 @@ void ARAViewSection::rebuildFromDocument()
     headerContent.reset();
     documentContent.reset();
     
-    headerContent = std::make_unique<SequenceHeaderContent>(this, *mEditor.getARADocument());
-    documentContent = std::make_unique<DocumentView>(this, *mEditor.getARADocument());
+    headerContent = std::make_unique<SequenceHeaderContent>(*this, *mEditor.getARADocument());
+    documentContent = std::make_unique<DocumentView>(*this, *mEditor.getARADocument());
     
     headerViewport->setViewedComponent(headerContent.get());
     documentViewport->setViewedComponent(documentContent.get());

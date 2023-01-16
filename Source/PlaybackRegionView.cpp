@@ -23,6 +23,7 @@
 #include "HelperDisplay.h"
 #include "PluginProcessor.h"
 #include "ARA_AudioMod.h"
+#include "ZoomState.h"
 
 //==============================================================================
 PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegion& region)
@@ -30,15 +31,15 @@ PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegi
 , playbackRegion(region)
 {
 	
-	auto* audioSource = playbackRegion.getAudioModification()->getAudioSource();
+	// auto* audioSource = playbackRegion.getAudioModification()->getAudioSource();
 
-	//waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
+	// waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
 	
 	
-	audioSourceView = std::make_unique<AudioSourceView>(araSection, region.getAudioModification()->getAudioSource());
+	audioSourceView = std::make_unique<AudioSourceView>(araSection, *region.getAudioModification()->getAudioSource());
 	addAndMakeVisible(audioSourceView.get());
 	
-	audioModView = std::make_unique<AudioModView>(araSection, playbackRegion);
+	audioModView = std::make_unique<AudioModView>(araSection, *region.getAudioModification<ARA_AudioMod>());
 	addAndMakeVisible(audioModView.get());
 	
 	activeRegionView = std::make_unique<ActiveRegionView>(araSection, playbackRegion);
