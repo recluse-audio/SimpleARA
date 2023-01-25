@@ -12,6 +12,7 @@
 #include "DocumentView.h"
 #include "PluginEditor.h"
 #include "ARA_PlaybackRegion.h"
+#include "ARA_RegionSequence.h"
 #include "WaveformCache.h"
 #include "PlayheadMarker.h"
 #include "ARAViewSection.h"
@@ -21,16 +22,14 @@
 #include "ZoomState.h"
 //==============================================================================
 DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
-: araSection(section),
-araDocument (document),
-zoomState(section.getZoomState())
+: ARAView(section)
+, araDocument (document)
 {
     playheadMarker = std::make_unique<PlayheadMarker>();
     playheadMarker->setAlwaysOnTop(true);
     addAndMakeVisible(playheadMarker.get());
 
-	updateZoomState();
-    //araDocument.addListener(this);
+    section.addChangeListener(this);
 }
 
 DocumentView::~DocumentView()
@@ -59,6 +58,7 @@ void DocumentView::paint (juce::Graphics& g)
 
 void DocumentView::resized()
 {
+	auto regionSequences = araDocument.getRegionSequences<ARA_RegionSequence*>();
     for(size_t i = 0; i < regionSequences.size(); i++)
     {
         auto yPos = i * zoomState.getTrackHeight();
@@ -82,10 +82,7 @@ void DocumentView::updatePlayheadPosition(double positionInSeconds)
 //===============
 void DocumentView::updateZoomState()
 {
-    for(auto sequence : regionSequences)
-    {
-        sequence->updateZoomState();
-    }
+	auto regionSequences = araDocument.getRegionSequences();
     
     auto width = this->_getMaxDuration() * zoomState.getPixelsPerSecond();
 	
@@ -103,7 +100,7 @@ void DocumentView::updateZoomState()
 //===============
 void DocumentView::clear()
 {
-    regionSequences.clear();
+
 }
 
 //================
@@ -111,12 +108,7 @@ void DocumentView::addRegionSequence(juce::ARARegionSequence *newSequence)
 {
 	auto sequenceView = new RegionSequenceView(araSection, *newSequence);
 	
-	// don't re-add an existing view.  Happens due to weird timing of calls to ara listeners in different hosts
-	if(regionSequences.contains(sequenceView))
-		return;
-	
 	addAndMakeVisible(sequenceView);
-	regionSequences.add(sequenceView);
 	
 	updateZoomState();
 }

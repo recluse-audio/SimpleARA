@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "UtilObjects.h"
+#include "ARAView.h"
 
 class SimpleARAEditor;
 class WaveformCache;
@@ -26,7 +27,7 @@ class ARAViewSection;
 /*
     This class is for the timeline and can scroll horizontally and vertically.  
 */
-class DocumentView  : public juce::Component
+class DocumentView  : public ARAView
 {
 public:
 	DocumentView (ARAViewSection& viewSection, juce::ARADocument& document);
@@ -49,18 +50,17 @@ public:
     void updateZoomState(); // rename this to update size?
 	
 	double getDuration() const;
+	
+	// Used to call updateZoomState when it has changed in the ARA 
+	void changeListenerCallback (juce::ChangeBroadcaster* source) override;
 
 private:
-    ARAViewSection& araSection;
 	juce::ARADocument& araDocument;
-    ZoomState& zoomState;
 	
     std::unique_ptr<TimeGrid> timeGrid;
     std::unique_ptr<PlayheadMarker> playheadMarker;
     
-	
-    juce::OwnedArray<RegionSequenceView> regionSequences;
-    
+	    
     double playheadPos = 0.0;
     
     /** Get duration of longest region sequence */

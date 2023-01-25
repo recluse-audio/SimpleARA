@@ -80,6 +80,7 @@
                 file="Source/SequenceHeaderContent.h"/>
         </GROUP>
         <GROUP id="{F39CCB1F-5DC6-FE16-AD40-56645A1FB87F}" name="ARAObjectViews">
+          <FILE id="cG1CsD" name="ARAView.h" compile="0" resource="0" file="Source/ARAView.h"/>
           <FILE id="wYA3Hk" name="AudioSourceView.cpp" compile="1" resource="0"
                 file="Source/AudioSourceView.cpp"/>
           <FILE id="cOXNAH" name="AudioSourceView.h" compile="0" resource="0"
@@ -138,6 +139,10 @@
               file="Source/ARA_PlaybackRenderer.cpp"/>
         <FILE id="RM9foq" name="ARA_PlaybackRenderer.h" compile="0" resource="0"
               file="Source/ARA_PlaybackRenderer.h"/>
+        <FILE id="bIlYO5" name="ARA_RegionSequence.cpp" compile="1" resource="0"
+              file="Source/ARA_RegionSequence.cpp"/>
+        <FILE id="fmpUwA" name="ARA_RegionSequence.h" compile="0" resource="0"
+              file="Source/ARA_RegionSequence.h"/>
       </GROUP>
       <FILE id="ceVH1S" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

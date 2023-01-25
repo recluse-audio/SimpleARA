@@ -27,6 +27,7 @@ class PlayHeadState;
 class ARAViewSection  : public juce::Component
 , public juce::Timer
 , public juce::ARADocument::Listener
+, public juce::ChangeBroadcaster
 {
 public:
     ARAViewSection(SimpleARAEditor& mEditor);

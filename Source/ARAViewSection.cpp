@@ -134,9 +134,7 @@ void ARAViewSection::setRegionFocus()
 //=======================
 void ARAViewSection::_updateZoomState()
 {
-    timeRulerContent->updateZoomState();
-    headerContent->updateZoomState();
-    documentContent->updateZoomState();
+	sendChangeMessage();
 
 
 }
