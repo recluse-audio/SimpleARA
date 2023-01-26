@@ -34,6 +34,7 @@ class ARA_PlaybackRegion;
 */
 class PlaybackRegionView : public juce::Component
 , private juce::ARAPlaybackRegion::Listener
+, public juce::ChangeListener
 {
 public:
 	PlaybackRegionView (ARAViewSection& section, ARA_PlaybackRegion& region);
@@ -57,6 +58,8 @@ public:
 	void resetGlobalAddressLabel();
 	
     void updateZoomState();
+
+	void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
 private:
     ARA_PlaybackRegion& playbackRegion;

@@ -21,6 +21,7 @@ araSection(section)
 , zoomState(section.getZoomState())
 {
 	regionSequence.addListener (this);
+	araSection.addChangeListener(this);
 
     rebuild();
 
@@ -131,6 +132,13 @@ void RegionSequenceView::_clearRegionViews()
 }
 
 
+//==================
+void RegionSequenceView::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+	if(source == &araSection)
+		updateZoomState();
+}
+
 
 //==============================================================================
 // ARA Document change callback overrides
@@ -162,4 +170,11 @@ void RegionSequenceView::willUpdatePlaybackRegionProperties (juce::ARAPlaybackRe
 void RegionSequenceView::didUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion*)
 {
 	_updateEndOfLastRegion();
+}
+
+
+//======================
+int RegionSequenceView::getOrderIndex() const
+{
+	return regionSequence.getOrderIndex();
 }

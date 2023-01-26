@@ -23,8 +23,8 @@ class ARA_RegionSequence : public juce::ARARegionSequence
 public:
 	using juce::ARARegionSequence::ARARegionSequence;
 	
-	
-	double getEndPositionInSeconds() const;
+	// returns the playbacktime position of the end of the last region in this region sequence in seconds
+	double getEndOfLastRegion() const;
 	void setView(RegionSequenceView* view);
 private:
 	juce::WeakReference<RegionSequenceView> mView;

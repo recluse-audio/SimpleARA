@@ -22,8 +22,9 @@
 #include "ZoomState.h"
 //==============================================================================
 DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
-: ARAView(section)
+: araSection(section)
 , araDocument (document)
+, zoomState(section.getZoomState())
 {
     playheadMarker = std::make_unique<PlayheadMarker>();
     playheadMarker->setAlwaysOnTop(true);
@@ -58,12 +59,20 @@ void DocumentView::paint (juce::Graphics& g)
 
 void DocumentView::resized()
 {
-	auto regionSequences = araDocument.getRegionSequences<ARA_RegionSequence*>();
-    for(size_t i = 0; i < regionSequences.size(); i++)
-    {
-        auto yPos = i * zoomState.getTrackHeight();
-        regionSequences[i]->setTopLeftPosition(0, yPos);
-    }
+	auto regionSequences = araDocument.getRegionSequences<ARA_RegionSequence>();
+	auto childComponents = this->getChildren();
+	for(auto child : childComponents)
+	{
+		auto sequenceView = dynamic_cast<RegionSequenceView*>(child);
+		if(!sequenceView)
+			return;
+		
+		int index = sequenceView->getOrderIndex();
+		auto yPos = index * zoomState.getTrackHeight();
+		sequenceView->setTopLeftPosition(0, yPos);
+		
+	}
+
 	repaint();
 }
 
@@ -125,6 +134,8 @@ double DocumentView::_getMaxDuration() const
 {
 	double maxDuration = 120.0;  //
 	
+	auto regionSequences = araDocument.getRegionSequences<ARA_RegionSequence>();
+	
 	/** Region sequences don't return end positions, probably should subclass that, for now ask the component view of it*/
 	for(auto sequence : regionSequences)
 	{
@@ -132,4 +143,11 @@ double DocumentView::_getMaxDuration() const
 			maxDuration = sequence->getEndOfLastRegion();
 	}
 	return maxDuration;
+}
+
+
+void DocumentView::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+	if(source == &araSection)
+		updateZoomState();
 }

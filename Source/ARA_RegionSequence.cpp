@@ -9,10 +9,9 @@
 */
 
 #include "ARA_RegionSequence.h"
-#include "RegionSequenceView.h"
 #include "SequenceHeader.h"
 
-double ARA_RegionSequence::getEndPositionInSeconds() const
+double ARA_RegionSequence::getEndOfLastRegion() const
 {
 	double endPos = 0.0;
 	auto regions = this->getPlaybackRegions();
@@ -26,7 +25,3 @@ double ARA_RegionSequence::getEndPositionInSeconds() const
 }
 
 //==================
-void ARA_RegionSequence::setView(RegionSequenceView *view)
-{
-	mView = view;
-}

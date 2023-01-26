@@ -59,6 +59,7 @@ PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegi
     sliderAttachment = std::make_unique<Attachment>(audioMod->getValueTreeState(), "GAIN", *slider.get());
     
 	playbackRegion.addListener(this);
+	araSection.addChangeListener(this);
 	
 	updateZoomState();
 	
@@ -101,6 +102,11 @@ void PlaybackRegionView::resized()
 }
 
 
+void PlaybackRegionView::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+	if(source == &araSection)
+		updateZoomState();
+}
 
 //-------------------------------------
 void PlaybackRegionView::_updateRegionBounds()

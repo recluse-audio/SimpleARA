@@ -22,8 +22,8 @@ class SimpleARAEditor;
 */
 class RegionSequenceView : public juce::Component,
 public juce::ARARegionSequence::Listener,
-public juce::ChangeBroadcaster,
-private juce::ARAPlaybackRegion::Listener
+private juce::ARAPlaybackRegion::Listener,
+public juce::ChangeListener
 {
 public:
 	RegionSequenceView (ARAViewSection& viewSection, juce::ARARegionSequence& sequence);
@@ -49,6 +49,10 @@ public:
     // clears out existing views, removing them as child components and deleting them, then re-adding them from the araDoc
     void rebuild();
 
+	void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+	
+	int getOrderIndex() const;
+	
 private:
     ARAViewSection& araSection;
     juce::ARARegionSequence& regionSequence;

@@ -27,7 +27,8 @@ class ARAViewSection;
 /*
     This class is for the timeline and can scroll horizontally and vertically.  
 */
-class DocumentView  : public ARAView
+class DocumentView  : public juce::Component,
+public juce::ChangeListener
 {
 public:
 	DocumentView (ARAViewSection& viewSection, juce::ARADocument& document);
@@ -51,10 +52,11 @@ public:
 	
 	double getDuration() const;
 	
-	// Used to call updateZoomState when it has changed in the ARA 
-	void changeListenerCallback (juce::ChangeBroadcaster* source) override;
+	void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
 private:
+	ARAViewSection& araSection;
+	ZoomState& zoomState;
 	juce::ARADocument& araDocument;
 	
     std::unique_ptr<TimeGrid> timeGrid;

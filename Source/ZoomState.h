@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
 
 //=========================
 /**
@@ -20,7 +21,7 @@
 	
 	TO DO: Consider making this into a ChangeBroadcaster and the objects listeners
  */
-class ZoomState 
+class ZoomState
 {
 public:
 	
@@ -81,6 +82,12 @@ public:
     }
     
 
+	void copy(ZoomState& stateToCopy)
+	{
+		this->_updateTrackHeight(stateToCopy.getTrackHeight());
+		this->_updatePixelsPerSecond(stateToCopy.getPixelsPerSecond());
+	}
+	
     
 	//====================
 	int getPixelsPerSecond() const
@@ -108,12 +115,7 @@ public:
     }
     
     
-    void copy(ZoomState& stateToCopy)
-    {
-        this->_updateTrackHeight(stateToCopy.getTrackHeight());
-        this->_updatePixelsPerSecond(stateToCopy.getPixelsPerSecond());
-    }
-    
+
     
 private:
 	static constexpr auto minZoom = 1.0;
