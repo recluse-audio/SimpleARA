@@ -44,7 +44,7 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     if(document != nullptr)
         _initializeViews(document);
 	
-	zoomControls = std::make_unique<ZoomControls>();
+	zoomControls = std::make_unique<ZoomControls>(*zoomState.get());
 	addAndMakeVisible(zoomControls.get());
 
     

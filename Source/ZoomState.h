@@ -51,10 +51,16 @@ public:
     }
     
     //===================
-    void increaseHorizontalZoom(double widthFactor)
+	// Passing 0.1 will increase horizontal zoom by 10%.  10% more pixels per second
+	// passing -0.1 will decrease horizontal zoom by 10%   10% fewer pixels per second
+    void transformHorizontalZoomByPercent(double widthTransformPercent)
     {
-        mWidthFactor = jlimit ( minZoom, maxZoom, mWidthFactor * widthFactor);
+		auto transformedWidthFactor = mWidthFactor * ( 1.0 + widthTransformPercent );
+		
+        mWidthFactor = jlimit ( minZoom, maxZoom, transformedWidthFactor);
+		
         auto pixelsPerSecond = basePixelsPerSecond * mWidthFactor;
+		
         this->_updatePixelsPerSecond(pixelsPerSecond);
     }
 	
@@ -137,6 +143,7 @@ private:
     {
         currentPixelsPerSecond = pixPerSecond;
         mWidthFactor = currentPixelsPerSecond / basePixelsPerSecond;
+		sendChangeMessage();
     }
     
     //====================
@@ -145,5 +152,6 @@ private:
     {
         currentTrackHeight = trackHeight;
         mHeightFactor = currentTrackHeight / baseTrackHeight;
+		sendChangeMessage();
     }
 };

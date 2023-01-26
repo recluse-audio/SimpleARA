@@ -136,7 +136,7 @@ void RegionSequenceView::_clearRegionViews()
 //==================
 void RegionSequenceView::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-	if(source == &araSection)
+	if(source == &zoomState)
 		updateZoomState();
 }
 

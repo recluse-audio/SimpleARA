@@ -149,6 +149,6 @@ double DocumentView::_getMaxDuration() const
 
 void DocumentView::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-	if(source == &araSection)
+	if(source == &zoomState)
 		updateZoomState();
 }

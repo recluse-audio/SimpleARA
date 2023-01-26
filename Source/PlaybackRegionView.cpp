@@ -106,7 +106,7 @@ void PlaybackRegionView::resized()
 
 void PlaybackRegionView::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-	if(source == &araSection)
+	if(source == &zoomState)
 		updateZoomState();
 }
 
