@@ -29,12 +29,12 @@
 PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegion& region)
 : araSection(section)
 , playbackRegion(region)
+, zoomState(araSection.getZoomState())
 {
 	
 	// auto* audioSource = playbackRegion.getAudioModification()->getAudioSource();
 
 	// waveformCache.getOrCreateThumbnail (audioSource).addChangeListener (this);
-	
 	
 	audioSourceView = std::make_unique<AudioSourceView>(araSection, *region.getAudioModification()->getAudioSource());
 	addAndMakeVisible(audioSourceView.get());
@@ -59,8 +59,8 @@ PlaybackRegionView::PlaybackRegionView(ARAViewSection& section, ARA_PlaybackRegi
     sliderAttachment = std::make_unique<Attachment>(audioMod->getValueTreeState(), "GAIN", *slider.get());
     
 	playbackRegion.addListener(this);
-	araSection.addChangeListener(this);
-	
+	zoomState.addChangeListener(this);
+
 	updateZoomState();
 	
 }
@@ -72,6 +72,8 @@ PlaybackRegionView::~PlaybackRegionView()
 //		.removeChangeListener (this);
 	
 	playbackRegion.removeListener(this);
+	zoomState.removeChangeListener(this);
+
 }
 
 

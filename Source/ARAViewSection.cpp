@@ -22,6 +22,7 @@
 #include "SequenceHeader.h"
 #include "SequenceHeaderContent.h"
 #include "RegionSequenceView.h"
+#include "ZoomControls.h"
 //==============================================================================
 ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 , playheadState(editor.getPlayHeadState())
@@ -42,6 +43,9 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     
     if(document != nullptr)
         _initializeViews(document);
+	
+	zoomControls = std::make_unique<ZoomControls>();
+	addAndMakeVisible(zoomControls.get());
 
     
     _rebuildFromDocument();
@@ -93,6 +97,8 @@ void ARAViewSection::resized()
     headerViewport->setBounds   (0, timeRulerHeight, headerWidth, heightMinusRuler);
     timeRulerViewport->setBounds(headerWidth, 0, widthMinusHeader, timeRulerHeight);
     documentViewport->setBounds(headerWidth, timeRulerHeight, widthMinusHeader, heightMinusRuler);
+	
+	zoomControls->setBounds(localWidth - 100, localHeight - 40, 90, 30);
 
 }
 

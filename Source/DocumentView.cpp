@@ -30,13 +30,14 @@ DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
     playheadMarker->setAlwaysOnTop(true);
     addAndMakeVisible(playheadMarker.get());
 
-    section.addChangeListener(this);
+    zoomState.addChangeListener(this);
 }
 
 DocumentView::~DocumentView()
 {
     timeGrid.release();
     playheadMarker.release();
+	zoomState.removeChangeListener(this);
 }
 
 

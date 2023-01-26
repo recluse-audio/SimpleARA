@@ -21,7 +21,7 @@ araSection(section)
 , zoomState(section.getZoomState())
 {
 	regionSequence.addListener (this);
-	araSection.addChangeListener(this);
+	zoomState.addChangeListener(this);
 
     rebuild();
 
@@ -34,6 +34,7 @@ araSection(section)
 RegionSequenceView::~RegionSequenceView()
 {
 	regionSequence.removeListener (this);
+	araSection.removeChangeListener(this);
 
 
 }

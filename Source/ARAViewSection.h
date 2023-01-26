@@ -20,6 +20,7 @@ class SequenceHeaderContent;
 class TimeRuler;
 class ZoomState;
 class PlayHeadState;
+class ZoomControls;
 //==============================================================================
 /*
     Currently trying method where entire document is plotted on region or sequence focus is accompolished simply by zooming the viewport the relevant area.  I don't think the invisible parts of a viewport are rendered so I think this is ok
@@ -80,6 +81,7 @@ private:
     std::unique_ptr<juce::Viewport> timeRulerViewport;
     std::unique_ptr<TimeRuler> timeRulerContent;
     
+	std::unique_ptr<ZoomControls> zoomControls;
 	//
     void _initializeViews(juce::ARADocument* document);
 	

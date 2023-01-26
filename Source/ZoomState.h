@@ -21,7 +21,7 @@
 	
 	TO DO: Consider making this into a ChangeBroadcaster and the objects listeners
  */
-class ZoomState
+class ZoomState : public juce::ChangeBroadcaster
 {
 public:
 	

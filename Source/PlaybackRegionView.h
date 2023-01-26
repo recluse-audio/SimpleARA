@@ -64,6 +64,7 @@ public:
 private:
     ARA_PlaybackRegion& playbackRegion;
     ARAViewSection& araSection;
+	ZoomState& zoomState;
     
 	std::unique_ptr<ActiveRegionView> activeRegionView;
 	std::unique_ptr<AudioModView> audioModView;
