@@ -35,12 +35,14 @@ DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
 
 DocumentView::~DocumentView()
 {
+	sequenceViews.clear();
     timeGrid.release();
     playheadMarker.release();
 	zoomState.removeChangeListener(this);
 }
 
 
+//=================
 void DocumentView::paint (juce::Graphics& g)
 {
 	g.fillAll(juce::Colours::grey);
@@ -58,26 +60,41 @@ void DocumentView::paint (juce::Graphics& g)
 					  1);
 }
 
+
+//=================
 void DocumentView::resized()
 {
-	auto regionSequences = araDocument.getRegionSequences<ARA_RegionSequence>();
-	auto childComponents = this->getChildren();
-	for(auto child : childComponents)
+	
+	for(auto sequenceView : sequenceViews)
 	{
-		auto sequenceView = dynamic_cast<RegionSequenceView*>(child);
-		if(!sequenceView)
-			return;
-		
 		int index = sequenceView->getOrderIndex();
 		auto yPos = index * zoomState.getTrackHeight();
 		sequenceView->setTopLeftPosition(0, yPos);
-		
 	}
 
 	repaint();
 }
 
 
+//===============
+void DocumentView::updateZoomState()
+{
+	auto regionSequences = araDocument.getRegionSequences();
+	
+	auto width = this->_getMaxDuration() * zoomState.getPixelsPerSecond();
+	
+	int sequenceCount = sequenceViews.size();
+	int minimum = 12; // even with 0 sequences we will still want the doc view to be a certain height
+	int numSequences = ( sequenceCount > minimum) ? sequenceCount : minimum;
+			
+	auto height = numSequences * zoomState.getTrackHeight();
+	
+	this->setSize(width, height);
+	
+	
+}
+
+//================
 void DocumentView::updatePlayheadPosition(double positionInSeconds)
 {
     auto proportionOfDuration = positionInSeconds / _getMaxDuration();
@@ -89,23 +106,7 @@ void DocumentView::updatePlayheadPosition(double positionInSeconds)
 
 
 
-//===============
-void DocumentView::updateZoomState()
-{
-	auto regionSequences = araDocument.getRegionSequences();
-    
-    auto width = this->_getMaxDuration() * zoomState.getPixelsPerSecond();
-	
-	int sequenceCount = regionSequences.size();
-	int minimum = 12; // even with 0 sequences we will still want the doc view to be a certain height
-	int numSequences = ( sequenceCount > minimum) ? sequenceCount : minimum;
-			
-    auto height = numSequences * zoomState.getTrackHeight();
-    
-    this->setSize(width, height);
-    
-    
-}
+
 
 //===============
 void DocumentView::clear()
@@ -119,6 +120,8 @@ void DocumentView::addRegionSequence(juce::ARARegionSequence *newSequence)
 	auto sequenceView = new RegionSequenceView(araSection, *newSequence);
 	
 	addAndMakeVisible(sequenceView);
+	
+	sequenceViews.add(sequenceView);
 	
 	updateZoomState();
 }

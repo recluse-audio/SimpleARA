@@ -62,7 +62,8 @@ private:
     std::unique_ptr<TimeGrid> timeGrid;
     std::unique_ptr<PlayheadMarker> playheadMarker;
     
-	    
+	juce::OwnedArray<RegionSequenceView> sequenceViews;
+	
     double playheadPos = 0.0;
     
     /** Get duration of longest region sequence */
