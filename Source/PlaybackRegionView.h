@@ -60,6 +60,17 @@ public:
     void updateZoomState();
 
 	void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+	
+	/** Time range for the playback region in the DAWs timeline, but only the active portion of the region*/
+	juce::Range<double> getActiveRegionTimeRange() const;
+
+	/**
+	 Time range for the playback region in the DAWs timeline if it were the full length of the audio source
+		Note: this can hypothetically return a negative start position if the full audio source would extend to before DAW position 0
+		Some hosts may even allow the active regions to exist at a negative time position.
+		--Joys of ARA baby
+	 */
+	juce::Range<double> getFullRegionTimeRange() const;
 
 private:
     ARA_PlaybackRegion& playbackRegion;

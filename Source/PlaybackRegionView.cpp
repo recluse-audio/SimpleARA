@@ -172,3 +172,19 @@ void PlaybackRegionView::updateZoomState()
     
     this->setSize(width, height);
 }
+
+
+//=============
+juce::Range<double> PlaybackRegionView::getActiveRegionTimeRange() const
+{
+	auto start = playbackRegion.getStartInPlaybackTime();
+	auto end = playbackRegion.getEndInPlaybackTime();
+	return juce::Range<double>(start, end);
+}
+
+
+//=============
+juce::Range<double> PlaybackRegionView::getFullRegionTimeRange() const
+{
+	return playbackRegion.getFullRegionTimeRange();
+}

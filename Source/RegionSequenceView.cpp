@@ -56,6 +56,12 @@ void RegionSequenceView::paint(juce::Graphics &g)
 void RegionSequenceView::resized()
 {
 
+	for(auto regionView : playbackRegionViews)
+	{
+		auto regionTimeRange = regionView->getFullRegionTimeRange();
+		auto startPixel = regionTimeRange.getStart() * zoomState.getPixelsPerSecond();
+		regionView->setTopLeftPosition(startPixel, 0);
+	}
 }
 
 //=================
@@ -117,6 +123,7 @@ void RegionSequenceView::_createAndAddPlaybackRegionView(juce::ARAPlaybackRegion
     
     this->addAndMakeVisible(regionView);
     playbackRegionViews.add(regionView);
+	resized();
     
 }
 
