@@ -47,6 +47,9 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 	zoomControls = std::make_unique<ZoomControls>(*zoomState.get());
 	addAndMakeVisible(zoomControls.get());
 
+	vertZoomControls = std::make_unique<ZoomControls>(*zoomState.get());
+	vertZoomControls->setVertical(true);
+	addAndMakeVisible(vertZoomControls.get());
     
     _rebuildFromDocument();
     
@@ -99,7 +102,7 @@ void ARAViewSection::resized()
     documentViewport->setBounds(headerWidth, timeRulerHeight, widthMinusHeader, heightMinusRuler);
 	
 	zoomControls->setBounds(localWidth - 100, localHeight - 40, 90, 30);
-
+	vertZoomControls->setBounds(localWidth - 40, localHeight - 140, 30, 90);
 }
 
 //========================

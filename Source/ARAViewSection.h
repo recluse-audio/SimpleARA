@@ -82,6 +82,8 @@ private:
     std::unique_ptr<TimeRuler> timeRulerContent;
     
 	std::unique_ptr<ZoomControls> zoomControls;
+	std::unique_ptr<ZoomControls> vertZoomControls;
+
 	//
     void _initializeViews(juce::ARADocument* document);
 	

@@ -64,6 +64,18 @@ public:
         this->_updatePixelsPerSecond(pixelsPerSecond);
     }
 	
+	//====================
+	void transformVerticalZoomByPercent(double transformPercent)
+	{
+		auto transformedHeightFactor = mHeightFactor * ( 1.0 + transformPercent );
+		
+		mHeightFactor = jlimit ( minZoom, maxZoom, transformedHeightFactor);
+		
+		auto trackHeight = baseTrackHeight * mHeightFactor;
+		
+		this->_updateTrackHeight(trackHeight);
+	}
+	
     //====================
     void setHorizontalZoom(double widthFactor)
     {

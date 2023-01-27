@@ -42,16 +42,35 @@ public:
     
     void resized() override
     {
-        zoomInButton->setBoundsRelative(0.55f, 0.f, 0.35f, 1.f);
-        zoomOutButton->setBoundsRelative(0.1, 0.f, 0.35f, 1.f);
+		if(isVertical)
+		{
+			zoomInButton->setBoundsRelative(0.f, 0.1f, 1.f, 0.35f);
+			zoomOutButton->setBoundsRelative(0.f, 0.55f, 1.f, 0.35f);
+		}
+		else
+		{
+			zoomInButton->setBoundsRelative(0.55f, 0.f, 0.35f, 1.f);
+			zoomOutButton->setBoundsRelative(0.1, 0.f, 0.35f, 1.f);
+		}
+
     }
 	
 	void buttonClicked(juce::Button* button) override
 	{
 		if(button == zoomInButton.get())
-			zoomState.transformHorizontalZoomByPercent(0.1);
+		{
+			if(isVertical)
+				zoomState.transformVerticalZoomByPercent(0.1);
+			else
+				zoomState.transformHorizontalZoomByPercent(0.1);
+		}
 		if(button == zoomOutButton.get())
-			zoomState.transformHorizontalZoomByPercent(-0.1);
+		{
+			if(isVertical)
+				zoomState.transformVerticalZoomByPercent(-0.1);
+			else
+				zoomState.transformHorizontalZoomByPercent(-0.1);
+		}
 	}
 
 private:
