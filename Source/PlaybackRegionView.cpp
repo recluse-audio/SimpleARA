@@ -166,7 +166,7 @@ void PlaybackRegionView::didUpdatePlaybackRegionProperties(juce::ARAPlaybackRegi
 //==============
 void PlaybackRegionView::updateZoomState()
 {
-    auto duration = playbackRegion.getDurationInPlaybackTime();
+    auto duration = playbackRegion.getAudioSourceDuration();
     auto width = duration * araSection.getZoomState().getPixelsPerSecond();
     auto height = araSection.getZoomState().getTrackHeight();
     

@@ -28,6 +28,7 @@ class ZoomControls;
 class ARAViewSection  : public juce::Component
 , public juce::Timer
 , public juce::ARADocument::Listener
+, public juce::ScrollBar::Listener
 , public juce::ChangeBroadcaster
 {
 public:
@@ -43,6 +44,8 @@ public:
     void didAddRegionSequenceToDocument (juce::ARADocument* doc, juce::ARARegionSequence* sequence) override;
 	void didEndEditing(juce::ARADocument* doc) override;
 	
+	void scrollBarMoved (juce::ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
+
 
 	
     // Sets which ARA view will be in focus
@@ -51,6 +54,7 @@ public:
     void setSequenceFocus();
     void setRegionFocus();
 	
+
 	void setViewportTimeRange(double startInSeconds, double durationInSeconds);
 	void setViewportEndPos(double endInSeconds);
 	double getDuration() const;
@@ -60,6 +64,7 @@ public:
     ZoomState& getZoomState();
     SimpleARAEditor& getEditor();
     WaveformCache& getWaveCache();
+	
 private:
     SimpleARAEditor& mEditor;
     PlayHeadState& playheadState;

@@ -147,7 +147,7 @@ private:
     std::atomic<double> basePixelsPerSecond { 10.0 };  // Atleast 10 pixels per second
     std::atomic<double> currentPixelsPerSecond { 10.0 };
     
-    std::atomic<int> baseHeaderWidth { 60 }; // not really zoom related but shared in the same way... maybe don't put this here?
+    std::atomic<int> baseHeaderWidth { 90 }; // not really zoom related but shared in the same way... maybe don't put this here?
     std::atomic<int> baseTimeRulerHeight { 30 };
     
     //====================

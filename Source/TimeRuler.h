@@ -11,13 +11,12 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "MultiTrackObjectBase.h"
 #include "ARAViewSection.h"
-
 //==============================================================================
 /*
 */
 class TimeRuler  : public juce::Component
+, public juce::ChangeListener
 {
 public:
     TimeRuler(ARAViewSection& section);
@@ -26,11 +25,13 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void updateZoomState();
+	void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+	
+	void updateZoomState();
     
 private:
     ARAViewSection& viewSection;
+	ZoomState& zoomState;
     
-    double currentPixPerSecond = 0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeRuler)
 };

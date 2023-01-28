@@ -27,15 +27,19 @@
 ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 , playheadState(editor.getPlayHeadState())
 {
+	// must initialize before all the views... don't like this, should change
+	zoomState = std::make_unique<ZoomState>();
+	
+	
     waveCache = std::make_unique<WaveformCache>();
     
     timeRulerContent = std::make_unique<TimeRuler>(*this);
     timeRulerViewport = std::make_unique<juce::Viewport>();
     timeRulerViewport->setViewedComponent(timeRulerContent.get());
+	timeRulerViewport->setScrollBarsShown(false, false);
     addAndMakeVisible(timeRulerViewport.get());
     
-    // must initialize before all the views... don't like this, should change
-	zoomState = std::make_unique<ZoomState>();
+
 
     
     
@@ -53,12 +57,17 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     
     _rebuildFromDocument();
     
+	documentViewport->getHorizontalScrollBar().addListener(this);
+	
+	zoomState->transformVerticalZoomByPercent(0.0);
     this->startTimerHz(60);
     
 }
 
 ARAViewSection::~ARAViewSection()
 {
+	documentViewport->getHorizontalScrollBar().removeListener(this);
+
 }
 
 void ARAViewSection::_initializeViews(juce::ARADocument* document)
@@ -243,7 +252,7 @@ void ARAViewSection::_updateViewport()
 	auto proportionX = viewportTimeRange.getStart() / documentContent->getDuration();
 	auto xPositionInContent = documentContent->getWidth() * proportionX;
 	documentViewport->setViewPosition(xPositionInContent, verticalScrollOffset);
-	documentViewport->setViewPosition(xPositionInContent, 0);
+	timeRulerViewport->setViewPosition(xPositionInContent, 0);
 	shouldUpdateViewport = false;
 }
 
@@ -251,4 +260,14 @@ void ARAViewSection::_updateViewport()
 double ARAViewSection::getDuration() const
 {
 	return documentContent->getDuration();
+}
+
+
+void ARAViewSection::scrollBarMoved(juce::ScrollBar *scrollBarThatHasMoved, double newRangeStart)
+{
+	if(scrollBarThatHasMoved == &documentViewport->getHorizontalScrollBar())
+	{
+		auto viewPosX = documentViewport->getViewPositionX();
+		timeRulerViewport->setViewPosition(viewPosX, 0);
+	}
 }

@@ -42,7 +42,7 @@ RegionSequenceView::~RegionSequenceView()
 void RegionSequenceView::paint(juce::Graphics &g)
 {
 	auto outline = this->getBounds();
-	g.setColour(juce::Colours::yellow.withAlpha(0.1f));
+	g.setColour(juce::Colours::yellow);
 	g.fillRect(outline);
 
 
@@ -90,6 +90,7 @@ void RegionSequenceView::rebuild()
 //=================
 void RegionSequenceView::updateZoomState()
 {
+	_updateEndOfLastRegion();
     auto width = getEndOfLastRegion() * zoomState.getPixelsPerSecond();
     auto height = zoomState.getTrackHeight();
     this->setSize(width, height);
@@ -161,6 +162,8 @@ void RegionSequenceView::didAddPlaybackRegionToRegionSequence (juce::ARARegionSe
 {
 	_createAndAddPlaybackRegionView (playbackRegion);
 	_updateEndOfLastRegion();
+	updateZoomState();
+
 }
 
 //=================
@@ -173,11 +176,13 @@ void RegionSequenceView::willDestroyPlaybackRegion (ARAPlaybackRegion* playbackR
 //=================
 void RegionSequenceView::willUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion* playbackRegion, juce::ARAPlaybackRegion::PropertiesPtr regionProperties)
 {
+
 }
 
 void RegionSequenceView::didUpdatePlaybackRegionProperties (juce::ARAPlaybackRegion*)
 {
-	_updateEndOfLastRegion();
+	updateZoomState();
+
 }
 
 
