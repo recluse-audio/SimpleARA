@@ -41,10 +41,12 @@ RegionSequenceView::~RegionSequenceView()
 
 void RegionSequenceView::paint(juce::Graphics &g)
 {
-	auto outline = this->getBounds();
-	g.setColour(juce::Colours::yellow);
-	g.fillRect(outline);
 
+	
+	auto bounds = this->getLocalBounds();
+	g.setColour(juce::Colours::mediumaquamarine.darker());
+	g.drawHorizontalLine(0, 0, bounds.getWidth());
+	g.drawHorizontalLine(bounds.getHeight() -1, 0, bounds.getWidth());
 
 	g.setColour (Colours::white);
 	g.setFont (15.0f);
@@ -59,8 +61,9 @@ void RegionSequenceView::resized()
 	for(auto regionView : playbackRegionViews)
 	{
 		auto regionTimeRange = regionView->getFullRegionTimeRange();
-		auto startPixel = regionTimeRange.getStart() * zoomState.getPixelsPerSecond();
-		regionView->setTopLeftPosition(startPixel, 0);
+		auto xPos = regionTimeRange.getStart() * zoomState.getPixelsPerSecond();
+		auto yPos = zoomState.getRegionOutlineWidth();
+		regionView->setTopLeftPosition(xPos, yPos);
 	}
 }
 
@@ -91,7 +94,7 @@ void RegionSequenceView::rebuild()
 void RegionSequenceView::updateZoomState()
 {
 	_updateEndOfLastRegion();
-    auto width = getEndOfLastRegion() * zoomState.getPixelsPerSecond();
+    auto width = araSection.getDuration() * zoomState.getPixelsPerSecond();
     auto height = zoomState.getTrackHeight();
     this->setSize(width, height);
 }

@@ -132,12 +132,21 @@ public:
         return baseTimeRulerHeight;
     }
     
-    
+    int getRegionHeight() const
+	{
+		return getTrackHeight() - (regionOutlineWidth * 2.0);
+	}
+	
+	int getRegionOutlineWidth() const
+	{
+		return (int)regionOutlineWidth;
+	}
 
     
 private:
 	static constexpr auto minZoom = 1.0;
 	static constexpr auto maxZoom = 32.0;
+	static constexpr auto regionOutlineWidth = 1.0; // num pixels outlining each region
 	std::atomic<double> mWidthFactor  { minZoom };
 	std::atomic<double> mHeightFactor { minZoom };
     

@@ -35,12 +35,12 @@ ActiveRegionView::~ActiveRegionView()
 
 void ActiveRegionView::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::grey);
+    g.fillAll(juce::Colours::mediumaquamarine.darker());
 
     if(playbackRegion.isCurrentlyInView())
         g.setColour(juce::Colours::yellow);
     else
-        g.setColour(juce::Colours::red);
+        g.setColour(juce::Colours::aquamarine.brighter());
     
 	g.drawRoundedRectangle(getLocalBounds().toFloat(), 1.f, 1.f);
 	

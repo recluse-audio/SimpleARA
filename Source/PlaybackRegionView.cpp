@@ -81,6 +81,7 @@ PlaybackRegionView::~PlaybackRegionView()
 void PlaybackRegionView::paint (juce::Graphics& g)
 {
 
+
 	
 //	auto bounds = this->getLocalBounds();
 //
@@ -97,7 +98,6 @@ void PlaybackRegionView::resized()
 {
 	_updateRegionBounds();
 	
-	repaint();
     activeRegionView->repaint();
     
     slider->setBoundsRelative(0.1f, 0.3f, 0.8f, 0.4f);
@@ -167,8 +167,8 @@ void PlaybackRegionView::didUpdatePlaybackRegionProperties(juce::ARAPlaybackRegi
 void PlaybackRegionView::updateZoomState()
 {
     auto duration = playbackRegion.getAudioSourceDuration();
-    auto width = duration * araSection.getZoomState().getPixelsPerSecond();
-    auto height = araSection.getZoomState().getTrackHeight();
+    auto width = duration * zoomState.getPixelsPerSecond();
+    auto height = zoomState.getRegionHeight();
     
     this->setSize(width, height);
 }

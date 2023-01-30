@@ -48,8 +48,8 @@ void DocumentView::paint (juce::Graphics& g)
 	//g.fillAll(juce::Colours::grey);
 	
 	auto outline = this->getBounds();
-	g.setColour(juce::Colours::red);
-	g.drawRect(outline, 2.f);
+	g.setColour(juce::Colours::darkgrey.darker());
+	g.fillRect(outline);
 
 
 	g.setColour (Colours::white);
@@ -72,7 +72,6 @@ void DocumentView::resized()
 		sequenceView->setTopLeftPosition(0, yPos);
 	}
 
-	repaint();
 }
 
 
@@ -120,7 +119,6 @@ void DocumentView::addRegionSequence(juce::ARARegionSequence *newSequence)
 	auto sequenceView = new RegionSequenceView(araSection, *newSequence);
 	
 	addAndMakeVisible(sequenceView);
-	
 	sequenceViews.add(sequenceView);
 	
 	updateZoomState();
