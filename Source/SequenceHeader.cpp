@@ -16,6 +16,7 @@
 SequenceHeader::SequenceHeader(ARAViewSection& section, juce::ARARegionSequence& sequence)
 : araSection(section)
 , regionSequence(sequence)
+, ZoomStateListener(section.getZoomState())
 {
     sequenceLabel = std::make_unique<juce::Label>();
     sequenceLabel->setText(juce::String(regionSequence.getName()), juce::NotificationType::dontSendNotification);
@@ -29,7 +30,7 @@ SequenceHeader::~SequenceHeader()
 
 void SequenceHeader::paint (juce::Graphics& g)
 {
-    
+	g.fillAll(juce::Colours::rosybrown);
 }
 
 void SequenceHeader::resized()
@@ -39,7 +40,12 @@ void SequenceHeader::resized()
 
 void SequenceHeader::updateZoomState()
 {
-    auto width = araSection.getZoomState().getHeaderWidth();
-    auto height = araSection.getZoomState().getTrackHeight();
+    auto width = getZoomState().getHeaderWidth();
+    auto height = getZoomState().getTrackHeight();
     this->setSize(width, height);
+}
+
+int SequenceHeader::getOrderIndex() const
+{
+	return regionSequence.getOrderIndex();
 }

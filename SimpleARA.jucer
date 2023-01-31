@@ -62,10 +62,13 @@
         <GROUP id="{ADE027B5-9849-FF5A-7979-0F7FC44190D4}" name="ZoomState">
           <FILE id="RPRGNr" name="Zoomer.h" compile="0" resource="0" file="Source/Zoomer.h"/>
           <FILE id="BCx5nD" name="ZoomState.h" compile="0" resource="0" file="Source/ZoomState.h"/>
+          <FILE id="LhyGd0" name="ZoomStateListener.h" compile="0" resource="0"
+                file="Source/ZoomStateListener.h"/>
           <FILE id="Iubvc4" name="ZoomStateOwner.h" compile="0" resource="0"
                 file="Source/ZoomStateOwner.h"/>
         </GROUP>
         <GROUP id="{F17BF76D-79DD-B1D7-5C57-992289DC1D76}" name="ARAViewSection">
+          <FILE id="f7XodK" name="ARAViewConfig.h" compile="0" resource="0" file="Source/ARAViewConfig.h"/>
           <FILE id="epLnjK" name="ARAViewSection.cpp" compile="1" resource="0"
                 file="Source/ARAViewSection.cpp"/>
           <FILE id="z30m3F" name="ARAViewSection.h" compile="0" resource="0"

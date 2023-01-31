@@ -55,10 +55,12 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 	vertZoomControls->setVertical(true);
 	addAndMakeVisible(vertZoomControls.get());
     
-    _rebuildFromDocument();
-    
 	documentViewport->getHorizontalScrollBar().addListener(this);
+	documentViewport->getVerticalScrollBar().addListener(this);
 	
+	
+	_rebuildFromDocument();
+
 	zoomState->transformVerticalZoomByPercent(0.0);
     this->startTimerHz(60);
     
@@ -67,6 +69,8 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 ARAViewSection::~ARAViewSection()
 {
 	documentViewport->getHorizontalScrollBar().removeListener(this);
+	documentViewport->getVerticalScrollBar().removeListener(this);
+
 
 }
 
@@ -82,6 +86,7 @@ void ARAViewSection::_initializeViews(juce::ARADocument* document)
     headerContent = std::make_unique<SequenceHeaderContent>(*this, *document);
     headerViewport = std::make_unique<juce::Viewport>();
     headerViewport->setViewedComponent(headerContent.get());
+	headerViewport->setScrollBarsShown(false, false);
     addAndMakeVisible(headerViewport.get());
 //
 //    /** TO DO : make regionZero into the last selected region */
@@ -152,7 +157,6 @@ void ARAViewSection::setRegionFocus()
 //=======================
 void ARAViewSection::_updateZoomState()
 {
-	sendChangeMessage();
 
 
 }
@@ -217,7 +221,7 @@ void ARAViewSection::_rebuildFromDocument()
     {
         _addRegionSequence(sequence);
     }
-	_updateZoomState();
+	zoomState->triggerUpdate();
 }
 
 //======================
@@ -247,27 +251,37 @@ void ARAViewSection::setViewportEndPos(double endInSeconds)
 	shouldUpdateViewport = true;
 }
 
+//==================
 void ARAViewSection::_updateViewport()
 {
 	auto proportionX = viewportTimeRange.getStart() / documentContent->getDuration();
 	auto xPositionInContent = documentContent->getWidth() * proportionX;
 	documentViewport->setViewPosition(xPositionInContent, verticalScrollOffset);
 	timeRulerViewport->setViewPosition(xPositionInContent, 0);
+	headerViewport->setViewPosition(0, verticalScrollOffset);
 	shouldUpdateViewport = false;
 }
 
 
+//==================
 double ARAViewSection::getDuration() const
 {
 	return documentContent->getDuration();
 }
 
 
+//==================
 void ARAViewSection::scrollBarMoved(juce::ScrollBar *scrollBarThatHasMoved, double newRangeStart)
 {
 	if(scrollBarThatHasMoved == &documentViewport->getHorizontalScrollBar())
 	{
 		auto viewPosX = documentViewport->getViewPositionX();
 		timeRulerViewport->setViewPosition(viewPosX, 0);
+	}
+	
+	if(scrollBarThatHasMoved == &documentViewport->getVerticalScrollBar())
+	{
+		auto viewPosY = documentViewport->getViewPositionY();
+		headerViewport->setViewPosition(0, viewPosY);
 	}
 }

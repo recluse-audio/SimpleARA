@@ -20,6 +20,7 @@
 #include "TimeGrid.h"
 #include "PlayHeadOverlay.h"
 #include "ZoomState.h"
+#include "SequenceHeader.h"
 //==============================================================================
 DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
 : araSection(section)
@@ -67,7 +68,7 @@ void DocumentView::resized()
 	
 	for(auto sequenceView : sequenceViews)
 	{
-		int index = sequenceView->getOrderIndex();
+		int index = sequenceView->getOrderIndex() - 1;
 		auto yPos = index * zoomState.getTrackHeight();
 		sequenceView->setTopLeftPosition(0, yPos);
 	}

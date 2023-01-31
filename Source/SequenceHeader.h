@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ZoomStateListener.h"
 
 class ARAViewSection;
 class ZoomState;
@@ -21,6 +22,7 @@ class ZoomState;
  
 */
 class SequenceHeader  : public juce::Component
+, public ZoomStateListener
 {
 public:
     SequenceHeader(ARAViewSection& section, juce::ARARegionSequence& sequence);
@@ -29,7 +31,9 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     
-    void updateZoomState();
+    void updateZoomState() override;
+	
+	int getOrderIndex() const;
 
 private:
     ARAViewSection& araSection;

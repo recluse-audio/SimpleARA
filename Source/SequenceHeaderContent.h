@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "ARAViewSection.h"
+#include "ZoomStateListener.h"
 
 class ZoomState;
 class SequenceHeader;
@@ -20,6 +21,7 @@ class SequenceHeader;
     Content for a viewport that allows vertical (but not horizontal) scrolling of headers associated with a given ARA region sequence
 */
 class SequenceHeaderContent  : public juce::Component
+, public ZoomStateListener
 {
 public:
     SequenceHeaderContent(ARAViewSection& section, juce::ARADocument& document);
@@ -35,11 +37,13 @@ public:
         headers.clear();
         this->deleteAllChildren();
     }
-    void updateZoomState();
+    void updateZoomState() override;
+	
 private:
     ARAViewSection& araSection;
     juce::ARADocument& araDocument;
     
     juce::OwnedArray<SequenceHeader> headers;
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SequenceHeaderContent)
 };

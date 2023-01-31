@@ -16,47 +16,60 @@
 SequenceHeaderContent::SequenceHeaderContent(ARAViewSection& section, juce::ARADocument& document)
 : araSection(section)
 , araDocument(document)
+, ZoomStateListener(section.getZoomState())
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 
 }
 
+//======================
 SequenceHeaderContent::~SequenceHeaderContent()
 {
     headers.clear();
 }
 
+
+//======================
 void SequenceHeaderContent::paint (juce::Graphics& g)
 {
-
+	g.fillAll(juce::Colours::green);
 }
 
+
+//======================
 void SequenceHeaderContent::resized()
 {
-    for(size_t orderIndex = 0; orderIndex < headers.size(); orderIndex++)
-    {
-        auto yPos = orderIndex * araSection.getZoomState().getTrackHeight();
-        headers[orderIndex]->setTopLeftPosition(0, yPos);
-    }
+	for(auto header : headers)
+	{
+		int index = header->getOrderIndex() - 1;
+		auto yPos = index * getZoomState().getTrackHeight();
+		header->setTopLeftPosition(0, yPos);
+	}
+
 }
 
-
+//======================
 void SequenceHeaderContent::addRegionSequence(juce::ARARegionSequence *sequence)
 {
-    int orderIndex = sequence->getOrderIndex();
     auto newHeader = new SequenceHeader(araSection, *sequence);
-    headers.insert(orderIndex, newHeader);
+	addAndMakeVisible(newHeader);
+	headers.add(newHeader);
 }
 
+
+//======================
 void SequenceHeaderContent::updateZoomState()
 {
     for(auto header : headers)
         header->updateZoomState();
     
-    auto width = araSection.getZoomState().getHeaderWidth();
+    auto width = getZoomState().getHeaderWidth();
     auto numHeaders = headers.size();
-    auto height = araSection.getZoomState().getTrackHeight() * numHeaders;
-    
+	if(numHeaders < 12)
+		numHeaders = 12;
+	
+    auto height = getZoomState().getTrackHeight() * numHeaders;
+	
     this->setSize(width, height);
 }

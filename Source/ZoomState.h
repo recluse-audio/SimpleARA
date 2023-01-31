@@ -142,6 +142,11 @@ public:
 		return (int)regionOutlineWidth;
 	}
 
+	/** Sends an updateZoomState() change broadcast to all listeners */
+	void triggerUpdate()
+	{
+		sendChangeMessage();
+	}
     
 private:
 	static constexpr auto minZoom = 1.0;

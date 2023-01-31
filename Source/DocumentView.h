@@ -23,6 +23,7 @@ class TimeGrid;
 class RegionSequenceView;
 class ZoomControls;
 class ARAViewSection;
+class SequenceHeader;
 //==============================================================================
 /*
     This class is for the timeline and can scroll horizontally and vertically.  
@@ -63,6 +64,8 @@ private:
     std::unique_ptr<PlayheadMarker> playheadMarker;
     
 	juce::OwnedArray<RegionSequenceView> sequenceViews;
+	juce::OwnedArray<SequenceHeader> sequenceHeaders;
+
 	
     double playheadPos = 0.0;
     

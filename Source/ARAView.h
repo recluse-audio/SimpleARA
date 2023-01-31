@@ -18,7 +18,6 @@
 /*
 */
 class ARAView  : public juce::Component
-, public juce::ChangeListener
 {
 public:
     ARAView(ARAViewSection& section) : araSection(section), zoomState(section.getZoomState())
@@ -33,16 +32,7 @@ public:
 	
 	virtual void updateZoomState(const ZoomState& zoomState) = 0;
 
-	void changeListenerCallback(juce::ChangeBroadcaster* source) override
-	{
-		if(source == &araSection)
-			updateZoomState(zoomState);
-	}
-	
-	void removeZoomListener()
-	{
-		araSection.removeChangeListener(this);
-	}
+
 private:
 	ZoomState& zoomState;
 	ARAViewSection& araSection;
