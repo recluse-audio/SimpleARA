@@ -48,7 +48,7 @@ void DocumentView::paint (juce::Graphics& g)
 {
 	//g.fillAll(juce::Colours::grey);
 	
-	auto outline = this->getBounds();
+	auto outline = this->getLocalBounds();
 	g.setColour(juce::Colours::darkgrey.darker());
 	g.fillRect(outline);
 

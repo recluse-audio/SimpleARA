@@ -63,7 +63,9 @@ public:
    // juce::AudioProcessorValueTreeState& getValueTreeState();
 	
 	PlayHeadState playHeadState;
+
 private:
+	
    // juce::AudioProcessorValueTreeState valueTreeState;
 //    juce::AudioProcessorValueTreeState::ParameterLayout _getParameterLayout();
 //    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier &property) override;

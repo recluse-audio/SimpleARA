@@ -70,13 +70,21 @@ void ActiveRegionView::_drawPlaybackRegion(juce::Graphics& g)
 
 void ActiveRegionView::mouseEnter(const juce::MouseEvent& e)
 {
-	auto helperDisplay = araSection.getEditor().getHelperDisplay();
-	helperDisplay->displayPlaybackRegion(playbackRegion);
+
 }
 
 void ActiveRegionView::mouseExit(const juce::MouseEvent& e)
 {
-	auto helperDisplay = araSection.getEditor().getHelperDisplay();
-	helperDisplay->clearDisplay();
+
     
+}
+
+
+void ActiveRegionView::mouseDown(const juce::MouseEvent& e)
+{
+	
+	//auto helperDisplay = araSection.getEditor().getHelperDisplay();
+	//helperDisplay->clearDisplay();
+	//helperDisplay->displayPlaybackRegion(playbackRegion);
+	
 }

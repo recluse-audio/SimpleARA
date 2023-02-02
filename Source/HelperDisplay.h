@@ -27,6 +27,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+	void mouseDown(const juce::MouseEvent& e) override;
+
 	void clearDisplay();
 	void displayPlaybackRegion(const ARA_PlaybackRegion& pRegion);
     void displayAudioMod(const ARA_AudioMod& pMod);

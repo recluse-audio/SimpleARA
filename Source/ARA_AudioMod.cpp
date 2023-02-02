@@ -52,3 +52,10 @@ float ARA_AudioMod::getParameterValue(juce::Identifier paramID) const
 {
     return valueTreeState.getRawParameterValue(paramID)->load();
 }
+
+
+//====================================
+void ARA_AudioMod::setHighlighted(bool shouldHighlight)
+{
+	
+}

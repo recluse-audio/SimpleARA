@@ -136,19 +136,21 @@ void PlaybackRegionView::_updateRegionBounds()
 void PlaybackRegionView::mouseEnter(const juce::MouseEvent& e)
 {
 	auto helperDisplay = araSection.getEditor().getHelperDisplay();
-	helperDisplay->displayPlaybackRegion(playbackRegion);
+	//helperDisplay->displayPlaybackRegion(playbackRegion);
 
 }
 
 void PlaybackRegionView::mouseExit(const juce::MouseEvent& e)
 {
     auto helperDisplay = araSection.getEditor().getHelperDisplay();
-    helperDisplay->clearDisplay();
+    //helperDisplay->clearDisplay();
 }
 
 void PlaybackRegionView::mouseDown(const juce::MouseEvent& e)
 {
-	
+	auto helperDisplay = araSection.getEditor().getHelperDisplay();
+	helperDisplay->clearDisplay();
+	helperDisplay->displayPlaybackRegion(playbackRegion);
 }
 
 

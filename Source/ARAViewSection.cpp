@@ -95,9 +95,10 @@ void ARAViewSection::_initializeViews(juce::ARADocument* document)
 //    addChildComponent(playbackRegionView.get());
 }
 
+//==================
 void ARAViewSection::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::pink.withAlpha(0.7f));
+    g.fillAll(juce::Colours::grey.withAlpha(1.f));
 }
 
 void ARAViewSection::resized()
@@ -268,6 +269,8 @@ double ARAViewSection::getDuration() const
 {
 	return documentContent->getDuration();
 }
+
+
 
 
 //==================

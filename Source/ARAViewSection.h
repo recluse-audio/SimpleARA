@@ -57,7 +57,6 @@ public:
 	void setViewportTimeRange(double startInSeconds, double durationInSeconds);
 	void setViewportEndPos(double endInSeconds);
 	double getDuration() const;
-
     
     juce::ARADocument& getARADocument();
     ZoomState& getZoomState();

@@ -26,9 +26,11 @@ public:
     juce::AudioProcessorValueTreeState& getValueTreeState();
 
     float getParameterValue(juce::Identifier paramID) const;
+	
+	void setHighlighted(bool shouldHighlight);
 
 private:
 	juce::Colour modColor;
-    
+
     juce::Atomic<float> gain;
 };

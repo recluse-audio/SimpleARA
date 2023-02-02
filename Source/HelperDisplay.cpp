@@ -50,3 +50,8 @@ void HelperDisplay::displayPlaybackRegion(const ARA_PlaybackRegion& pRegion)
 	auto address = audioSourceAddress + audioModAddress + playbackRegionAddress;
 	displayLabel->setText(address, juce::NotificationType::dontSendNotification);
 }
+
+void HelperDisplay::mouseDown(const juce::MouseEvent& e)
+{
+	this->clearDisplay();
+}
