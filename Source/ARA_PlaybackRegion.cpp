@@ -9,6 +9,10 @@
 */
 
 #include "ARA_PlaybackRegion.h"
+#include "PlaybackRegionView.h"
+
+
+
 
 void ARA_PlaybackRegion::setCurrentlyInView(bool inView)
 {
@@ -20,6 +24,15 @@ bool ARA_PlaybackRegion::isCurrentlyInView() const
     return currentlyInView;
 }
 
+void ARA_PlaybackRegion::setCurrentlySelected(bool isSelected)
+{
+	currentlySelected = isSelected;
+}
+
+bool ARA_PlaybackRegion::isCurrentlySelected() const
+{
+	return currentlySelected;
+}
 
 juce::Range<double> ARA_PlaybackRegion::getFullRegionTimeRange()
 {

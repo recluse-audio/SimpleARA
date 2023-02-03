@@ -55,7 +55,7 @@ float ARA_AudioMod::getParameterValue(juce::Identifier paramID) const
 
 
 //====================================
-void ARA_AudioMod::setHighlighted(bool shouldHighlight)
+void ARA_AudioMod::setSelected(bool shouldBeSelected)
 {
 	
 }

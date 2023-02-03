@@ -80,3 +80,15 @@ juce::ARAPlaybackRegion* ARA_DocumentSpecialisation::getRegionAtIndex(int index)
         
     return nullptr;
 }
+
+
+void ARA_DocumentSpecialisation::setViewportPosition(juce::Point<int> newPosition)
+{
+	viewportPosition = newPosition;
+}
+
+
+juce::Point<int>& ARA_DocumentSpecialisation::getViewportPosition()
+{
+	return  viewportPosition;
+}

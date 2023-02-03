@@ -34,6 +34,8 @@ public:
         return undoManager;
     }
     
+	void setViewportPosition(juce::Point<int> newPosition);
+	juce::Point<int>& getViewportPosition();
 protected:
 	juce::ARAPlaybackRenderer* doCreatePlaybackRenderer() noexcept override;
 
@@ -51,6 +53,9 @@ protected:
 
 	bool doStoreObjectsToStream (ARAOutputStream& output, const ARAStoreObjectsFilter* filter) noexcept override;
 	
+
 private:
     juce::UndoManager undoManager;
+
+	juce::Point<int> viewportPosition;
 };

@@ -11,6 +11,8 @@
 #pragma once
 #include <JuceHeader.h>
 
+class PlaybackRegionView;
+
 class ARA_PlaybackRegion : public juce::ARAPlaybackRegion
 {
 public:
@@ -18,6 +20,8 @@ public:
     void setCurrentlyInView(bool inView);
     bool isCurrentlyInView() const;
     
+	void setCurrentlySelected(bool isSelected);
+	bool isCurrentlySelected() const;
 	/**
 		Returns the start and end of this playback region at its current position in the DAW timeline
 		IF it were extended to the full duration of its audio source.
@@ -44,10 +48,14 @@ public:
 	/** Full duration of this region's audio source*/
 	double getAudioSourceDuration() const;
 	
+	
+	
 private:
     double mSampleRate = -1;
     bool currentlyInView = false;
+	bool currentlySelected = false;
     juce::Colour modColor;
+	
     
     
     /** Pass this function a start / end sample position  and see where it overlaps with the bounds of this playback region

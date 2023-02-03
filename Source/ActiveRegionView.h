@@ -24,6 +24,7 @@ class ARA_PlaybackRegion;
 	see PlaybackRegionView
 */
 class ActiveRegionView  : public juce::Component
+, public juce::ARAEditorView::Listener
 {
 public:
     ActiveRegionView(ARAViewSection& section, ARA_PlaybackRegion& region);
@@ -35,7 +36,8 @@ public:
 	void mouseEnter(const juce::MouseEvent& e) override;
 	void mouseExit(const juce::MouseEvent& e) override;
 	void mouseDown(const juce::MouseEvent& e) override;
-
+	
+	
 private:
 	ARA_PlaybackRegion& playbackRegion;
 	WaveformCache& waveCache;

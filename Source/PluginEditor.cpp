@@ -18,7 +18,9 @@
 
 //==============================================================================
 SimpleARAEditor::SimpleARAEditor (SimpleARAProcessor& p)
-    : AudioProcessorEditor (&p), AudioProcessorEditorARAExtension(&p), audioProcessor (p)
+: AudioProcessorEditor (&p)
+, AudioProcessorEditorARAExtension(&p)
+, audioProcessor (p)
 {
 
     this->isARAEditorView();

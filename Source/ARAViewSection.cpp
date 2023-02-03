@@ -46,7 +46,13 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
     auto document = mEditor.getARADocument();
     
     if(document != nullptr)
-        _initializeViews(document);
+	{
+		_initializeViews(document);
+
+	}
+	
+	mEditor.getARAEditorView()->addListener(this);
+	mEditor.getARADocument()->addListener(this);
 	
 	zoomControls = std::make_unique<ZoomControls>(*zoomState.get());
 	addAndMakeVisible(zoomControls.get());
@@ -62,7 +68,12 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 	_rebuildFromDocument();
 
 	zoomState->transformVerticalZoomByPercent(0.0);
+	
     this->startTimerHz(60);
+	
+	auto docSpecialisation = mEditor.getARADocumentSpecialisation();
+	auto viewPosition = docSpecialisation->getViewportPosition();
+	this->setViewportPosition(viewPosition.getX(), viewPosition.getY());
     
 }
 
@@ -70,7 +81,8 @@ ARAViewSection::~ARAViewSection()
 {
 	documentViewport->getHorizontalScrollBar().removeListener(this);
 	documentViewport->getVerticalScrollBar().removeListener(this);
-
+	mEditor.getARAEditorView()->removeListener(this);
+	mEditor.getARADocument()->removeListener(this);
 
 }
 
@@ -193,6 +205,12 @@ WaveformCache& ARAViewSection::getWaveCache()
     return *waveCache.get();
 }
 
+
+
+
+
+
+
 //======================
 void ARAViewSection::didAddRegionSequenceToDocument (juce::ARADocument* doc, juce::ARARegionSequence* sequence)
 {
@@ -204,6 +222,25 @@ void ARAViewSection::didEndEditing(juce::ARADocument *doc)
 {
 	_rebuildFromDocument();
 }
+
+//==================
+void ARAViewSection::onNewSelection(const juce::ARAViewSelection& newSelection)
+{
+	this->_unselectAll();
+	auto effectiveRegions = newSelection.getEffectivePlaybackRegions<ARA_PlaybackRegion>();
+	for(auto region : effectiveRegions)
+	{
+		region->setCurrentlySelected(true);
+	}
+	repaint();
+	
+}
+
+
+
+
+
+
 
 // clears current
 void ARAViewSection::_rebuildFromDocument()
@@ -252,17 +289,21 @@ void ARAViewSection::setViewportEndPos(double endInSeconds)
 	shouldUpdateViewport = true;
 }
 
-//==================
-void ARAViewSection::_updateViewport()
-{
-	auto proportionX = viewportTimeRange.getStart() / documentContent->getDuration();
-	auto xPositionInContent = documentContent->getWidth() * proportionX;
-	documentViewport->setViewPosition(xPositionInContent, verticalScrollOffset);
-	timeRulerViewport->setViewPosition(xPositionInContent, 0);
-	headerViewport->setViewPosition(0, verticalScrollOffset);
-	shouldUpdateViewport = false;
-}
 
+
+//==================
+void ARAViewSection::_unselectAll()
+{
+	auto allSequences = this->getARADocument().getRegionSequences();
+	for(auto sequence : allSequences)
+	{
+		auto regions = sequence->getPlaybackRegions<ARA_PlaybackRegion>();
+		for(auto region : regions)
+		{
+			region->setCurrentlySelected(false);
+		}
+	}
+}
 
 //==================
 double ARAViewSection::getDuration() const
@@ -274,17 +315,32 @@ double ARAViewSection::getDuration() const
 
 
 //==================
-void ARAViewSection::scrollBarMoved(juce::ScrollBar *scrollBarThatHasMoved, double newRangeStart)
+void ARAViewSection::scrollBarMoved(juce::ScrollBar *scrollBar, double newRangeStart)
 {
-	if(scrollBarThatHasMoved == &documentViewport->getHorizontalScrollBar())
+	if(scrollBar == &documentViewport->getHorizontalScrollBar() || scrollBar == &documentViewport->getVerticalScrollBar())
 	{
 		auto viewPosX = documentViewport->getViewPositionX();
-		timeRulerViewport->setViewPosition(viewPosX, 0);
+		auto viewPosY = documentViewport->getViewPositionY();
+		setViewportPosition(viewPosX, viewPosY);
+		
+		auto docSpec = mEditor.getARADocumentSpecialisation();
+		docSpec->setViewportPosition(documentViewport->getViewPosition());
 	}
 	
-	if(scrollBarThatHasMoved == &documentViewport->getVerticalScrollBar())
-	{
-		auto viewPosY = documentViewport->getViewPositionY();
-		headerViewport->setViewPosition(0, viewPosY);
-	}
 }
+
+
+///==================
+void ARAViewSection::setViewportPosition(int x, int y)
+{
+	
+	documentViewport->setViewPosition(x, y);
+	_updateViewPositions();
+}
+
+//====================
+void ARAViewSection::_updateViewPositions()
+{
+	
+}
+

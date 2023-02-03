@@ -24,6 +24,8 @@ ActiveRegionView::ActiveRegionView(ARAViewSection& section, ARA_PlaybackRegion& 
 , waveCache(section.getWaveCache())
 {
 
+	auto araEditorView = araSection.getEditor().getARAEditorView();
+	araEditorView->addListener(this);
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 
@@ -31,13 +33,15 @@ ActiveRegionView::ActiveRegionView(ARAViewSection& section, ARA_PlaybackRegion& 
 
 ActiveRegionView::~ActiveRegionView()
 {
+	auto araEditorView = araSection.getEditor().getARAEditorView();
+	araEditorView->removeListener(this);
 }
 
 void ActiveRegionView::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::mediumaquamarine.darker());
 
-    if(playbackRegion.isCurrentlyInView())
+    if(playbackRegion.isCurrentlySelected())
         g.setColour(juce::Colours::yellow);
     else
         g.setColour(juce::Colours::aquamarine.brighter());
@@ -88,3 +92,6 @@ void ActiveRegionView::mouseDown(const juce::MouseEvent& e)
 	//helperDisplay->displayPlaybackRegion(playbackRegion);
 	
 }
+
+
+

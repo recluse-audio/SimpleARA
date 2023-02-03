@@ -27,10 +27,11 @@ public:
 
     float getParameterValue(juce::Identifier paramID) const;
 	
-	void setHighlighted(bool shouldHighlight);
-
+	void setSelected(bool shouldBeSelected);
+	
 private:
 	juce::Colour modColor;
+	
+	bool currentlySelected = false;
 
-    juce::Atomic<float> gain;
 };

@@ -28,6 +28,7 @@ class ZoomControls;
 class ARAViewSection  : public juce::Component
 , public juce::Timer
 , public juce::ARADocument::Listener
+, public juce::ARAEditorView::Listener
 , public juce::ScrollBar::Listener
 {
 public:
@@ -40,8 +41,13 @@ public:
     
     void timerCallback() override;
 
+	// juce::ARADocument::Listener Callbacks
     void didAddRegionSequenceToDocument (juce::ARADocument* doc, juce::ARARegionSequence* sequence) override;
 	void didEndEditing(juce::ARADocument* doc) override;
+	
+	// juce::ARAEditorView::Listener Callbacks
+	void onNewSelection(const juce::ARAViewSelection& newSelection) override;
+
 	
 	void scrollBarMoved (juce::ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
 
@@ -54,6 +60,7 @@ public:
     void setRegionFocus();
 	
 
+	void setViewportPosition(int x, int y);
 	void setViewportTimeRange(double startInSeconds, double durationInSeconds);
 	void setViewportEndPos(double endInSeconds);
 	double getDuration() const;
@@ -99,11 +106,14 @@ private:
 	//
     void _addRegionSequence(juce::ARARegionSequence* sequence);
 	
-	//
-	void _updateViewport();
+	// Updates
+	void _updateViewPositions();
 	
 	// clears current
 	void _rebuildFromDocument();
+	
+	// Goes through all regions and sequences and marks them as unselected
+	void _unselectAll();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ARAViewSection)
 };
