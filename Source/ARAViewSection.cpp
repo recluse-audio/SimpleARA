@@ -69,7 +69,7 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 
 	zoomState->transformVerticalZoomByPercent(0.0);
 	
-    this->startTimerHz(60);
+ //   this->startTimerHz(60);
 	
 	auto docSpecialisation = mEditor.getARADocumentSpecialisation();
 	auto viewPosition = docSpecialisation->getViewportPosition();
@@ -79,6 +79,7 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 
 ARAViewSection::~ARAViewSection()
 {
+	
 	documentViewport->getHorizontalScrollBar().removeListener(this);
 	documentViewport->getVerticalScrollBar().removeListener(this);
 	mEditor.getARAEditorView()->removeListener(this);
@@ -214,13 +215,13 @@ WaveformCache& ARAViewSection::getWaveCache()
 //======================
 void ARAViewSection::didAddRegionSequenceToDocument (juce::ARADocument* doc, juce::ARARegionSequence* sequence)
 {
-    _addRegionSequence(sequence);
+    //_addRegionSequence(sequence);
 }
 
 //======================
 void ARAViewSection::didEndEditing(juce::ARADocument *doc)
 {
-	_rebuildFromDocument();
+	//_rebuildFromDocument();
 }
 
 //==================
@@ -251,14 +252,15 @@ void ARAViewSection::_rebuildFromDocument()
     headerContent = std::make_unique<SequenceHeaderContent>(*this, *mEditor.getARADocument());
     documentContent = std::make_unique<DocumentView>(*this, *mEditor.getARADocument());
     
-    headerViewport->setViewedComponent(headerContent.get());
-    documentViewport->setViewedComponent(documentContent.get());
-    
     auto regionSequences = mEditor.getARADocument()->getRegionSequences();
     for(auto sequence : regionSequences)
     {
         _addRegionSequence(sequence);
     }
+	
+	headerViewport->setViewedComponent(headerContent.get());
+	documentViewport->setViewedComponent(documentContent.get());
+	
 	zoomState->triggerUpdate();
 }
 
@@ -317,11 +319,18 @@ double ARAViewSection::getDuration() const
 //==================
 void ARAViewSection::scrollBarMoved(juce::ScrollBar *scrollBar, double newRangeStart)
 {
+	if(!hasRestoredViewPosition)
+	{
+		hasRestoredViewPosition = true;
+		return;
+	}
+	
 	if(scrollBar == &documentViewport->getHorizontalScrollBar() || scrollBar == &documentViewport->getVerticalScrollBar())
 	{
 		auto viewPosX = documentViewport->getViewPositionX();
 		auto viewPosY = documentViewport->getViewPositionY();
-		setViewportPosition(viewPosX, viewPosY);
+		timeRulerViewport->setViewPosition(viewPosX, 0);
+		headerViewport->setViewPosition(0, viewPosY);
 		
 		auto docSpec = mEditor.getARADocumentSpecialisation();
 		docSpec->setViewportPosition(documentViewport->getViewPosition());
@@ -335,12 +344,9 @@ void ARAViewSection::setViewportPosition(int x, int y)
 {
 	
 	documentViewport->setViewPosition(x, y);
-	_updateViewPositions();
-}
-
-//====================
-void ARAViewSection::_updateViewPositions()
-{
+	timeRulerViewport->setViewPosition(x, 0);
+	headerViewport->setViewPosition(0, y);
 	
 }
+
 

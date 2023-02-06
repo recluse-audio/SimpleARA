@@ -13,6 +13,7 @@
 #include "PluginEditor.h"
 #include "ARA_PlaybackRegion.h"
 #include "ARA_RegionSequence.h"
+#include "ARA_DocumentSpecialisation.h"
 #include "WaveformCache.h"
 #include "PlayheadMarker.h"
 #include "ARAViewSection.h"
@@ -32,6 +33,7 @@ DocumentView::DocumentView(ARAViewSection& section, juce::ARADocument& document)
     addAndMakeVisible(playheadMarker.get());
 
     zoomState.addChangeListener(this);
+	//updateZoomState(); // need to manually call this to make sure it is sized properly when restoring the viewport position
 }
 
 DocumentView::~DocumentView()
@@ -91,7 +93,9 @@ void DocumentView::updateZoomState()
 	
 	this->setSize(width, height);
 	
-	
+	auto docSpecialisation = araSection.getEditor().getARADocumentSpecialisation();
+	auto viewPosition = docSpecialisation->getViewportPosition();
+	araSection.setViewportPosition(viewPosition.getX(), viewPosition.getY());
 }
 
 //================
@@ -121,8 +125,6 @@ void DocumentView::addRegionSequence(juce::ARARegionSequence *newSequence)
 	
 	addAndMakeVisible(sequenceView);
 	sequenceViews.add(sequenceView);
-	
-	updateZoomState();
 }
 
 //================

@@ -60,6 +60,7 @@ public:
     void setRegionFocus();
 	
 
+	// tells documentViewport / timeRulerViewport / headerViewport where to look
 	void setViewportPosition(int x, int y);
 	void setViewportTimeRange(double startInSeconds, double durationInSeconds);
 	void setViewportEndPos(double endInSeconds);
@@ -76,6 +77,7 @@ private:
     
 	juce::Range<double> viewportTimeRange;
 	bool shouldUpdateViewport = false;
+	bool hasRestoredViewPosition = false;
 	int verticalScrollOffset = 0;
 	int horizontalScrollOffset = 0;
 	   
@@ -107,7 +109,7 @@ private:
     void _addRegionSequence(juce::ARARegionSequence* sequence);
 	
 	// Updates
-	void _updateViewPositions();
+	void _updateTimeRulerAnd();
 	
 	// clears current
 	void _rebuildFromDocument();
@@ -115,5 +117,6 @@ private:
 	// Goes through all regions and sequences and marks them as unselected
 	void _unselectAll();
     
+	
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ARAViewSection)
 };
