@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "ARAViewSection.h"
 
 //=========================
 /**
@@ -26,12 +27,7 @@ class ZoomState : public juce::ChangeBroadcaster
 public:
 	
 	//====================
-	ZoomState()
-	{
-		
-	}
-	//====================
-	ZoomState(int pixelsPerSecond, double pixelsPerRegion)
+	ZoomState(ARAViewSection& section) : araSection(section)
 	{
 		
 	}
@@ -39,7 +35,6 @@ public:
 	//====================
 	~ZoomState()
 	{
-		
 	}
 	
     //====================
@@ -145,10 +140,27 @@ public:
 	/** Sends an updateZoomState() change broadcast to all listeners */
 	void triggerUpdate()
 	{
-		sendChangeMessage();
+		// get old view position and calculate proportionally
+		auto viewport = araSection.getDocumentViewport();
+		auto contentSize = viewport->getViewedComponent()->getLocalBounds();
+		auto viewPosition = viewport->getViewPosition();
+		auto proportionX = (double) viewPosition.getX() / (double) contentSize.getWidth();
+		auto proportionY = (double) viewPosition.getY() / (double) contentSize.getHeight();
+		
+		sendSynchronousChangeMessage();
+		
+		// apply same
+		auto newSize = viewport->getViewedComponent()->getLocalBounds();
+		auto newX = (double) newSize.getWidth() * proportionX;
+		auto newY = (double) newSize.getHeight() * proportionY;
+		viewport->setViewPosition(newX, newY);
+		//viewport->setViewPositionProportionately((double) newX, (double) proportionY);
 	}
+	
+
     
 private:
+	ARAViewSection& araSection;
 	static constexpr auto minZoom = 1.0;
 	static constexpr auto maxZoom = 32.0;
 	static constexpr auto regionOutlineWidth = 1.0; // num pixels outlining each region
@@ -164,12 +176,14 @@ private:
     std::atomic<int> baseHeaderWidth { 90 }; // not really zoom related but shared in the same way... maybe don't put this here?
     std::atomic<int> baseTimeRulerHeight { 30 };
     
+	float relativeViewX = 0.f, relativeViewY = 0.f;
+	
     //====================
     void _updatePixelsPerSecond(double pixPerSecond)
     {
         currentPixelsPerSecond = pixPerSecond;
         mWidthFactor = currentPixelsPerSecond / basePixelsPerSecond;
-		sendChangeMessage();
+		triggerUpdate();
     }
     
     //====================
@@ -178,6 +192,6 @@ private:
     {
         currentTrackHeight = trackHeight;
         mHeightFactor = currentTrackHeight / baseTrackHeight;
-		sendChangeMessage();
+		triggerUpdate();
     }
 };

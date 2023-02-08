@@ -23,12 +23,15 @@
 #include "SequenceHeaderContent.h"
 #include "RegionSequenceView.h"
 #include "ZoomControls.h"
+
+
+
 //==============================================================================
 ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 , playheadState(editor.getPlayHeadState())
 {
 	// must initialize before all the views... don't like this, should change
-	zoomState = std::make_unique<ZoomState>();
+	zoomState = std::make_unique<ZoomState>(*this);
 	
 	
     waveCache = std::make_unique<WaveformCache>();
@@ -39,17 +42,26 @@ ARAViewSection::ARAViewSection(SimpleARAEditor& editor) : mEditor(editor)
 	timeRulerViewport->setScrollBarsShown(false, false);
     addAndMakeVisible(timeRulerViewport.get());
     
-
-
-    
     
     auto document = mEditor.getARADocument();
     
     if(document != nullptr)
 	{
-		_initializeViews(document);
+//		auto docSpecialisation = mEditor.getARADocumentSpecialisation();
+
+		documentContent = std::make_unique<DocumentView> (*this, *document);
+		documentViewport = std::make_unique<juce::Viewport>();
+		documentViewport->setViewedComponent(documentContent.get());
+		addAndMakeVisible(documentViewport.get());
+		
+		headerContent = std::make_unique<SequenceHeaderContent>(*this, *document);
+		headerViewport = std::make_unique<juce::Viewport>();
+		headerViewport->setViewedComponent(headerContent.get());
+		headerViewport->setScrollBarsShown(false, false);
+		addAndMakeVisible(headerViewport.get());
 
 	}
+	
 	
 	mEditor.getARAEditorView()->addListener(this);
 	mEditor.getARADocument()->addListener(this);
@@ -128,6 +140,7 @@ void ARAViewSection::resized()
     headerViewport->setBounds   (0, timeRulerHeight, headerWidth, heightMinusRuler);
     timeRulerViewport->setBounds(headerWidth, 0, widthMinusHeader, timeRulerHeight);
     documentViewport->setBounds(headerWidth, timeRulerHeight, widthMinusHeader, heightMinusRuler);
+
 	
 	zoomControls->setBounds(localWidth - 100, localHeight - 40, 90, 30);
 	vertZoomControls->setBounds(localWidth - 40, localHeight - 140, 30, 90);
@@ -331,9 +344,6 @@ void ARAViewSection::scrollBarMoved(juce::ScrollBar *scrollBar, double newRangeS
 		auto viewPosY = documentViewport->getViewPositionY();
 		timeRulerViewport->setViewPosition(viewPosX, 0);
 		headerViewport->setViewPosition(0, viewPosY);
-		
-		auto docSpec = mEditor.getARADocumentSpecialisation();
-		docSpec->setViewportPosition(documentViewport->getViewPosition());
 	}
 	
 }
@@ -349,4 +359,7 @@ void ARAViewSection::setViewportPosition(int x, int y)
 	
 }
 
-
+juce::Viewport* ARAViewSection::getDocumentViewport() const
+{
+	return documentViewport.get();
+}

@@ -21,6 +21,7 @@ class TimeRuler;
 class ZoomState;
 class PlayHeadState;
 class ZoomControls;
+class PersistentViewport;
 //==============================================================================
 /*
     Currently trying method where entire document is plotted on region or sequence focus is accompolished simply by zooming the viewport the relevant area.  I don't think the invisible parts of a viewport are rendered so I think this is ok
@@ -60,6 +61,8 @@ public:
     void setRegionFocus();
 	
 
+	juce::Viewport* getDocumentViewport() const;
+	
 	// tells documentViewport / timeRulerViewport / headerViewport where to look
 	void setViewportPosition(int x, int y);
 	void setViewportTimeRange(double startInSeconds, double durationInSeconds);
@@ -93,6 +96,9 @@ private:
     std::unique_ptr<juce::Viewport> timeRulerViewport;
     std::unique_ptr<TimeRuler> timeRulerContent;
     
+	std::unique_ptr<juce::ScrollBar> verticalScrollBar;
+	std::unique_ptr<juce::ScrollBar> horizontalScrollBar;
+	
 	std::unique_ptr<ZoomControls> zoomControls;
 	std::unique_ptr<ZoomControls> vertZoomControls;
 
